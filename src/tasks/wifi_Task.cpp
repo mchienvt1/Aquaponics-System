@@ -1,0 +1,38 @@
+#include "wifi_Task.h"
+
+const char* SSID = PROJECT_WIFI_SSID;
+const char* PASSWORD = PROJECT_WIFI_PASSWORD;
+
+// Task to handle Wi-Fi connection
+void WifiTask(void *pvParameters) {
+    // Connecting attempts
+    Serial.print("Connect to SSID: ");
+    Serial.println(SSID);
+
+    Serial.begin(115200);
+
+    // Wifi Station Mode
+    WiFi.mode(WIFI_STA);
+    WiFi.begin(SSID, PASSWORD);
+
+    // Loop if not connected
+    while (WiFi.status() != WL_CONNECTED) {
+        vTaskDelay(1000 / portTICK_PERIOD_MS);
+        Serial.println("Connecting to WiFi..");
+    }
+
+    // Successfully connected
+    Serial.print("Successfully Connected to SSID: ");
+    Serial.println(SSID);
+
+    // Print Local Address
+    Serial.print("Local address: http://");
+    Serial.println(WiFi.localIP());
+
+    // Terminate Task since the connection is established
+    vTaskDelete(NULL);
+}
+
+void WifiTask_INIT() {
+    xTaskCreate(WifiTask, "Wifi_Task", 4096, NULL, 1, NULL);
+}

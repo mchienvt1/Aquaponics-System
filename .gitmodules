@@ -1,0 +1,3 @@
+[submodule "lib/STM32_DHT20"]
+	path = lib/STM32_DHT20
+	url = git@github.com:caotiendattx/DHT20_STM32Cube.git
