@@ -9,16 +9,14 @@ void WifiTask(void *pvParameters) {
     Serial.print("Connect to SSID: ");
     Serial.println(SSID);
 
-    Serial.begin(115200);
-
     // Wifi Station Mode
     WiFi.mode(WIFI_STA);
     WiFi.begin(SSID, PASSWORD);
 
     // Loop if not connected
     while (WiFi.status() != WL_CONNECTED) {
-        vTaskDelay(1000 / portTICK_PERIOD_MS);
         Serial.println("Connecting to WiFi..");
+        vTaskDelay(1000 / portTICK_PERIOD_MS);
     }
 
     // Successfully connected

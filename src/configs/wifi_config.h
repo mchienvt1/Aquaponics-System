@@ -1,0 +1,2 @@
+#define PROJECT_WIFI_SSID ""
+#define PROJECT_WIFI_PASSWORD ""

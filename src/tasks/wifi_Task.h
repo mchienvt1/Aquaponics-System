@@ -1,7 +1,8 @@
-#ifndef WIFI_H
-#define WIFI_H
+#ifndef WIFI_H_
+#define WIFI_H_
 
 #include "global.h"
+#include "../configs/wifi_config.h"
 
 extern const char *ssid;
 extern const char *password;

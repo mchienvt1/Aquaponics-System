@@ -1,5 +1,8 @@
-#ifndef GLOBAL_H
-#define GLOBAL_H
+#ifndef GLOBAL_H_
+#define GLOBAL_H_
+
+#include <array>
+#include <map>
 
 #include "WiFi.h"
 #include "ESPAsyncWebServer.h"
@@ -8,8 +11,11 @@
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
 
-// WIFI CONFIG
-#define PROJECT_WIFI_SSID ""
-#define PROJECT_WIFI_PASSWORD ""
+// Sensors
+#define ISHC
+#define ISDC 
+#define ISEC
+
+// Pumps
 
 #endif

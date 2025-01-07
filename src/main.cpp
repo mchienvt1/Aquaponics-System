@@ -3,6 +3,7 @@
 #include "tasks/dispatch_Task.h"
 
 void setup(){
+  Serial.begin(115200); 
   DispatchTask_INIT();
 }
  
