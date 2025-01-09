@@ -1,12 +1,12 @@
 #include "CRC16.h"
 
-uint16_t CalculateCRC(const std::array<uint8_t, 6> &data) {
+uint16_t calculate_CRC(const std::array<uint8_t, 6> &data) {
 
     // Initialize 16-bit register 0xFFFF as CRC value
     uint16_t crc = 0xffff;
 
     // For each byte in data
-    for (size_t i = 0; i < data.size(); +i) {
+    for (size_t i = 0; i < data.size(); ++i) {
 
         // XOR first byte of data[i] with CRC value 
         crc ^= data[i];
@@ -27,12 +27,12 @@ uint16_t CalculateCRC(const std::array<uint8_t, 6> &data) {
     return crc;
 }
 
-std::array<uint8_t, 8> ProcessCRC(const std::array<uint8_t, 6> &data) {
+std::array<uint8_t, 8> process_CRC(const std::array<uint8_t, 6> &data) {
 
     // Initialize empty command and CRC
     size_t data_size = data.size();
     std::array<uint8_t, 8> command;
-    uint16_t crc = CalculateCRC(data);
+    uint16_t crc = calculate_CRC(data);
 
     // Append old data to command
     for(size_t i = 0; i < data_size; ++i) {

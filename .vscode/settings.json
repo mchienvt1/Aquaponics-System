@@ -108,6 +108,8 @@
     "cinttypes": "cpp",
     "typeinfo": "cpp",
     "chrono": "cpp",
-    "ratio": "cpp"
+    "ratio": "cpp",
+    "list": "cpp",
+    "iostream": "cpp"
   }
 }

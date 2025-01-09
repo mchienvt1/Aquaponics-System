@@ -3,6 +3,6 @@
 
 #include "global.h"
 
-float ConvertToFloat(const std::array<uint8_t, 4> &data);
+float convert_to_float(const std::array<uint8_t, 4> &data);
 
 #endif

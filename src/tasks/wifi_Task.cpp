@@ -4,7 +4,7 @@ const char* SSID = PROJECT_WIFI_SSID;
 const char* PASSWORD = PROJECT_WIFI_PASSWORD;
 
 // Task to handle Wi-Fi connection
-void WifiTask(void *pvParameters) {
+void wifi_task(void *pvParameters) {
     // Connecting attempts
     Serial.print("Connect to SSID: ");
     Serial.println(SSID);
@@ -31,6 +31,6 @@ void WifiTask(void *pvParameters) {
     vTaskDelete(NULL);
 }
 
-void WifiTask_INIT() {
-    xTaskCreate(WifiTask, "Wifi_Task", 4096, NULL, 1, NULL);
+void wifi_task_init() {
+    xTaskCreate(wifi_task, "WiFi_Task", 4096, NULL, 1, NULL);
 }

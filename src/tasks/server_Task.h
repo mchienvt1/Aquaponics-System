@@ -3,6 +3,6 @@
 
 #include "global.h"
 
-void ServerTask_INIT();
+void server_task_init();
 
 #endif

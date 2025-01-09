@@ -25,7 +25,7 @@ String processor(const String& var){
 }
 
 // Task to handle server
-void ServerTask(void *pvParameters) {
+void server_task(void *pvParameters) {
   // Initialize SPIFFS
   if(!SPIFFS.begin(true)){
     Serial.println("An Error has occurred while mounting SPIFFS");
@@ -59,6 +59,6 @@ void ServerTask(void *pvParameters) {
   vTaskDelete(NULL);  // Delete the task when done
 }
 
-void ServerTask_INIT() {
-  xTaskCreate(ServerTask, "Server_Task",  8192, NULL, 1, NULL);
+void server_task_init() {
+  xTaskCreate(server_task, "Server_Task",  8192, NULL, 1, NULL);
 }

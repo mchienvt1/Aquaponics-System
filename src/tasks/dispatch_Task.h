@@ -5,7 +5,8 @@
 #include "wifi_Task.h"
 #include "server_Task.h"
 #include "GPIO_Task.h"
+#include "RS485_Task.h"
 
-void DispatchTask_INIT();
+void dispatch_task_init();
 
 #endif

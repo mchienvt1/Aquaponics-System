@@ -12,10 +12,19 @@
 #include "freertos/task.h"
 
 // Sensors
-#define ISHC
+#define ISHC 
 #define ISDC 
-#define ISEC
+#define ISEC 
 
-// Pumps
+// Baudrate
+#define BAUDRATE 115200
+
+// MQTT server details
+
+// OTA Config
+#define OTA_URL_SIZE 256
+#define HASH_LEN 32
+#define FIREBASE_DATABASE_URL ""
+#define OTA_RECV_TIMEOUT_MS 5000
 
 #endif

@@ -7,6 +7,6 @@
 extern const char *ssid;
 extern const char *password;
 
-void WifiTask_INIT();
+void wifi_task_init();
 
 #endif
