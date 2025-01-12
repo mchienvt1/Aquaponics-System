@@ -54,11 +54,6 @@ void read_from_sensor(Sensor &sensor, size_t buffer_size, std::string command_na
     if (avail > 0) {
         RS485Serial.read(buffer, sizeof(buffer));
         *value = sensor.process_value(buffer);
-
-        // Publish value to MQTT
-        if (*value != -1.0) {
-            sensor.publish(command_name, *value);
-        }
     }
     else {
         Serial.println("Lỗi cảm biến");
@@ -70,10 +65,17 @@ float process_value(Sensor &sensor, std::string command_name, size_t buffer_size
 {
     float value = -1.0;
     clean_buffer();
+    
     write_to_sensor(sensor, command_name);
     vTaskDelay(50 / portTICK_PERIOD_MS);
+
     read_from_sensor(sensor, buffer_size, command_name, &value);
-    vTaskDelay(50 / portTICK_PERIOD_MS);   
+    vTaskDelay(50 / portTICK_PERIOD_MS);
+
+    // Publish value to MQTT
+    if (value != -1.0) {
+        sensor.publish(command_name, value);
+    }
     return value;
 }
 

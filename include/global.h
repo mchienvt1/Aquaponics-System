@@ -13,18 +13,20 @@
 
 // Sensors
 #define ISHC 
-#define ISDC 
-#define ISEC 
+// #define ISDC 
+// #define ISEC 
 
 // Baudrate
 #define BAUDRATE 115200
 
 // MQTT server details
 
+
+
 // OTA Config
 #define OTA_URL_SIZE 256
 #define HASH_LEN 32
-#define FIREBASE_DATABASE_URL ""
+#define FIREBASE_DATABASE_URL "https://ota-test-8caf0-default-rtdb.firebaseio.com/"
 #define OTA_RECV_TIMEOUT_MS 5000
 
 #endif

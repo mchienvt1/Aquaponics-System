@@ -30,17 +30,20 @@ float Sensor::process_value(const uint8_t *buffer) {
 
 void Sensor_ISHC::publish(const std::string &command_name, const float &value) {
     // Publish data to MQTT server
-    // publish_data("SensorISHC", String(command_name.c_str()), String(value, 2));
+    // Topic: <BOARD_ID>/SensorISHC/<COMMAND_NAME>
+    publish_data("SensorISHC", String(command_name.c_str()), String(value, 2));
 }
 
 void Sensor_ISDC::publish(const std::string &command_name, const float &value) {
     // Publish data to MQTT server
-    // publish_data("SensorISDC", String(command_name.c_str()), String(value, 2));
+    // Topic: <BOARD_ID>/SensorISDC/<COMMAND_NAME>
+    publish_data("SensorISDC", String(command_name.c_str()), String(value, 2));
 }
 
 void Sensor_ISEC::publish(const std::string &command_name, const float &value) {
     // Publish data to MQTT server
-    // publish_data("SensorISEC", String(command_name.c_str()), String(value, 2));
+    // Topic: <BOARD_ID>/SensorISEC/<COMMAND_NAME>
+    publish_data("SensorISEC", String(command_name.c_str()), String(value, 2));
 }
 
 void Sensor::print_command() {

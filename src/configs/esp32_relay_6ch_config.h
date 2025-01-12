@@ -1,10 +1,10 @@
-// Controls
-#define CH1 1
-#define CH2 2
-#define CH3 41
-#define CH4 42
-#define CH5 45
-#define CH6 46
+// Relay 6 Channel
+#define RELAY_CH1 1
+#define RELAY_CH2 2
+#define RELAY_CH3 41
+#define RELAY_CH4 42
+#define RELAY_CH5 45
+#define RELAY_CH6 46
 
 #define TXD 17 // relay_6_ch
 #define RXD 18 // relay_6_ch
@@ -15,3 +15,5 @@
 // Buzzer
 #define BUZZER 21
 
+// BOARD ID
+#define BOARD_ID 1
