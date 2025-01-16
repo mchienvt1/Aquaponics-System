@@ -2,9 +2,6 @@
 #define SENSOR_H_
 
 #include "global.h"
-#include "../tasks/MQTT_Task.h"
-#include "../utils/ConvertToFloat.h"
-#include "../utils/CRC16.h"
 
 class Sensor {
 
@@ -14,13 +11,7 @@ protected:
 
 public:
     Sensor() {};
-    Sensor(uint8_t id, const std::map<std::string, std::array<uint8_t, 6>> &raw_command_map) {
-        this->id = id;
-        for (auto &raw_command : raw_command_map) {
-            std::array<uint8_t, 8> command = process_CRC(raw_command.second);
-            command_map[raw_command.first] = command;
-        }
-    }
+    Sensor(uint8_t id, const std::map<std::string, std::array<uint8_t, 6>> &raw_command_map);
     virtual ~Sensor() {};
     
     virtual void add_command(const std::string &command_name, std::array<uint8_t, 6> &raw_command_map);
@@ -30,6 +21,8 @@ public:
 
     virtual void print_command();
 };
+
+#ifdef ISHC
 
 class Sensor_ISHC : public Sensor {
 
@@ -41,6 +34,9 @@ public:
     void publish(const std::string &command_name, const float &value) override;
 };
 
+#endif
+
+#ifdef ISEC
 
 class Sensor_ISEC : public Sensor {
 
@@ -52,6 +48,10 @@ public:
     void publish(const std::string &command_name, const float &value) override;
 };
 
+#endif
+
+#ifdef ISDC
+
 class Sensor_ISDC : public Sensor {
 
 public:
@@ -61,5 +61,6 @@ public:
 
     void publish(const std::string &command_name, const float &value) override;
 };
+#endif
 
 #endif

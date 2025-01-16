@@ -1,22 +1,13 @@
-#ifndef OTA_H
-#define OTA_H
-
-#include <HTTPClient.h>
+#ifndef OTA_H_
+#define OTA_H_
 
 #include "global.h"
-#include "wifi_Task.h"
-#include "GPIO_Task.h"
-#include "esp_partition.h"
-#include "esp_system.h"
-#include "esp_event.h"
-#include <esp_err.h>
-#include "esp_log.h"
-#include "esp_ota_ops.h"
-#include "esp_http_client.h"
-#include "esp_https_ota.h"
-#include "esp_wifi.h"
-#include "nvs.h"
-#include "nvs_flash.h"
+
+void print_sha256(const uint8_t *image_hash, const char *label);
+
+void get_sha256_of_partitions(void);
+
+esp_err_t validate_image_header(esp_app_desc_t *new_app_info);
 
 void OTA_task_init();
 

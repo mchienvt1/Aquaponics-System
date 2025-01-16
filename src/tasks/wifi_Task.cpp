@@ -1,36 +1,48 @@
 #include "wifi_Task.h"
 
-const char* SSID = PROJECT_WIFI_SSID;
-const char* PASSWORD = PROJECT_WIFI_PASSWORD;
+volatile bool need_reconnect = false;
 
 // Task to handle Wi-Fi connection
 void wifi_task(void *pvParameters) {
-    // Connecting attempts
-    Serial.print("Connect to SSID: ");
-    Serial.println(SSID);
-
-    // Wifi Station Mode
+    
+    // Wifi Mode
     WiFi.mode(WIFI_STA);
-    WiFi.begin(SSID, PASSWORD);
-
+    WiFi.begin(WIFI_SSID, WIFI_PASSWORD);
+    // set_rgb_color(RED_RGB);
     // Loop if not connected
     while (WiFi.status() != WL_CONNECTED) {
-        Serial.println("Connecting to WiFi..");
-        vTaskDelay(1000 / portTICK_PERIOD_MS);
+        // Print status
+        ESP_LOGI("WIFI", "WiFi Status: %d ", WiFi.status());
+        vTaskDelay(WIFI_TIMER / portTICK_PERIOD_MS);
     }
 
     // Successfully connected
     Serial.print("Successfully Connected to SSID: ");
-    Serial.println(SSID);
+    Serial.println(WIFI_SSID);
 
     // Print Local Address
-    Serial.print("Local address: http://");
+    Serial.print("Local address: http://"); 
     Serial.println(WiFi.localIP());
 
-    // Terminate Task since the connection is established
-    vTaskDelete(NULL);
+    // Check if need to reconnect
+    while (true) {
+        if (WiFi.status() != WL_CONNECTED) {
+            if (!need_reconnect) {
+                need_reconnect = true;
+                Serial.println("WiFi Disconnected");
+                WiFi.disconnect();
+                WiFi.begin(WIFI_SSID, WIFI_PASSWORD);
+                Serial.println("Reconnecting to SSID: " + String(WIFI_SSID));
+            }
+        }
+        if (need_reconnect && WiFi.status() == WL_CONNECTED) {
+        }
+        // ESP_LOGI("WIFI", "WiFi mode: %d ", WiFi.getMode());
+        vTaskDelay(WIFI_TIMER / portTICK_PERIOD_MS);
+    }
 }
 
+// Function to initialize the Wi-Fi task
 void wifi_task_init() {
-    xTaskCreate(wifi_task, "WiFi_Task", 4096, NULL, 1, NULL);
-}
+    xTaskCreate(wifi_task, "WiFi_Task", 4096, NULL, 2, NULL);
+}   

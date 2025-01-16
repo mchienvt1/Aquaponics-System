@@ -1,9 +1,29 @@
-#include "CRC16.h"
+#include "utils.h"
+
+float convert_to_float(const std::array<uint8_t, 4> &data) {
+    // Combine the bytes into a single unsigned integer
+    // The only important bit of this shit
+    unsigned int intValue = (data[0] << 24) | (data[1] << 16) | (data[2] << 8) | data[3];
+
+    // Extract sign, exponent, and mantissa
+    unsigned int sign = (intValue >> 31) & 1;
+    unsigned int exponent = (intValue >> 23) & 0xFF;
+    unsigned int mantissa = intValue & 0x7FFFFF;
+
+    // Calculate the floating-point value
+    float result = std::ldexp(static_cast<float>(mantissa) / (1 << 23) + 1.0f, exponent - 127);
+    if (sign) {
+        result = -result;
+    }
+
+    return result;
+}
+
 
 uint16_t calculate_CRC(const std::array<uint8_t, 6> &data) {
 
     // Initialize 16-bit register 0xFFFF as CRC value
-    uint16_t crc = 0xffff;
+    uint16_t crc = 0xFFFF;
 
     // For each byte in data
     for (size_t i = 0; i < data.size(); ++i) {
@@ -40,8 +60,8 @@ std::array<uint8_t, 8> process_CRC(const std::array<uint8_t, 6> &data) {
     }
 
     // Append CRC to command
-    command[data_size] = static_cast<uint8_t>(crc & 0x00FF);
-    command[data_size + 1] = static_cast<uint8_t>(crc & 0xFF00);
-    
+    command[data_size] = static_cast<uint8_t>(crc & 0xFF);
+    command[data_size + 1] = static_cast<uint8_t>((crc >> 8) & 0xFF); // Because it's an 8-bit command
+
     return command;
 }

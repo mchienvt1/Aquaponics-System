@@ -1,6 +1,21 @@
 #include "RS485_Task.h"
 HardwareSerial RS485Serial(1);
 
+uint8_t count_sensor() {
+    uint8_t count = 0;
+#ifdef ISHC
+    count++;
+#endif
+#ifdef ISDC
+    count++;
+#endif
+#ifdef ISEC
+    count++;
+#endif
+    return count;
+}
+
+#ifdef ISHC
 Sensor_ISHC sensorISHC(
     ISHC_ID, 
     {
@@ -8,7 +23,9 @@ Sensor_ISHC sensorISHC(
         {MEASURE_TEMP, {ISHC_ID, 0x03, 0x00, 0x03, 0x00, 0x02}}
     }
 );
+#endif
 
+#ifdef ISDC
 Sensor_ISDC sensorISDC(
     ISDC_ID, 
     {
@@ -16,7 +33,9 @@ Sensor_ISDC sensorISDC(
         {MEASURE_TEMP, {ISDC_ID, 0x03, 0x00, 0x03, 0x00, 0x02}}
     }
 );
+#endif
 
+#ifdef ISEC
 Sensor_ISEC sensorISEC(
     ISEC_ID, 
     {
@@ -27,8 +46,9 @@ Sensor_ISEC sensorISEC(
         {MEASURE_TEMP, {ISEC_ID, 0x03, 0x00, 0x04, 0x00, 0x02}}
     }
 );
+#endif
 
-void clean_buffer() {
+void clean_rs485_buffer() {
     size_t bytes_to_read = RS485Serial.available();
     if (bytes_to_read > 0)
     {
@@ -39,11 +59,15 @@ void clean_buffer() {
 
 void write_to_sensor(Sensor &sensor, std::string command_name) {
     std::array<uint8_t, 8> command = sensor.get_command(command_name);
+    // Serial.print("Write ");
     uint8_t cmd[8];
     for (int i = 0; i < 8; ++i)
     {
         cmd[i] = command[i];
+        // Serial.print(command[i], HEX);
+        // Serial.print(" ");
     }
+    // Serial.println("to sensor");
     RS485Serial.write(cmd, sizeof(cmd));
 }
 
@@ -56,7 +80,7 @@ void read_from_sensor(Sensor &sensor, size_t buffer_size, std::string command_na
         *value = sensor.process_value(buffer);
     }
     else {
-        Serial.println("Lỗi cảm biến");
+        ESP_LOGE("RS485", "No data received from sensor");
     }
     memset(buffer, 0, sizeof(buffer));
 }
@@ -64,13 +88,13 @@ void read_from_sensor(Sensor &sensor, size_t buffer_size, std::string command_na
 float process_value(Sensor &sensor, std::string command_name, size_t buffer_size)
 {
     float value = -1.0;
-    clean_buffer();
+    clean_rs485_buffer();
     
     write_to_sensor(sensor, command_name);
-    vTaskDelay(50 / portTICK_PERIOD_MS);
+    vTaskDelay(RS485_READ_WRITE_TIMER / portTICK_PERIOD_MS);
 
     read_from_sensor(sensor, buffer_size, command_name, &value);
-    vTaskDelay(50 / portTICK_PERIOD_MS);
+    vTaskDelay(RS485_READ_WRITE_TIMER / portTICK_PERIOD_MS);
 
     // Publish value to MQTT
     if (value != -1.0) {
@@ -81,26 +105,28 @@ float process_value(Sensor &sensor, std::string command_name, size_t buffer_size
 
 void rs485_task(void *pvParameters) {
     while (1) {
+        float temp_ISHC = 0.0, temp_ISDC = 0.0, temp_ISEC = 0.0;
 #ifdef ISHC
-        float pH_ISHC = process_value(sensorISHC, MEASURE_PH, 9);
-        float temp_ISHC = process_value(sensorISHC, MEASURE_TEMP, 9);
+        // float pH = process_value(sensorISHC, MEASURE_PH, 9);
+        temp_ISHC = process_value(sensorISHC, MEASURE_TEMP, 9);
 #endif
 #ifdef ISDC
-        float dO_ISDC = process_value(sensorISDC, MEASURE_DO, 9);
-        float temp_ISDC = process_value(sensorISDC, MEASURE_TEMP, 9);
+        float oxygen = process_value(sensorISDC, MEASURE_DO, 9);
+        temp_ISDC = process_value(sensorISDC, MEASURE_TEMP, 9);
 #endif
 #ifdef ISEC
-        float conduct_ISEC = process_value(sensorISEC, MEASURE_CONDUCT, 9);
-        float resis_ISEC = process_value(sensorISEC, MEASURE_RESIS, 9);
-        float sali_ISEC = process_value(sensorISEC, MEASURE_SALI, 9);
-        float tds_ISEC = process_value(sensorISEC, MEASURE_TDS, 9);
-        float temp_ISEC = process_value(sensorISEC, MEASURE_TEMP, 9);
+        float conduct = process_value(sensorISEC, MEASURE_CONDUCT, 9);
+        float resis = process_value(sensorISEC, MEASURE_RESIS, 9);
+        float sali = process_value(sensorISEC, MEASURE_SALI, 9);
+        float tds = process_value(sensorISEC, MEASURE_TDS, 9);
+        temp_ISEC = process_value(sensorISEC, MEASURE_TEMP, 9);
 #endif
-        vTaskDelay(1000 / portTICK_PERIOD_MS);
+        float temp = (temp_ISHC + temp_ISDC + temp_ISEC) / count_sensor();
+        vTaskDelay(RS485_PROCESS_TIMER / portTICK_PERIOD_MS);
     }
 }
 
 void RS485_task_init() {
-    RS485Serial.begin(9600, SERIAL_8N1, RXD, TXD);
+    RS485Serial.begin(RS485_BAUDRATE, SERIAL_8N1, RXD_RS485, TXD_RS485);
     xTaskCreate(rs485_task, "RS485_Task", 4096, NULL, 1, NULL);
 }
