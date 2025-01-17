@@ -16,8 +16,8 @@ void publish_data(String type, String feed, String data) {
 }
 
 void subscribe(String type, String feed) {
-    String topic = BOARD_ID + DELIMITER + type + DELIMITER + feed;
-    
+    // String topic = BOARD_ID + DELIMITER + type + DELIMITER + feed;
+    String topic = String("chuong/f/") + feed;
     if (psClient.connected())
     {
         ESP_LOGI("MQTT", "Subscribing to topic: %s", topic.c_str());
@@ -34,7 +34,8 @@ void callback(char* topic, byte* payload, unsigned int length) {
     //     Serial.print((char)payload[i]);
     // }
     ESP_LOGD("MQTT", "Payload: %s", payload);
-
+    return;
+    
     // Parsing message
     char* token = strtok(topic, DELIMITER);
     char* topic_parts[4];

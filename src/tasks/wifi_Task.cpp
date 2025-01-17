@@ -12,10 +12,12 @@ void wifi_task(void *pvParameters) {
     // Loop if not connected
     while (WiFi.status() != WL_CONNECTED) {
         // Print status
+        set_rgb_color(RED_RGB);
         ESP_LOGI("WIFI", "WiFi Status: %d ", WiFi.status());
         vTaskDelay(WIFI_TIMER / portTICK_PERIOD_MS);
     }
 
+    set_rgb_color(GREEN_RGB);
     // Successfully connected
     Serial.print("Successfully Connected to SSID: ");
     Serial.println(WIFI_SSID);
@@ -23,7 +25,8 @@ void wifi_task(void *pvParameters) {
     // Print Local Address
     Serial.print("Local address: http://"); 
     Serial.println(WiFi.localIP());
-
+    set_rgb_color(BLACK_RGB); 
+    
     // Check if need to reconnect
     while (true) {
         if (WiFi.status() != WL_CONNECTED) {

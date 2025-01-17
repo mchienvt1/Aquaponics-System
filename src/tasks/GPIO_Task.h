@@ -14,6 +14,8 @@ extern int GPIO_Relay_Pin[6];
 extern const Color RED_RGB;
 extern const Color GREEN_RGB;
 extern const Color BLUE_RGB;
+extern const Color WHITE_RGB;
+extern const Color BLACK_RGB;
 
 void set_rgb_color(Color c);
 
