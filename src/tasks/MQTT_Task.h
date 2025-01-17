@@ -12,4 +12,4 @@ void subscribe(String type, String feed);
 
 void mqtt_task_init();
 
-#endif // MQTT_TASK_H
+#endif // MQTT_TASK_H_

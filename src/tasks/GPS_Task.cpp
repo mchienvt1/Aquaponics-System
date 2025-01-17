@@ -6,11 +6,11 @@ gps_location location;
 
 bool satellite_status = false;
 
-void display_info_init() {
-    Serial.println(F("Sats HDOP  Latitude   Longitude   Fix  Date       Time     Date Alt    Course Speed Card  Chars Sentences Checksum"));
-    Serial.println(F("           (deg)      (deg)       Age                      Age  (m)    --- from GPS ----  RX    RX        Fail"));
-    Serial.println(F("----------------------------------------------------------------------------------------------------------------------------------------"));
-}
+// void display_info_init() {
+//     Serial.println(F("Sats HDOP  Latitude   Longitude   Fix  Date       Time     Date Alt    Course Speed Card  Chars Sentences Checksum"));
+//     Serial.println(F("           (deg)      (deg)       Age                      Age  (m)    --- from GPS ----  RX    RX        Fail"));
+//     Serial.println(F("----------------------------------------------------------------------------------------------------------------------------------------"));
+// }
 
 void displayInfo()
 {

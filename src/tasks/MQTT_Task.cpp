@@ -8,7 +8,7 @@ PubSubClient psClient(espClient);
 
 void publish_data(String type, String feed, String data) {
     // String topic = BOARD_ID + DELIMITER + type + DELIMITER + feed;
-    String topic = String("chuong/f/") + feed;
+    String topic = String("chuong/feeds/") + feed;
     if (psClient.connected()) {
         ESP_LOGI("MQTT", "Publishing to topic: %s", topic.c_str());
         psClient.publish(topic.c_str(), data.c_str());
@@ -17,7 +17,7 @@ void publish_data(String type, String feed, String data) {
 
 void subscribe(String type, String feed) {
     // String topic = BOARD_ID + DELIMITER + type + DELIMITER + feed;
-    String topic = String("chuong/f/") + feed;
+    String topic = String("chuong/feeds/") + feed;
     if (psClient.connected())
     {
         ESP_LOGI("MQTT", "Subscribing to topic: %s", topic.c_str());
@@ -33,8 +33,7 @@ void callback(char* topic, byte* payload, unsigned int length) {
     // for (unsigned int i = 0; i < length; i++) {
     //     Serial.print((char)payload[i]);
     // }
-    ESP_LOGD("MQTT", "Payload: %s", payload);
-    return;
+    // return;
     
     // Parsing message
     char* token = strtok(topic, DELIMITER);
@@ -52,7 +51,14 @@ void callback(char* topic, byte* payload, unsigned int length) {
         // Increment index
         idx++;
     }
+    if (strcmp(topic_parts[2], "R1") == 0) {
+        uint8_t mode = payload[0] - '0';
+        write_relay_pin(topic_parts[2], mode);
 
+        // TODO: Send ACK to the sender
+        // publish_data(RELAY_CONTROL, topic_parts[2], String(payload[0]));
+    }
+    for (unsigned int i = 0; i < length; i++) payload[i] = 0;
     // Check if the message is for this board
     if (std::atoi(topic_parts[0]) != BOARD_ID) {
         return;
@@ -78,28 +84,28 @@ void callback(char* topic, byte* payload, unsigned int length) {
 static void subscribe_relay_topics() {
     // Create and subscribe to relays' status topics
     // Topic: <BOARD_ID>/Relay_Status/<RELAY_ID>
-    subscribe(RELAY_STATUS, "1");
-    subscribe(RELAY_STATUS, "2");
-    subscribe(RELAY_STATUS, "3");
-    subscribe(RELAY_STATUS, "4");
-    subscribe(RELAY_STATUS, "5");
-    subscribe(RELAY_STATUS, "6");
+    subscribe(RELAY_STATUS, "R1");
+    // subscribe(RELAY_STATUS, "2");
+    // subscribe(RELAY_STATUS, "3");
+    // subscribe(RELAY_STATUS, "4");
+    // subscribe(RELAY_STATUS, "5");
+    // subscribe(RELAY_STATUS, "6");
 
     // Create and publish relays' control topics
     // Topic: <BOARD_ID>/Relay_Control/<RELAY_ID>
-    publish_data(RELAY_CONTROL, "1", String(digitalRead(RELAY_CH1)));
-    publish_data(RELAY_CONTROL, "2", String(digitalRead(RELAY_CH2)));
-    publish_data(RELAY_CONTROL, "3", String(digitalRead(RELAY_CH3)));
-    publish_data(RELAY_CONTROL, "4", String(digitalRead(RELAY_CH4)));
-    publish_data(RELAY_CONTROL, "5", String(digitalRead(RELAY_CH5)));
-    publish_data(RELAY_CONTROL, "6", String(digitalRead(RELAY_CH6)));
+    // publish_data(RELAY_CONTROL, "1", String(digitalRead(RELAY_CH1)));
+    // publish_data(RELAY_CONTROL, "2", String(digitalRead(RELAY_CH2)));
+    // publish_data(RELAY_CONTROL, "3", String(digitalRead(RELAY_CH3)));
+    // publish_data(RELAY_CONTROL, "4", String(digitalRead(RELAY_CH4)));
+    // publish_data(RELAY_CONTROL, "5", String(digitalRead(RELAY_CH5)));
+    // publish_data(RELAY_CONTROL, "6", String(digitalRead(RELAY_CH6)));
 }
 
 void mqtt_task(void *pvParameters) {
     
     // Await WiFi connection
     while (WiFi.status() != WL_CONNECTED) {
-        vTaskDelay(WIFI_TIMER / portTICK_PERIOD_MS);
+        delay(WIFI_TIMER);
     }
 
     // Setup server connection
@@ -107,37 +113,36 @@ void mqtt_task(void *pvParameters) {
     psClient.setServer(MQTT_SERVER, MQTT_PORT);
     psClient.setCallback(callback);
 
-    
     // Connect to server
     while (!psClient.connected()) {
         ESP_LOGI("MQTT", "Connecting to MQTT server");
+
         // Attempt to connect
         String psClientName = "Ambatukam" + String(random(0xffff), HEX);
         if (psClient.connect(psClientName.c_str(), MQTT_USERNAME, MQTT_PASSWORD)) {
             ESP_LOGI("MQTT", "Connected to MQTT server");
-
             // Subscribe to relay topics
-            // subscribe_relay_topics();
+            subscribe_relay_topics();
 
             // Publish IP address
             // Topic: <BOARD_ID>/IPv4/Address
             String local_ip = WiFi.localIP().toString();
-            publish_data("IPv4", String("Address"), local_ip);
+            // publish_data("IPv4", String("Address"), local_ip);
 
             // Serial.println(local_ip);
             // Serial.println("Started");
 
             // Maintain connection
             while (1) {
-                // psClient.loop();
-                vTaskDelay(MQTT_LOOP_TIMER / portTICK_PERIOD_MS);
+                psClient.loop();
+                delay(MQTT_LOOP_TIMER);
             }
         }
         
         // Failed to connect 
         else {
             ESP_LOGE("MQTT", "Failed, (rc = %d)", psClient.state());
-            vTaskDelay(MQTT_RECONNECT_TIMER / portTICK_PERIOD_MS);
+            delay(MQTT_RECONNECT_TIMER);
         }
     }
 }
