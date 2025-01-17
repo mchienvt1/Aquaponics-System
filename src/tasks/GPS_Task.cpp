@@ -16,6 +16,7 @@ void displayInfo()
 {
     if (!gps.location.isUpdated()) {
         ESP_LOGI("GPS", "Finding Satellites...");
+        satellite_status = false;
         return;
     }
 
