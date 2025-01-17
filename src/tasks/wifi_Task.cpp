@@ -14,7 +14,7 @@ void wifi_task(void *pvParameters) {
         // Print status
         set_rgb_color(RED_RGB);
         ESP_LOGI("WIFI", "WiFi Status: %d ", WiFi.status());
-        vTaskDelay(WIFI_TIMER / portTICK_PERIOD_MS);
+        delay(WIFI_TIMER);
     }
 
     set_rgb_color(GREEN_RGB);
@@ -41,7 +41,7 @@ void wifi_task(void *pvParameters) {
         if (need_reconnect && WiFi.status() == WL_CONNECTED) {
         }
         // ESP_LOGI("WIFI", "WiFi mode: %d ", WiFi.getMode());
-        vTaskDelay(WIFI_TIMER / portTICK_PERIOD_MS);
+        delay(WIFI_TIMER);
     }
 }
 

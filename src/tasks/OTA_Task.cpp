@@ -104,7 +104,7 @@ void perform_OTA(const String &firmware_url) {
 void check_for_update() {
 
     ESP_LOGI("OTA", "URL: %s", OTA_DATABASE_SERVER_URL.c_str());
-    http.begin(OTA_DATABASE_SERVER_URL);
+    http.begin(espClient, OTA_DATABASE_SERVER_URL);
     int httpCode = http.GET();
     if (httpCode == HTTP_CODE_OK)
     {   

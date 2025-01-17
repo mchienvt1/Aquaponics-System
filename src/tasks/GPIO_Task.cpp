@@ -66,6 +66,6 @@ void gpio_task(void *pvParameters) {
 
 void gpio_task_init() {
     xTaskCreate(gpio_task, "GPIO_Task", 4096, NULL, 1, NULL);
-    xTaskCreate(test_relay_control, "", 2048, NULL, 2, NULL);
+    // xTaskCreate(test_relay_control, "", 2048, NULL, 2, NULL);
     xTaskCreate(test_rgb, "test_rgb", 2048, NULL, 258, NULL);
 };

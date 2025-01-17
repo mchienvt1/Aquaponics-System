@@ -2,108 +2,79 @@
 
 TinyGPSPlus gps;
 HardwareSerial GPSSerial(2);
+gps_location location;
+
+bool satellite_status = false;
+
+void display_info_init() {
+    Serial.println(F("Sats HDOP  Latitude   Longitude   Fix  Date       Time     Date Alt    Course Speed Card  Chars Sentences Checksum"));
+    Serial.println(F("           (deg)      (deg)       Age                      Age  (m)    --- from GPS ----  RX    RX        Fail"));
+    Serial.println(F("----------------------------------------------------------------------------------------------------------------------------------------"));
+}
 
 void displayInfo()
 {
-    Serial.print(F("Location: "));
-    Serial.printf("satellites:%d\n", gps.satellites.value());
-    if (gps.location.isUpdated()) {
-        Serial.print(gps.location.lat(), 6);
-        Serial.print(F(","));
-        Serial.print(gps.location.lng(), 6);
-        Serial.print(F("\n"));
-
-    } else {
-        Serial.print(F("INVALID\n"));
+    if (!gps.location.isUpdated()) {
+        ESP_LOGI("GPS", "Finding Satellites...");
+        return;
     }
 
-    Serial.print(F("  Date/Time: "));
-    if (gps.date.isUpdated()) {
-        Serial.print(gps.date.month());
-        Serial.print(F("/"));
-        Serial.print(gps.date.day());
-        Serial.print(F("/"));
-        Serial.print(gps.date.year());
-    } else {
-        Serial.print(F("INVALID"));
+    satellite_status = true;
+
+    if (gps.satellites.isValid() && gps.hdop.isValid()) {
+        Serial.printf("Found %02d satellites with %03.1f hdop\n", gps.satellites.value(), gps.hdop.hdop());
     }
 
-    Serial.print(F(" "));
-    if (gps.time.isUpdated()) {
-        if (gps.time.hour() < 10) Serial.print(F("0"));
-        Serial.print(gps.time.hour());
-        Serial.print(F(":"));
-        if (gps.time.minute() < 10) Serial.print(F("0"));
-        Serial.print(gps.time.minute());
-        Serial.print(F(":"));
-        if (gps.time.second() < 10) Serial.print(F("0"));
-        Serial.print(gps.time.second());
-        Serial.print(F("."));
-        if (gps.time.centisecond() < 10) Serial.print(F("0"));
-        Serial.print(gps.time.centisecond());
-    } else {
-        Serial.print(F("INVALID"));
+    if (gps.location.isValid()) {
+        location.lat = gps.location.lat();
+        location.lng = gps.location.lng();
+        Serial.printf("Location: (%03.6f, %03.6f) updated %dms ago\n", location.lat, location.lng, gps.location.age());
+    }
+    else {
+        Serial.println("Unknown Location");
     }
 
+    if (gps.date.isValid() && gps.time.isValid()) {
+        Serial.print("Date and time: ");
+        char sz1[32];
+        sprintf(sz1, "%02d/%02d/%02d ", gps.date.month(), gps.date.day(), gps.date.year());
+        Serial.print(sz1);
+        char sz2[32];
+        sprintf(sz2, "%02d:%02d:%02d", gps.time.hour(), gps.time.minute(), gps.time.second());
+        Serial.println(sz2);
+    }
+    else {
+        Serial.println("Unknown Date/Time");
+    }
+    // printInt(gps.charsProcessed(), true, 6);
+    // printInt(gps.sentencesWithFix(), true, 10);
+    // printInt(gps.failedChecksum(), true, 9);
     Serial.println();
 }
 
-// void get_data() {
-//     if (gps.location.isUpdated()) {
-//         ESP_LOGI("GPS", "LAT = %.6f, LNG = %.6f", gps.location.lat(), gps.location.lng());
-//     }
-//     if (gps.time.isUpdated()) {
-//         gpsData.hour = gps.time.hour();
-//         gpsData.minute = gps.time.minute();
-//         gpsData.second = gps.time.second();
-//     }
-//     if (gps.date.isUpdated()) {
-//         gpsData.day = gps.date.day();
-//         gpsData.month = gps.date.month();
-//         gpsData.year = gps.date.year();
-//     }
-// }
-
 void publish_data_task(void *pvParameters) {
     while (true) {
-        if (WiFi.status() == WL_CONNECTED) {
-            // String location = String(gpsData.lat, 6) + "," + String(gpsData.lng, 6);
-            // publish_data("GPS", "Location", location);
-            vTaskDelay(INSANELY_LONG_TIMER / portTICK_PERIOD_MS);
+        if (WiFi.status() == WL_CONNECTED && satellite_status) {
+            String location_data = String(location.lat, 6) + "," + String(location.lng, 6);
+            publish_data("GPS", "Location", location_data);
+            delay(INSANELY_LONG_TIMER);
         }
-        vTaskDelay(GPS_TIMER / portTICK_PERIOD_MS);
+        delay(GPS_TIMER);
     }
 }
 
 void GPS_task(void *pvParameters) {
+    // display_info_init();
     while (true) {
+        // Read data from AT6668
         while (GPSSerial.available() > 0) {
-            // char c = (char)GPSSerial.read();
-            Serial.write(GPSSerial.read());
-            // gps.encode(c);
+            gps.encode(GPSSerial.read());
         }
-        Serial.println("");
-        // ESP_LOGI("GPS", "SoftwareSerial available %d", ss.available());
-
-        // displayInfo();
-        vTaskDelay(GPS_TIMER / portTICK_PERIOD_MS);
-        
-        // while (GPSSerial.available() >= 1){
-        //     Serial.write(GPSSerial.read());
-        //     gps.encode(Serial1.read());
-        //     if (gps.location.isUpdated()) {
-        //         // Latitude in degrees (double)
-        //         Serial.print("Latitude= ");
-        //         Serial.print(gps.location.lat(), 6);
-        //         // Longitude in degrees (double)
-        //         Serial.print(" Longitude= ");
-        //         Serial.println(gps.location.lng(), 6);
-        //     }
-        // }
+        displayInfo();
+        delay(GPS_TIMER);
     }
 
 }
-
 
 void GPS_task_init() {
     GPSSerial.begin(GPS_BAUDRATE, SERIAL_8N1, RXD_GPS, TXD_GPS);
