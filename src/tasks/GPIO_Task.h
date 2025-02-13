@@ -1,5 +1,5 @@
-#ifndef GPIO_H_
-#define GPIO_H_
+#ifndef GPIO_TASK_H_
+#define GPIO_TASK_H_
 
 #include "global.h"
 

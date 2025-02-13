@@ -35,20 +35,22 @@
 // #endif
 
 // Libraries for OTA Update
-#ifdef OTA_H_
+#ifdef OTA_TASK_H_
 #include <HTTPClient.h>
 #include "esp_http_client.h"
 #include "esp_https_ota.h"
 #endif
 
 // Libraries for AsyncWebServer
-#ifdef SERVER_H_
+#ifdef SERVER_TASK_H_
 #include "ESPAsyncWebServer.h"
 // #include "AsyncJson.h"
 #endif
 
+// Global defines
+#include "defines.h"
+
 // Include configs
-#include "../src/configs/defines.h"
 #include "../src/configs/sensor.h"
 
 // Include utils

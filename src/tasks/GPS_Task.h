@@ -1,5 +1,5 @@
-#ifndef GPS_H_
-#define GPS_H_
+#ifndef GPS_TASK_H_
+#define GPS_TASK_H_
 
 #include "global.h"
 

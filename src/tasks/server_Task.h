@@ -1,5 +1,5 @@
-#ifndef SERVER_H_
-#define SERVER_H_
+#ifndef SERVER_TASK_H_
+#define SERVER_TASK_H_
 
 #include "global.h"
 

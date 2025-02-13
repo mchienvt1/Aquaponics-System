@@ -1,5 +1,5 @@
-#ifndef WIFI_H_
-#define WIFI_H_
+#ifndef WIFI_TASK_H_
+#define WIFI_TASK_H_
 
 #include "global.h"
 

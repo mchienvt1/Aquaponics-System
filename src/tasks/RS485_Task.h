@@ -1,5 +1,5 @@
-#ifndef RS485_H_
-#define RS485_H_
+#ifndef RS485_TASK_H_
+#define RS485_TASK_H_
 
 // #include <chrono>
 // #include <ctime>

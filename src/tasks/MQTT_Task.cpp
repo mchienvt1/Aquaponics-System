@@ -8,7 +8,7 @@ PubSubClient psClient(espClient);
 
 void publish_data(String type, String feed, String data) {
     // String topic = BOARD_ID + DELIMITER + type + DELIMITER + feed;
-    String topic = String("chuong/feeds/") + feed;
+    String topic = String("chuong/feeds/") + type + feed;
     if (psClient.connected()) {
         ESP_LOGI("MQTT", "Publishing to topic: %s", topic.c_str());
         psClient.publish(topic.c_str(), data.c_str());
@@ -17,7 +17,7 @@ void publish_data(String type, String feed, String data) {
 
 void subscribe(String type, String feed) {
     // String topic = BOARD_ID + DELIMITER + type + DELIMITER + feed;
-    String topic = String("chuong/feeds/") + feed;
+    String topic = String("chuong/feeds/") + type + feed;
     if (psClient.connected())
     {
         ESP_LOGI("MQTT", "Subscribing to topic: %s", topic.c_str());
@@ -51,13 +51,6 @@ void callback(char* topic, byte* payload, unsigned int length) {
         // Increment index
         idx++;
     }
-    if (strcmp(topic_parts[2], "R1") == 0) {
-        uint8_t mode = payload[0] - '0';
-        write_relay_pin(topic_parts[2], mode);
-
-        // TODO: Send ACK to the sender
-        // publish_data(RELAY_CONTROL, topic_parts[2], String(payload[0]));
-    }
     for (unsigned int i = 0; i < length; i++) payload[i] = 0;
     // Check if the message is for this board
     if (std::atoi(topic_parts[0]) != BOARD_ID) {
@@ -71,12 +64,12 @@ void callback(char* topic, byte* payload, unsigned int length) {
     // If the message is for the relay control
     if (strcmp(topic_parts[1], RELAY_CONTROL) == 0) {
         // Write data to relay
-        write_relay_pin(topic_parts[2], payload[0]);
+        uint8_t mode = payload[0] - '0';
+        write_relay_pin(topic_parts[2], mode);
 
         // TODO: Send ACK to the sender
 
         // Publish relay status after writing data to relay
-        publish_data(RELAY_CONTROL, topic_parts[2], String(payload[0]));
         return;
     }
 }
@@ -84,21 +77,21 @@ void callback(char* topic, byte* payload, unsigned int length) {
 static void subscribe_relay_topics() {
     // Create and subscribe to relays' status topics
     // Topic: <BOARD_ID>/Relay_Status/<RELAY_ID>
-    subscribe(RELAY_STATUS, "R1");
-    // subscribe(RELAY_STATUS, "2");
-    // subscribe(RELAY_STATUS, "3");
-    // subscribe(RELAY_STATUS, "4");
-    // subscribe(RELAY_STATUS, "5");
-    // subscribe(RELAY_STATUS, "6");
+    subscribe(RELAY_STATUS, "1");
+    subscribe(RELAY_STATUS, "2");
+    subscribe(RELAY_STATUS, "3");
+    subscribe(RELAY_STATUS, "4");
+    subscribe(RELAY_STATUS, "5");
+    subscribe(RELAY_STATUS, "6");
 
     // Create and publish relays' control topics
     // Topic: <BOARD_ID>/Relay_Control/<RELAY_ID>
-    // publish_data(RELAY_CONTROL, "1", String(digitalRead(RELAY_CH1)));
-    // publish_data(RELAY_CONTROL, "2", String(digitalRead(RELAY_CH2)));
-    // publish_data(RELAY_CONTROL, "3", String(digitalRead(RELAY_CH3)));
-    // publish_data(RELAY_CONTROL, "4", String(digitalRead(RELAY_CH4)));
-    // publish_data(RELAY_CONTROL, "5", String(digitalRead(RELAY_CH5)));
-    // publish_data(RELAY_CONTROL, "6", String(digitalRead(RELAY_CH6)));
+    publish_data(RELAY_CONTROL, "1", String(digitalRead(RELAY_CH1)));
+    publish_data(RELAY_CONTROL, "2", String(digitalRead(RELAY_CH2)));
+    publish_data(RELAY_CONTROL, "3", String(digitalRead(RELAY_CH3)));
+    publish_data(RELAY_CONTROL, "4", String(digitalRead(RELAY_CH4)));
+    publish_data(RELAY_CONTROL, "5", String(digitalRead(RELAY_CH5)));
+    publish_data(RELAY_CONTROL, "6", String(digitalRead(RELAY_CH6)));
 }
 
 void mqtt_task(void *pvParameters) {
@@ -127,13 +120,10 @@ void mqtt_task(void *pvParameters) {
             // Publish IP address
             // Topic: <BOARD_ID>/IPv4/Address
             String local_ip = WiFi.localIP().toString();
-            // publish_data("IPv4", String("Address"), local_ip);
-
-            // Serial.println(local_ip);
-            // Serial.println("Started");
+            publish_data("IPv4", String("Address"), local_ip);
 
             // Maintain connection
-            while (1) {
+            while (true) {
                 psClient.loop();
                 delay(MQTT_LOOP_TIMER);
             }

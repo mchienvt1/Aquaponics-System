@@ -1,5 +1,5 @@
-#ifndef OTA_H_
-#define OTA_H_
+#ifndef OTA_TASK_H_
+#define OTA_TASK_H_
 
 #include "global.h"
 
