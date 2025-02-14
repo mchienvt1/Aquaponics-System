@@ -5,7 +5,7 @@ PubSubClient psClient(espClient);
 
 void publish_data(String type, String feed, String data) {
     // String topic = BOARD_ID + DELIMITER + type + DELIMITER + feed;
-    String topic =  "2003." + type + "." + feed;
+    String topic =  String(BOARD_ID) + "." + type + "." + feed;
     if (psClient.connected()) {
         ESP_LOGI("MQTT", "Publishing to topic: %s", topic.c_str());
         psClient.publish(topic.c_str(), data.c_str());
@@ -14,7 +14,7 @@ void publish_data(String type, String feed, String data) {
 
 void subscribe(String type, String feed) {
     // String topic = BOARD_ID + DELIMITER + type + DELIMITER + feed;
-    String topic = "2003." + type + "." + feed;
+    String topic = String(BOARD_ID) + "." + type + "." + feed;
     if (psClient.connected())
     {
         ESP_LOGI("MQTT", "Subscribing to topic: %s", topic.c_str());
@@ -22,63 +22,84 @@ void subscribe(String type, String feed) {
     }
 }
 
+void processing_payload(byte* payload, unsigned int length) {
+}
+
 void callback(char* topic, byte* payload, unsigned int length) {
     // Print message
     ESP_LOGI("MQTT", "Message arrived [%s]", topic);
 
-    // Print payload
-    for (unsigned int i = 0; i < length; i++) {
-        Serial.print((char)payload[i]);
-    }
-    return;
-    
+    // // Print payload
+    // for (unsigned int i = 0; i < length; i++) {
+    //     Serial.print((char)payload[i]);
+    // }
+
     // Parsing message
-    char* token = strtok(topic, DELIMITER);
+    char* token = strtok(topic, "/");
     char* topic_parts[4];
     uint8_t idx = 0;
 
-    // // Process each token until strtok returns NULL (end of string)
-    // while (token != nullptr && idx < 4) {
-    //     // Output the token
-    //     topic_parts[idx] = token;
+    // Process each token until strtok returns NULL (end of string)
+    while (token != nullptr && idx < 4) {
+        // Output the token
+        topic_parts[idx] = token;
 
-    //     // Get the next token
-    //     token = strtok(nullptr, DELIMITER);
+        // Get the next token
+        token = strtok(nullptr, "/");
 
-    //     // Increment index
-    //     idx++;
-    // }
-    // for (unsigned int i = 0; i < length; i++) payload[i] = 0;
-    // // Check if the message is for this board
-    // if (std::atoi(topic_parts[0]) != BOARD_ID) {
-    //     return;
-    // }
-    // // If the message is for the relay status
-    // if (strcmp(topic_parts[1], RELAY_STATUS) == 0) {
-    //     // TODO: Parsing payload
-    //     return;
-    // }
-    // // If the message is for the relay control
-    // if (strcmp(topic_parts[1], RELAY_CONTROL) == 0) {
-    //     // Write data to relay
-    //     uint8_t mode = payload[0] - '0';
-    //     write_relay_pin(topic_parts[2], mode);
+        // Increment index
+        idx++;
+    }
 
-    //     // TODO: Send ACK to the sender
+    // Check if the message is for this board
+    if (std::atoi(topic_parts[0]) != BOARD_ID) {
+        return;
+    }
 
-    //     // Publish relay status after writing data to relay
-    //     return;
-    // }
+    // Ignore if the message is not from the relay topic
+    if (strcmp(topic_parts[1], "relay") != 0) {
+        return;
+    }
+
+    // Ignore if the message is from the relay.ack topic
+    if (strcmp(topic_parts[2], "ack") == 0) {
+        return;
+    }
+
+    // If the message is from the relay.controller topic
+    if (strcmp(topic_parts[2], "controller") == 0) {
+        // Process the message
+        char* part = strtok((char*)payload, "-");
+        char* payload_parts[4];
+        uint8_t payload_idx = 0;
+        while (part != nullptr && payload_idx < 4) {
+            // Output the token
+            payload_parts[payload_idx] = part;
+
+            // Get the next token
+            part = strtok(nullptr, "-");
+
+            // Increment index
+            payload_idx++;
+        }
+
+        uint8_t relay_ch = atoi(payload_parts[1]);
+        if (NUM_RELAY >= relay_ch && relay_ch > 0) {
+            uint8_t state = atoi(payload_parts[2]);
+            digitalWrite(relay_ch, state);
+            publish_data("relay", "ack", String(relay_ch) + "-" + String(state));
+        }
+    }
 }
 
 static void subscribe_relay_topics() {
-    // Create and subscribe to relays' status topics
-    // Topic: <BOARD_ID>/Relay_Status/<RELAY_ID>
+    // Create and subscribe to relays' ack topics
+    // Topic: <BOARD_ID>.relay.ack
     subscribe("relay", "ack");
 
     // Create and publish relays' control topics
-    // Topic: <BOARD_ID>/Relay_Control/<RELAY_ID>
-    subscribe("relay.controller", "1");
+    // Topic: <BOARD_ID>/relay.controller
+    subscribe("relay", "controller");
     // publish_data(RELAY_CONTROL, "2", String(digitalRead(RELAY_CH2)));
     // publish_data(RELAY_CONTROL, "3", String(digitalRead(RELAY_CH3)));
     // publish_data(RELAY_CONTROL, "4", String(digitalRead(RELAY_CH4)));
