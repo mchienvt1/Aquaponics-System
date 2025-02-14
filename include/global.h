@@ -52,6 +52,7 @@
 
 // Include configs
 #include "../src/configs/sensor.h"
+#include "../src/configs/sensor_data.h"
 
 // Include utils
 #include "../src/utils/utils.h"

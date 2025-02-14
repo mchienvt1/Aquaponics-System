@@ -1,5 +1,6 @@
 #include "RS485_Task.h"
 HardwareSerial RS485Serial(1);
+SensorData sensor_data;
 
 uint8_t count_sensor() {
     uint8_t count = 0;
@@ -103,26 +104,49 @@ float process_value(Sensor &sensor, std::string command_name, size_t buffer_size
     return value;
 }
 
+static void load_sensor_data() {
+    float temp_ISHC = -1.0, temp_ISDC = -1.0, temp_ISEC = -1.0;
+
+#ifdef ISHC
+    temp_ISHC = process_value(sensorISHC, MEASURE_TEMP, 9);
+    // float pH = process_value(sensorISHC, MEASURE_PH, 9);
+    sensor_data.set_data(MEASURE_PH, process_value(sensorISHC, MEASURE_PH, 9));
+#endif
+
+#ifdef ISDC
+    temp_ISDC = process_value(sensorISDC, MEASURE_TEMP, 9);
+    // float oxygen = process_value(sensorISDC, MEASURE_DO, 9);
+    sensor_data.set_data(MEASURE_DO, process_value(sensorISDC, MEASURE_DO, 9));
+#endif
+
+#ifdef ISEC
+    temp_ISEC = process_value(sensorISEC, MEASURE_TEMP, 9);
+    // float conduct = process_value(sensorISEC, MEASURE_CONDUCT, 9);
+    sensor_data.set_data(MEASURE_CONDUCT, process_value(sensorISEC, MEASURE_CONDUCT, 9));
+    // float sali = process_value(sensorISEC, MEASURE_SALI, 9);
+    sensor_data.set_data(MEASURE_SALI, process_value(sensorISEC, MEASURE_SALI, 9));
+    // float tds = process_value(sensorISEC, MEASURE_TDS, 9);
+    sensor_data.set_data(MEASURE_TDS, process_value(sensorISEC, MEASURE_TDS, 9));
+    // float resis = process_value(sensorISEC, MEASURE_RESIS, 9);
+    sensor_data.set_data(MEASURE_RESIS, process_value(sensorISEC, MEASURE_RESIS, 9));
+#endif
+
+    float temp = (temp_ISHC + temp_ISDC + temp_ISEC) / count_sensor();
+    sensor_data.set_data(MEASURE_TEMP, temp);
+}
+
+static void send_sensor_data() {
+    // Publish data to MQTT server
+    // Topic: <BOARD_ID>.sensor.total
+    String message = sensor_data.format_data();
+    ESP_LOGI("RS485", "Publishing data to topic sensor.total with value \n\t%s", message.c_str());
+    publish_data("sensor", "total", message);
+}
 
 void rs485_task(void *pvParameters) {
     while (1) {
-        float temp_ISHC = 0.0, temp_ISDC = 0.0, temp_ISEC = 0.0;
-#ifdef ISHC
-        float pH = process_value(sensorISHC, MEASURE_PH, 9);
-        temp_ISHC = process_value(sensorISHC, MEASURE_TEMP, 9);
-#endif
-#ifdef ISDC
-        float oxygen = process_value(sensorISDC, MEASURE_DO, 9);
-        temp_ISDC = process_value(sensorISDC, MEASURE_TEMP, 9);
-#endif
-#ifdef ISEC
-        float conduct = process_value(sensorISEC, MEASURE_CONDUCT, 9);
-        float resis = process_value(sensorISEC, MEASURE_RESIS, 9);
-        float sali = process_value(sensorISEC, MEASURE_SALI, 9);
-        float tds = process_value(sensorISEC, MEASURE_TDS, 9);
-        temp_ISEC = process_value(sensorISEC, MEASURE_TEMP, 9);
-#endif
-        float temp = (temp_ISHC + temp_ISDC + temp_ISEC) / count_sensor();
+        load_sensor_data();
+        send_sensor_data();
         vTaskDelay(RS485_PROCESS_TIMER / portTICK_PERIOD_MS);
     }
 }
