@@ -41,7 +41,7 @@ void Sensor_ISHC::publish(const std::string &command_name, const float &value) {
     // Publish data to MQTT server
     // Topic: <BOARD_ID>/SensorISHC/<COMMAND_NAME>
     ESP_LOGI("ISHC", "Publishing data to topic SensorISHC/%s with value: %f", command_name.c_str(), value);
-    publish_data("SensorISHC", String(command_name.c_str()), String(value, 2));
+    publish_data("sensor", String(command_name.c_str()), String(value, 2));
 }
 #endif
 
@@ -50,7 +50,7 @@ void Sensor_ISDC::publish(const std::string &command_name, const float &value) {
     // Publish data to MQTT server
     // Topic: <BOARD_ID>/SensorISDC/<COMMAND_NAME>
     ESP_LOGI("ISDC", "Publishing data to topic SensorISDC/%s with value: %f", command_name.c_str(), value);
-    publish_data("SensorISDC", String(command_name.c_str()), String(value, 2));
+    publish_data("sensor", String(command_name.c_str()), String(value, 2));
 }
 #endif
 
@@ -59,7 +59,7 @@ void Sensor_ISEC::publish(const std::string &command_name, const float &value) {
     // Publish data to MQTT server
     // Topic: <BOARD_ID>/SensorISEC/<COMMAND_NAME>
     ESP_LOGI("ISEC", "Publishing data to topic SensorISEC/%s with value: %f", command_name.c_str(), value);
-    publish_data("SensorISEC", String(command_name.c_str()), String(value, 2));
+    publish_data("sensor", String(command_name.c_str()), String(value, 2));
 }
 #endif
 

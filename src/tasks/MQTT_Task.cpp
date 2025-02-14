@@ -8,7 +8,7 @@ PubSubClient psClient(espClient);
 
 void publish_data(String type, String feed, String data) {
     // String topic = BOARD_ID + DELIMITER + type + DELIMITER + feed;
-    String topic = String("chuong/feeds/") + type + feed;
+    String topic =  "2003." + type + "." + feed;
     if (psClient.connected()) {
         ESP_LOGI("MQTT", "Publishing to topic: %s", topic.c_str());
         psClient.publish(topic.c_str(), data.c_str());
@@ -17,7 +17,7 @@ void publish_data(String type, String feed, String data) {
 
 void subscribe(String type, String feed) {
     // String topic = BOARD_ID + DELIMITER + type + DELIMITER + feed;
-    String topic = String("chuong/feeds/") + type + feed;
+    String topic = "2003." + type + "." + feed;
     if (psClient.connected())
     {
         ESP_LOGI("MQTT", "Subscribing to topic: %s", topic.c_str());
@@ -33,7 +33,7 @@ void callback(char* topic, byte* payload, unsigned int length) {
     // for (unsigned int i = 0; i < length; i++) {
     //     Serial.print((char)payload[i]);
     // }
-    // return;
+    return;
     
     // Parsing message
     char* token = strtok(topic, DELIMITER);
@@ -102,8 +102,8 @@ void mqtt_task(void *pvParameters) {
     }
 
     // Setup server connection
-    // IPAddress server(172, 16, 238, 101);
-    psClient.setServer(MQTT_SERVER, MQTT_PORT);
+    IPAddress server(3, 106, 55, 238);
+    psClient.setServer(server, MQTT_PORT);
     psClient.setCallback(callback);
 
     // Connect to server
