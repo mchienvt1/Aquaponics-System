@@ -1,8 +1,5 @@
 #include "MQTT_Task.h"
 
-const char *RELAY_CONTROL = "Relay_Control";
-const char *RELAY_STATUS = "Relay_Status";
-
 WiFiClient espClient;
 PubSubClient psClient(espClient);
 
@@ -30,9 +27,9 @@ void callback(char* topic, byte* payload, unsigned int length) {
     ESP_LOGI("MQTT", "Message arrived [%s]", topic);
 
     // Print payload
-    // for (unsigned int i = 0; i < length; i++) {
-    //     Serial.print((char)payload[i]);
-    // }
+    for (unsigned int i = 0; i < length; i++) {
+        Serial.print((char)payload[i]);
+    }
     return;
     
     // Parsing message
@@ -40,58 +37,53 @@ void callback(char* topic, byte* payload, unsigned int length) {
     char* topic_parts[4];
     uint8_t idx = 0;
 
-    // Process each token until strtok returns NULL (end of string)
-    while (token != nullptr && idx < 4) {
-        // Output the token
-        topic_parts[idx] = token;
+    // // Process each token until strtok returns NULL (end of string)
+    // while (token != nullptr && idx < 4) {
+    //     // Output the token
+    //     topic_parts[idx] = token;
 
-        // Get the next token
-        token = strtok(nullptr, DELIMITER);
+    //     // Get the next token
+    //     token = strtok(nullptr, DELIMITER);
 
-        // Increment index
-        idx++;
-    }
-    for (unsigned int i = 0; i < length; i++) payload[i] = 0;
-    // Check if the message is for this board
-    if (std::atoi(topic_parts[0]) != BOARD_ID) {
-        return;
-    }
-    // If the message is for the relay status
-    if (strcmp(topic_parts[1], RELAY_STATUS) == 0) {
-        // TODO: Parsing payload
-        return;
-    }
-    // If the message is for the relay control
-    if (strcmp(topic_parts[1], RELAY_CONTROL) == 0) {
-        // Write data to relay
-        uint8_t mode = payload[0] - '0';
-        write_relay_pin(topic_parts[2], mode);
+    //     // Increment index
+    //     idx++;
+    // }
+    // for (unsigned int i = 0; i < length; i++) payload[i] = 0;
+    // // Check if the message is for this board
+    // if (std::atoi(topic_parts[0]) != BOARD_ID) {
+    //     return;
+    // }
+    // // If the message is for the relay status
+    // if (strcmp(topic_parts[1], RELAY_STATUS) == 0) {
+    //     // TODO: Parsing payload
+    //     return;
+    // }
+    // // If the message is for the relay control
+    // if (strcmp(topic_parts[1], RELAY_CONTROL) == 0) {
+    //     // Write data to relay
+    //     uint8_t mode = payload[0] - '0';
+    //     write_relay_pin(topic_parts[2], mode);
 
-        // TODO: Send ACK to the sender
+    //     // TODO: Send ACK to the sender
 
-        // Publish relay status after writing data to relay
-        return;
-    }
+    //     // Publish relay status after writing data to relay
+    //     return;
+    // }
 }
 
 static void subscribe_relay_topics() {
     // Create and subscribe to relays' status topics
     // Topic: <BOARD_ID>/Relay_Status/<RELAY_ID>
-    subscribe(RELAY_STATUS, "1");
-    subscribe(RELAY_STATUS, "2");
-    subscribe(RELAY_STATUS, "3");
-    subscribe(RELAY_STATUS, "4");
-    subscribe(RELAY_STATUS, "5");
-    subscribe(RELAY_STATUS, "6");
+    subscribe("relay", "ack");
 
     // Create and publish relays' control topics
     // Topic: <BOARD_ID>/Relay_Control/<RELAY_ID>
-    publish_data(RELAY_CONTROL, "1", String(digitalRead(RELAY_CH1)));
-    publish_data(RELAY_CONTROL, "2", String(digitalRead(RELAY_CH2)));
-    publish_data(RELAY_CONTROL, "3", String(digitalRead(RELAY_CH3)));
-    publish_data(RELAY_CONTROL, "4", String(digitalRead(RELAY_CH4)));
-    publish_data(RELAY_CONTROL, "5", String(digitalRead(RELAY_CH5)));
-    publish_data(RELAY_CONTROL, "6", String(digitalRead(RELAY_CH6)));
+    subscribe("relay.controller", "1");
+    // publish_data(RELAY_CONTROL, "2", String(digitalRead(RELAY_CH2)));
+    // publish_data(RELAY_CONTROL, "3", String(digitalRead(RELAY_CH3)));
+    // publish_data(RELAY_CONTROL, "4", String(digitalRead(RELAY_CH4)));
+    // publish_data(RELAY_CONTROL, "5", String(digitalRead(RELAY_CH5)));
+    // publish_data(RELAY_CONTROL, "6", String(digitalRead(RELAY_CH6)));
 }
 
 void mqtt_task(void *pvParameters) {

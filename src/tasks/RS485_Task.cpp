@@ -97,17 +97,18 @@ float process_value(Sensor &sensor, std::string command_name, size_t buffer_size
     vTaskDelay(RS485_READ_WRITE_TIMER / portTICK_PERIOD_MS);
 
     // Publish value to MQTT
-    if (value != -1.0) {
-        sensor.publish(command_name, value);
-    }
+    // if (value != -1.0) {
+    //     sensor.publish(command_name, value);
+    // }
     return value;
 }
+
 
 void rs485_task(void *pvParameters) {
     while (1) {
         float temp_ISHC = 0.0, temp_ISDC = 0.0, temp_ISEC = 0.0;
 #ifdef ISHC
-        // float pH = process_value(sensorISHC, MEASURE_PH, 9);
+        float pH = process_value(sensorISHC, MEASURE_PH, 9);
         temp_ISHC = process_value(sensorISHC, MEASURE_TEMP, 9);
 #endif
 #ifdef ISDC
