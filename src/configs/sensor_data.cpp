@@ -7,7 +7,7 @@ SensorData::SensorData() {
     data_map[3] = std::make_pair(MEASURE_CONDUCT, -1.0);
     data_map[4] = std::make_pair(MEASURE_SALI, -1.0);
     data_map[5] = std::make_pair(MEASURE_TDS, -1.0);
-    // data_map[6] = std::make_pair(MEASURE_RESIS, -1.0);
+    data_map[6] = std::make_pair(MEASURE_RESIS, -1.0);
 }
 
 SensorData::~SensorData() {}

@@ -17,7 +17,6 @@ public:
     virtual void add_command(const std::string &command_name, std::array<uint8_t, 6> &raw_command_map);
     virtual std::array<uint8_t, 8> get_command(const std::string &command_name);
     virtual float process_value(const uint8_t *buffer);
-    virtual void publish(const std::string &command_name, const float &value) {};
 
     virtual void print_command();
 };
@@ -30,8 +29,6 @@ public:
     Sensor_ISHC() {};
     Sensor_ISHC(uint8_t id, const std::map<std::string, std::array<uint8_t, 6>> &raw_command_map) : Sensor(id, raw_command_map) {};
     ~Sensor_ISHC() {};
-
-    void publish(const std::string &command_name, const float &value) override;
 };
 
 #endif
@@ -44,8 +41,6 @@ public:
     Sensor_ISEC() {};
     Sensor_ISEC(uint8_t id, const std::map<std::string, std::array<uint8_t, 6>> &raw_command_map) : Sensor(id, raw_command_map) {};
     ~Sensor_ISEC() {};
-
-    void publish(const std::string &command_name, const float &value) override;
 };
 
 #endif
@@ -58,8 +53,6 @@ public:
     Sensor_ISDC() {};
     Sensor_ISDC(uint8_t id, const std::map<std::string, std::array<uint8_t, 6>> &raw_command_map) : Sensor(id, raw_command_map) {};
     ~Sensor_ISDC() {};
-
-    void publish(const std::string &command_name, const float &value) override;
 };
 #endif
 
