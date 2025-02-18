@@ -31,11 +31,11 @@ float SensorData::get_data(const std::string &data_name) {
 }
 
 String SensorData::format_data() {
-    String res = "";
+    String res = "{";
     for (uint8_t idx = 0; idx < SENSOR_DATA_COUNT; ++idx) {
-        res += String(data_map[idx].first.c_str()) + ":" + String(data_map[idx].second);
-        if (idx < SENSOR_DATA_COUNT - 1) res += "#";
+        res += '"' + String(data_map[idx].first.c_str()) + '"' + ":" + String(data_map[idx].second);
+        if (idx < SENSOR_DATA_COUNT - 1) res += ",";
         // Serial.printf("res: %s\n", res.c_str());
     }
-    return res;
+    return res + "}";
 }

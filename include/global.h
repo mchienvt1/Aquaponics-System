@@ -43,8 +43,9 @@
 // #include "AsyncJson.h"
 #endif
 
-// Global defines
+// Global defines and constants
 #include "defines.h"
+// Global structs and classes
 #include "constants.h"
 
 // Include configs

@@ -3,9 +3,7 @@
 
 #include "global.h"
 
-void publish_data(String type_topic, String data);
-
-void subscribe(String type_topic);
+void publish_data(String data);
 
 void mqtt_task_init();
 

@@ -2,24 +2,26 @@
 
 WiFiClient wifiClient;
 Arduino_MQTT_Client mqttClient(wifiClient);
-ThingsBoard tb(mqttClient);
+ThingsBoard tb(mqttClient, MAX_MESSAGE_RECEIVE_SIZE, MAX_MESSAGE_SEND_SIZE);
 
-void mqtt_task() {
+void publish_data(String data) {
+    tb.sendTelemetryString(data.c_str());
+}
+
+void mqtt_task(void *pvParameters) {
     // Await WiFi connection
     while (WiFi.status() != WL_CONNECTED) {
         delay(WIFI_TIMER);
     }
        
     if (!tb.connected()) {
-        ESP_LOGI("TB", "Connecting to ThingsBoard server %s with token %s", THINGSBOARD_SERVER, TOKEN);
-        if (tb.connect(THINGSBOARD_SERVER, TOKEN, THINGSBOARD_PORT)) {
-            ESP_LOGI("TB", "Connected to ThingsBoard server");
-
-            tb.sendTelemetryData("temperature", 25.0);
+        // ESP_LOGI("MQTT", "Connecting to ThingsBoard server %s with token %s", THINGSBOARD_SERVER, SENSOR_TOKEN);
+        if (tb.connect(THINGSBOARD_SERVER, SENSOR_TOKEN, THINGSBOARD_PORT)) {
+            ESP_LOGI("MQTT", "Connected to ThingsBoard MQTT server");
 
             while (true) {
                 tb.loop();
-                delay(THINGSBOARD_LOOP_TIMER);
+                delay(MQTT_LOOP_TIMER);
             }
         }
       }

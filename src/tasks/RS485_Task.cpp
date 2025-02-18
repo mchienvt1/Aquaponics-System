@@ -139,8 +139,8 @@ static void send_sensor_data() {
     // Publish data to MQTT server
     // Topic: <BOARD_ID>.sensor.total
     String message = sensor_data.format_data();
-    ESP_LOGI("RS485", "Publishing data to topic sensor.total with value \n\t%s", message.c_str());
-    // publish_data(SENSOR_DATA_TOPIC, message);
+    ESP_LOGI("RS485", "Publishing data to ThingsBoard with value \n\t%s", message.c_str());
+    publish_data(message);
 }
 
 void rs485_task(void *pvParameters) {
