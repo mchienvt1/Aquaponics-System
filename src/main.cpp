@@ -61,8 +61,8 @@ void setup() {
      */
     esp_wifi_set_ps(WIFI_PS_NONE);
     dispatch();
-}
-
-void loop(){
-  // Nothing to do here, FreeRTOS tasks handle the work
+  }
+  
+  void loop(){
+    delay(5000);
 }

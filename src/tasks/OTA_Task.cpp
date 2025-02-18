@@ -1,6 +1,5 @@
 #include "OTA_Task.h"
 
-// WiFiClient wifiClient;
 HTTPClient http;
 
 const String OTA_DATABASE_SERVER_URL = FIREBASE_DATABASE_URL;
@@ -104,7 +103,7 @@ void perform_OTA(const String &firmware_url) {
 void check_for_update() {
 
     ESP_LOGI("OTA", "URL: %s", OTA_DATABASE_SERVER_URL.c_str());
-    http.begin(espClient, OTA_DATABASE_SERVER_URL);
+    http.begin(wifiClient, OTA_DATABASE_SERVER_URL);
     int httpCode = http.GET();
     if (httpCode == HTTP_CODE_OK)
     {   

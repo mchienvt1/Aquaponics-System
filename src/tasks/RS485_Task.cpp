@@ -140,7 +140,7 @@ static void send_sensor_data() {
     // Topic: <BOARD_ID>.sensor.total
     String message = sensor_data.format_data();
     ESP_LOGI("RS485", "Publishing data to topic sensor.total with value \n\t%s", message.c_str());
-    publish_data("sensor", "total", message);
+    // publish_data(SENSOR_DATA_TOPIC, message);
 }
 
 void rs485_task(void *pvParameters) {

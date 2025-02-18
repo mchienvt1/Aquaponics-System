@@ -3,12 +3,9 @@
 
 #include "global.h"
 
-extern WiFiClient espClient;
-extern PubSubClient psClient;
+void publish_data(String type_topic, String data);
 
-void publish_data(String type, String feed, String data);
-
-void subscribe(String type, String feed);
+void subscribe(String type_topic);
 
 void mqtt_task_init();
 

@@ -57,7 +57,7 @@ void publish_data_task(void *pvParameters) {
     while (true) {
         if (WiFi.status() == WL_CONNECTED && satellite_status) {
             String location_data = String(location.lat, 6) + "," + String(location.lng, 6);
-            publish_data("GPS", "Location", location_data);
+            // publish_data(GPS_LOCATION_TOPIC, location_data);
             delay(INSANELY_LONG_TIMER);
         }
         delay(GPS_TIMER);

@@ -18,11 +18,6 @@ void set_rgb_color(Color c) {
     pixels.show();
 }
 
-// Pin goes from 1 to 6
-void write_relay_pin(String pin, uint8_t mode) {
-    digitalWrite(GPIO_Relay_Pin[std::atoi(pin.c_str()) - 1], mode);
-}
-
 void set_led_color() {
     pixels.begin();
     pixels.setBrightness(Brightness);
@@ -37,26 +32,26 @@ void set_relay_pin_mode() {
     pinMode(RELAY_CH6, OUTPUT);
 }
 
-void test_relay_control(void *pvParameters) {
-    while (true) {
-        for(int i = 0; i < 6; ++i) {
-            digitalWrite(GPIO_Relay_Pin[i], !digitalRead(GPIO_Relay_Pin[i]));
-            vTaskDelay(60000 / portTICK_PERIOD_MS);
-            ESP_LOGI("GPIO", "Relay %d toggle %d", i, digitalRead(GPIO_Relay_Pin[i]));
-        }
-    }
-}
+// void test_relay_control(void *pvParameters) {
+//     while (true) {
+//         for(int i = 0; i < 6; ++i) {
+//             digitalWrite(GPIO_Relay_Pin[i], !digitalRead(GPIO_Relay_Pin[i]));
+//             vTaskDelay(60000 / portTICK_PERIOD_MS);
+//             ESP_LOGI("GPIO", "Relay %d toggle %d", i, digitalRead(GPIO_Relay_Pin[i]));
+//         }
+//     }
+// }
 
-void test_rgb(void *pvParameters) {
-    while (true) {
-        set_rgb_color(RED_RGB);
-        vTaskDelay(LED_RGB_TIMER / portTICK_PERIOD_MS);
-        set_rgb_color(GREEN_RGB);
-        vTaskDelay(LED_RGB_TIMER / portTICK_PERIOD_MS);
-        set_rgb_color(BLUE_RGB);
-        vTaskDelay(LED_RGB_TIMER / portTICK_PERIOD_MS);
-    }
-}
+// void test_rgb(void *pvParameters) {
+//     while (true) {
+//         set_rgb_color(RED_RGB);
+//         vTaskDelay(LED_RGB_TIMER / portTICK_PERIOD_MS);
+//         set_rgb_color(GREEN_RGB);
+//         vTaskDelay(LED_RGB_TIMER / portTICK_PERIOD_MS);
+//         set_rgb_color(BLUE_RGB);
+//         vTaskDelay(LED_RGB_TIMER / portTICK_PERIOD_MS);
+//     }
+// }
 
 void gpio_task(void *pvParameters) {    
     set_led_color();
