@@ -6,6 +6,7 @@ ThingsBoard tb(mqttClient, MAX_MESSAGE_RECEIVE_SIZE, MAX_MESSAGE_SEND_SIZE);
 
 void publish_data(String data) {
     tb.sendTelemetryString(data.c_str());
+    tb.sendAttributeString(data.c_str());
 }
 
 void mqtt_task(void *pvParameters) {
@@ -24,7 +25,7 @@ void mqtt_task(void *pvParameters) {
                 delay(MQTT_LOOP_TIMER);
             }
         }
-      }
+    }
 }
 
 void mqtt_task_init() {

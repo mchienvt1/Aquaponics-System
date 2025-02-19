@@ -2,17 +2,7 @@
 
 Adafruit_NeoPixel pixels(NUM_PIXELS, LED_RGB, NEO_GRB + NEO_KHZ800);
 
-int GPIO_Relay_Pin[6] = {
-    RELAY_CH1, RELAY_CH2, RELAY_CH3, RELAY_CH4, RELAY_CH5, RELAY_CH6
-};
-
-const Color RED_RGB = {220, 20, 60};
-const Color GREEN_RGB = {34, 139, 34};
-const Color BLUE_RGB = {100, 149, 237};
-const Color WHITE_RGB = {255, 255, 255};
-const Color BLACK_RGB = {0, 0, 0};
-
-void set_rgb_color(Color c) {
+void set_rgb_color(color c) {
     // ESP_LOGI("GPIO", "Change pixel color to #%2x%2x%2x", c.red, c.green, c.blue);
     pixels.setPixelColor(0, c.red, c.green, c.blue);
     pixels.show();
