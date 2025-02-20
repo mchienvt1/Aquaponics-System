@@ -78,8 +78,8 @@ void GPS_task(void *pvParameters) {
 
 }
 
-void GPS_task_init() {
+void gps_task_init() {
     GPSSerial.begin(GPS_BAUDRATE, SERIAL_8N1, RXD_GPS, TXD_GPS);
     xTaskCreate(GPS_task, "GPS_Task", 4096, NULL, 1, NULL);
-    xTaskCreate(publish_data_task, "Publish_GPS_Task", 4096, NULL, 2, NULL);
+    xTaskCreate(publish_data_task, "Publish_GPS_Task", 1024, NULL, 2, NULL);
 };

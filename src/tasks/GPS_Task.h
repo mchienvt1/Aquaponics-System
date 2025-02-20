@@ -3,10 +3,6 @@
 
 #include "global.h"
 
-struct gps_location {
-    double lat, lng;
-};
-
-void GPS_task_init();
+void gps_task_init();
 
 #endif

@@ -29,6 +29,8 @@
 #include "PubSubClient.h"
 #include "ThingsBoard.h"
 #include "Arduino_MQTT_Client.h"
+#include <OTA_Firmware_Update.h>
+#include <Espressif_Updater.h>
 
 // Libraries for OTA Update
 #ifdef OTA_TASK_H_
@@ -68,7 +70,7 @@
 
 // Global variables
 extern WiFiClient wifiClient;
-extern PubSubClient psClient;
+// extern PubSubClient psClient;
 extern Arduino_MQTT_Client mqttClient;
 extern ThingsBoard tb;
 

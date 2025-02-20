@@ -6,6 +6,6 @@
 
 #include "global.h"
 
-void RS485_task_init();
+void rs485_task_init();
 
 #endif

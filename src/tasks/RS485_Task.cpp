@@ -151,7 +151,7 @@ void rs485_task(void *pvParameters) {
     }
 }
 
-void RS485_task_init() {
+void rs485_task_init() {
     RS485Serial.begin(RS485_BAUDRATE, SERIAL_8N1, RXD_RS485, TXD_RS485);
     xTaskCreate(rs485_task, "RS485_Task", 4096, NULL, 1, NULL);
 }
