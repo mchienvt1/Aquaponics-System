@@ -1,4 +1,5 @@
 #include "RS485_Task.h"
+
 HardwareSerial RS485Serial(1);
 SensorData sensor_data;
 
@@ -139,7 +140,7 @@ static void send_sensor_data() {
     // Publish data to MQTT server
     // Topic: <BOARD_ID>.sensor.total
     String message = sensor_data.format_data();
-    ESP_LOGI("RS485", "Publishing data to ThingsBoard with value \n\t%s", message.c_str());
+    // ESP_LOGI("RS485", "Publishing data to ThingsBoard with value \n\t%s", message.c_str());
     publish_data(message);
 }
 
