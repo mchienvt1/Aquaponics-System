@@ -1,7 +1,7 @@
-#include "RS485_Task.h"
+#include "Sensor_Task.h"
 
 HardwareSerial RS485Serial(1);
-SensorData sensor_data;
+SensorData data;
 
 uint8_t count_sensor() {
     uint8_t count = 0;
@@ -111,40 +111,40 @@ static void load_sensor_data() {
 #ifdef ISHC
     temp_ISHC = process_value(sensorISHC, MEASURE_TEMP, 9);
     // float pH = process_value(sensorISHC, MEASURE_PH, 9);
-    sensor_data.set_data(MEASURE_PH, process_value(sensorISHC, MEASURE_PH, 9));
+    data.set_data(MEASURE_PH, process_value(sensorISHC, MEASURE_PH, 9));
 #endif
 
 #ifdef ISDC
     temp_ISDC = process_value(sensorISDC, MEASURE_TEMP, 9);
     // float oxygen = process_value(sensorISDC, MEASURE_DO, 9);
-    sensor_data.set_data(MEASURE_DO, process_value(sensorISDC, MEASURE_DO, 9));
+    data.set_data(MEASURE_DO, process_value(sensorISDC, MEASURE_DO, 9));
 #endif
 
 #ifdef ISEC
     temp_ISEC = process_value(sensorISEC, MEASURE_TEMP, 9);
     // float conduct = process_value(sensorISEC, MEASURE_CONDUCT, 9);
-    sensor_data.set_data(MEASURE_CONDUCT, process_value(sensorISEC, MEASURE_CONDUCT, 9));
+    data.set_data(MEASURE_CONDUCT, process_value(sensorISEC, MEASURE_CONDUCT, 9));
     // float sali = process_value(sensorISEC, MEASURE_SALI, 9);
-    sensor_data.set_data(MEASURE_SALI, process_value(sensorISEC, MEASURE_SALI, 9));
+    data.set_data(MEASURE_SALI, process_value(sensorISEC, MEASURE_SALI, 9));
     // float tds = process_value(sensorISEC, MEASURE_TDS, 9);
-    sensor_data.set_data(MEASURE_TDS, process_value(sensorISEC, MEASURE_TDS, 9));
+    data.set_data(MEASURE_TDS, process_value(sensorISEC, MEASURE_TDS, 9));
     // float resis = process_value(sensorISEC, MEASURE_RESIS, 9);
-    sensor_data.set_data(MEASURE_RESIS, process_value(sensorISEC, MEASURE_RESIS, 9));
+    data.set_data(MEASURE_RESIS, process_value(sensorISEC, MEASURE_RESIS, 9));
 #endif
 
     float temp = (temp_ISHC + temp_ISDC + temp_ISEC) / count_sensor();
-    sensor_data.set_data(MEASURE_TEMP, temp);
+    data.set_data(MEASURE_TEMP, temp);
 }
 
 static void send_sensor_data() {
     // Publish data to MQTT server
     // Topic: <BOARD_ID>.sensor.total
-    String message = sensor_data.format_data();
+    // String message = data.format_data();
     // ESP_LOGI("RS485", "Publishing data to ThingsBoard with value \n\t%s", message.c_str());
-    publish_data(message);
+    // publish_data(message);
 }
 
-void rs485_task(void *pvParameters) {
+void sensor_task(void *pvParameters) {
     while (1) {
         load_sensor_data();
         send_sensor_data();
@@ -152,7 +152,7 @@ void rs485_task(void *pvParameters) {
     }
 }
 
-void rs485_task_init() {
+void sensor_task_init() {
     RS485Serial.begin(RS485_BAUDRATE, SERIAL_8N1, RXD_RS485, TXD_RS485);
-    xTaskCreate(rs485_task, "RS485_Task", 4096, NULL, 1, NULL);
+    xTaskCreate(sensor_task, "Sensor_Task", 4096, NULL, 1, NULL);
 }

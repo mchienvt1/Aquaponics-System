@@ -42,32 +42,32 @@ void set_duration(uint8_t d) {
 //     need_control = false;
 // }
 
-void relay_status_task(void *pvParameters) {
-    while (true) {
-        if (has_callback) {
-            Serial.println("Set Control true");
-            need_control = true;
-            has_callback = false;
-        }
-        delay(RELAY_STATUS_TIMER);
-    }
-}
+// void relay_status_task(void *pvParameters) {
+//     while (true) {
+//         if (has_callback) {
+//             Serial.println("Set Control true");
+//             need_control = true;
+//             has_callback = false;
+//         }
+//         delay(RELAY_STATUS_TIMER);
+//     }
+// }
 
-void relay_control_task(void *pvParameters) {
-    while (true) {
-        if (need_control) {
-            // Process relay control
-            digitalWrite(RELAY_CH1, HIGH);
-            delay(duration);
-            digitalWrite(RELAY_CH1, LOW);
-            need_control = false;
-            duration = 0;
-        }
-        delay(RELAY_CONTROL_TIMER);
-    }
-}
+// void relay_control_task(void *pvParameters) {
+//     while (true) {
+//         if (need_control) {
+//             // Process relay control
+//             digitalWrite(RELAY_CH1, HIGH);
+//             delay(duration);
+//             digitalWrite(RELAY_CH1, LOW);
+//             need_control = false;
+//             duration = 0;
+//         }
+//         delay(RELAY_CONTROL_TIMER);
+//     }
+// }
 
 void relay_task_init() {
-    xTaskCreate(relay_status_task, "relay_status_task", 2048, nullptr, 1, nullptr);
-    xTaskCreate(relay_control_task, "relay_control_task", 2048, nullptr, 2, nullptr);
+    // xTaskCreate(relay_status_task, "relay_status_task", 2048, nullptr, 1, nullptr);
+    // xTaskCreate(relay_control_task, "relay_control_task", 2048, nullptr, 2, nullptr);
 }

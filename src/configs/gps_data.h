@@ -1,17 +1,17 @@
-#ifndef SENSOR_DATA_H_
-#define SENSOR_DATA_H_
+#ifndef GPS_DATA_H_
+#define GPS_DATA_H_
 
 #include "global.h"
 
-class SensorData 
+class GPSData 
 {
 protected:
-    std::pair<std::string, float> sensor_data_map[SENSOR_DATA_COUNT];
-    float default_value = -1.0;
+    std::pair<std::string, double> gps_data_map[GPS_DATA_COUNT];
+    double default_value = 0.0;
 
 public:
-    SensorData();
-    ~SensorData();
+    GPSData();
+    ~GPSData();
     
     void set_data(const std::string &data_name, const float &value);
     float get_data(const std::string &data_name);

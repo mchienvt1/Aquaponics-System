@@ -32,6 +32,7 @@
 #include <Server_Side_RPC.h>
 #include <OTA_Firmware_Update.h>
 #include <Espressif_Updater.h>
+#include "ArduinoJson.h"
 
 // Libraries for OTA Update
 #ifdef OTA_TASK_H_
@@ -52,6 +53,7 @@
 // Include configs
 #include "../src/configs/sensor.h"
 #include "../src/configs/sensor_data.h"
+#include "../src/configs/gps_data.h"
 
 // Include utils
 #include "../src/utils/utils.h"

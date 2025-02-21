@@ -72,22 +72,22 @@ constexpr uint8_t GPIO_Relay_Pin[6] = {
 
 /* TASK Timers */
 #define WIFI_TIMER 1000
-#define RELAY_STATUS_TIMER 1000
-#define RELAY_CONTROL_TIMER 100
+// #define RELAY_STATUS_TIMER 1000
+// #define RELAY_CONTROL_TIMER 100
 #define RS485_PROCESS_TIMER 1000
 #define RS485_READ_WRITE_TIMER 1000
 #define GPS_TIMER 10000
-#define THINGSBOARD_LOOP_TIMER 100
+#define THINGSBOARD_LOOP_TIMER 1000
 #define THINGSBOARD_CONNECT_TIMER 1000
-#define MQTT_TIMER 10000
+#define TELEMETRY_TIMER 10000
 #define OTA_TIMER 10000
 #define LED_RGB_TIMER 1000
 #define INSANELY_LONG_TIMER 60000
 
 // GPS //
-struct gps_location {
-    double lat, lng;
-};
+#define GPS_DATA_COUNT 2
+#define GPS_LATITUDE "latitude"
+#define GPS_LONGITUDE "longitude"
 
 // WiFi Credentials //
 #define WIFI_SSID "w"

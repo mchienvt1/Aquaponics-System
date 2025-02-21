@@ -4,7 +4,6 @@
 #include "global.h"
 
 class Sensor {
-
 protected:
     std::map<std::string, std::array<uint8_t, 8>> command_map;
     uint8_t id;
@@ -22,7 +21,6 @@ public:
 };
 
 #ifdef ISHC
-
 class Sensor_ISHC : public Sensor {
 
 public:
@@ -30,11 +28,9 @@ public:
     Sensor_ISHC(uint8_t id, const std::map<std::string, std::array<uint8_t, 6>> &raw_command_map) : Sensor(id, raw_command_map) {};
     ~Sensor_ISHC() {};
 };
-
 #endif
 
 #ifdef ISEC
-
 class Sensor_ISEC : public Sensor {
 
 public:
@@ -42,11 +38,9 @@ public:
     Sensor_ISEC(uint8_t id, const std::map<std::string, std::array<uint8_t, 6>> &raw_command_map) : Sensor(id, raw_command_map) {};
     ~Sensor_ISEC() {};
 };
-
 #endif
 
 #ifdef ISDC
-
 class Sensor_ISDC : public Sensor {
 
 public:

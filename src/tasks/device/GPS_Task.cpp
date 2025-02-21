@@ -2,7 +2,7 @@
 
 HardwareSerial GPSSerial(2);
 TinyGPSPlus gps;
-gps_location location;
+GPSData gps_data;
 
 bool satellite_status = false;
 
@@ -21,9 +21,9 @@ void displayInfo()
     }
 
     if (gps.location.isValid()) {
-        location.lat = gps.location.lat();
-        location.lng = gps.location.lng();
-        Serial.printf("Location: (%03.6f, %03.6f) updated %dms ago\n", location.lat, location.lng, gps.location.age());
+        gps_data.set_data(GPS_LATITUDE, gps.location.lat());
+        gps_data.set_data(GPS_LONGITUDE, gps.location.lng());
+        Serial.printf("Location: (%03.6f, %03.6f) updated %dms ago\n", gps_data.get_data(GPS_LATITUDE), gps_data.get_data(GPS_LONGITUDE), gps.location.age());
     }
     else {
         Serial.println("Unknown Location");
@@ -56,10 +56,7 @@ void GPS_task(void *pvParameters) {
         }
         displayInfo();
         if (WiFi.status() == WL_CONNECTED && satellite_status) {
-            String location_data = "{";
-            location_data += '"' + String("latitude") + '"' + ":" + String(location.lat, 6) + ",";
-            location_data += '"' + String("longitude") + '"' + ":" + String(location.lng, 6) + "}";
-            publish_data(location_data);
+            update_gps_data(gps_data.format_data());
         }
         delay(GPS_TIMER);
     }

@@ -3,6 +3,6 @@
 
 #include "global.h"
 
-void rs485_task_init();
+void sensor_task_init();
 
 #endif
