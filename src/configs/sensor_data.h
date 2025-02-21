@@ -4,7 +4,7 @@
 #include "global.h"
 
 class SensorData {
-protected:
+private:
     std::pair<std::string, float> data_map[SENSOR_DATA_COUNT];
 public:
     SensorData();

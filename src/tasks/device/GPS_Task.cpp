@@ -1,16 +1,10 @@
 #include "GPS_Task.h"
 
-TinyGPSPlus gps;
 HardwareSerial GPSSerial(2);
+TinyGPSPlus gps;
 gps_location location;
 
 bool satellite_status = false;
-
-// void display_info_init() {
-//     Serial.println(F("Sats HDOP  Latitude   Longitude   Fix  Date       Time     Date Alt    Course Speed Card  Chars Sentences Checksum"));
-//     Serial.println(F("           (deg)      (deg)       Age                      Age  (m)    --- from GPS ----  RX    RX        Fail"));
-//     Serial.println(F("----------------------------------------------------------------------------------------------------------------------------------------"));
-// }
 
 void displayInfo()
 {
@@ -53,18 +47,6 @@ void displayInfo()
     Serial.println();
 }
 
-void publish_data_task(void *pvParameters) {
-    while (true) {
-        if (WiFi.status() == WL_CONNECTED && satellite_status) {
-            String location_data = "{";
-            location_data += '"' + String("latitude") + '"' + ":" + String(location.lat, 6) + ",";
-            location_data += '"' + String("longitude") + '"' + ":" + String(location.lng, 6) + "}";
-            publish_data(location_data);
-        }
-        delay(GPS_TIMER);
-    }
-}
-
 void GPS_task(void *pvParameters) {
     // display_info_init();
     while (true) {
@@ -73,6 +55,12 @@ void GPS_task(void *pvParameters) {
             gps.encode(GPSSerial.read());
         }
         displayInfo();
+        if (WiFi.status() == WL_CONNECTED && satellite_status) {
+            String location_data = "{";
+            location_data += '"' + String("latitude") + '"' + ":" + String(location.lat, 6) + ",";
+            location_data += '"' + String("longitude") + '"' + ":" + String(location.lng, 6) + "}";
+            publish_data(location_data);
+        }
         delay(GPS_TIMER);
     }
 
@@ -81,5 +69,4 @@ void GPS_task(void *pvParameters) {
 void gps_task_init() {
     GPSSerial.begin(GPS_BAUDRATE, SERIAL_8N1, RXD_GPS, TXD_GPS);
     xTaskCreate(GPS_task, "GPS_Task", 4096, NULL, 1, NULL);
-    xTaskCreate(publish_data_task, "Publish_GPS_Task", 1024, NULL, 2, NULL);
 };

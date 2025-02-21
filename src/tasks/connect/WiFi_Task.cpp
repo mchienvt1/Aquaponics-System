@@ -1,11 +1,10 @@
-#include "wifi_Task.h"
+#include "WiFi_Task.h"
 
 volatile bool need_reconnect = false;
 
 // Task to handle Wi-Fi connection
 void wifi_task(void *pvParameters) {
-    
-    // Wifi Mode
+        // Wifi Mode
     WiFi.mode(WIFI_STA);
     WiFi.begin(WIFI_SSID, WIFI_PASSWORD);
     // set_rgb_color(RED_RGB);
@@ -18,14 +17,8 @@ void wifi_task(void *pvParameters) {
     }
 
     set_rgb_color(GREEN_RGB);
-    // Successfully connected
-    Serial.print("Successfully Connected to SSID: ");
-    Serial.println(WIFI_SSID);
-
-    // Print Local Address
-    Serial.print("Local address: http://"); 
-    Serial.println(WiFi.localIP());
-    set_rgb_color(BLACK_RGB); 
+    ESP_LOGI("WIFI", "Connected to SSID: %s", WIFI_SSID);
+    ESP_LOGI("WIFI", "IP Address: %s", WiFi.localIP().toString().c_str());
     
     // Check if need to reconnect
     while (true) {
@@ -36,9 +29,11 @@ void wifi_task(void *pvParameters) {
                 WiFi.disconnect();
                 WiFi.begin(WIFI_SSID, WIFI_PASSWORD);
                 Serial.println("Reconnecting to SSID: " + String(WIFI_SSID));
+                set_rgb_color(RED_RGB);
             }
         }
         if (need_reconnect && WiFi.status() == WL_CONNECTED) {
+            need_reconnect = false;
         }
         // ESP_LOGI("WIFI", "WiFi mode: %d ", WiFi.getMode());
         delay(WIFI_TIMER);
@@ -47,5 +42,5 @@ void wifi_task(void *pvParameters) {
 
 // Function to initialize the Wi-Fi task
 void wifi_task_init() {
-    xTaskCreate(wifi_task, "WiFi_Task", 4096, NULL, 2, NULL);
+    xTaskCreate(wifi_task, "WiFi_Task", 4096, NULL, 1, NULL);
 }   

@@ -29,6 +29,7 @@
 #include "PubSubClient.h"
 #include "ThingsBoard.h"
 #include "Arduino_MQTT_Client.h"
+#include <Server_Side_RPC.h>
 #include <OTA_Firmware_Update.h>
 #include <Espressif_Updater.h>
 
@@ -45,9 +46,7 @@
 // #include "AsyncJson.h"
 #endif
 
-// Global defines and constants
-#include "defines.h"
-// Global structs and classes
+// Global constants and structs
 #include "constants.h"
 
 // Include configs
@@ -58,20 +57,8 @@
 #include "../src/utils/utils.h"
 
 // Include tasks
-#include "../src/tasks/GPIO_Task.h"
-#include "../src/tasks/Relay_Task.h"
-#include "../src/tasks/GPS_Task.h"
-#include "../src/tasks/server_Task.h"
-#include "../src/tasks/RS485_Task.h"
-#include "../src/tasks/dispatch_Task.h"
-#include "../src/tasks/MQTT_Task.h"
-#include "../src/tasks/OTA_Task.h"
-#include "../src/tasks/wifi_Task.h"
-
-// Global variables
-extern WiFiClient wifiClient;
-// extern PubSubClient psClient;
-extern Arduino_MQTT_Client mqttClient;
-extern ThingsBoard tb;
+#include "../src/tasks/connect/connect_Task.h"
+#include "../src/tasks/device/device_Task.h"
+#include "../src/tasks/dispatch.h"
 
 #endif
