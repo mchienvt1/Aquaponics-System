@@ -32,7 +32,9 @@
 #include "ArduinoJson.h"
 #include <Espressif_Updater.h>
 #include <OTA_Firmware_Update.h>
+#include "RPC_Request_Callback.h"
 #include <Server_Side_RPC.h>
+#include <Client_Side_RPC.h>
 #include <Shared_Attribute_Update.h>
 
 // Libraries for OTA Update

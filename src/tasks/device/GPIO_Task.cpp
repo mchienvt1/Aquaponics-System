@@ -1,9 +1,8 @@
 #include "GPIO_Task.h"
 
-Adafruit_NeoPixel pixels(NUM_PIXELS, LED_RGB, NEO_GRB + NEO_KHZ800);
-
 void set_rgb_color(color c) {
     // ESP_LOGI("GPIO", "Change pixel color to #%2x%2x%2x", c.red, c.green, c.blue);
+    pixels.clear();
     pixels.setPixelColor(0, c.red, c.green, c.blue);
     pixels.show();
 }
@@ -46,6 +45,13 @@ void set_relay_pin_mode() {
 void gpio_task(void *pvParameters) {    
     set_led_color();
     set_relay_pin_mode();
+    while (true) {
+        uint32_t color = pixels.getPixelColor(0);
+        pixels.clear();
+        delay(1000);
+        pixels.setPixelColor(0, color);
+        delay(1000);
+    }
     vTaskDelete(NULL);
 }
 

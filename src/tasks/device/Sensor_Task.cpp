@@ -82,7 +82,7 @@ void read_from_sensor(Sensor &sensor, size_t buffer_size, std::string command_na
         *value = sensor.process_value(buffer);
     }
     else {
-        ESP_LOGE("RS485", "No data received from sensor");
+        ESP_LOGE("SENSOR", "No data received from sensor");
     }
     memset(buffer, 0, sizeof(buffer));
 }
@@ -137,7 +137,9 @@ static void load_sensor_data() {
 }
 
 static void send_sensor_data() {
-    update_telemetry_data(data.format_data());
+    String message = data.format_data();
+    ESP_LOGI("SENSOR", "Publish Sensor Data %s", message.c_str());
+    update_telemetry_data(message);
 }
 
 void sensor_task(void *pvParameters) {

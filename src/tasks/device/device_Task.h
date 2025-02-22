@@ -7,6 +7,8 @@
 #include "GPS_Task.h"
 #include "Relay_Task.h"
 
+extern Adafruit_NeoPixel pixels;
+
 void device_task_init();
 
 #endif

@@ -30,7 +30,7 @@ void wifi_task(void *pvParameters) {
                 WiFi.disconnect();
                 WiFi.begin(WIFI_SSID, WIFI_PASSWORD);
                 Serial.println("Reconnecting to SSID: " + String(WIFI_SSID));
-                set_rgb_color(RED_RGB);
+                // set_rgb_color(RED_RGB);
             }
         }
         if (wifi_need_reconnect && WiFi.status() == WL_CONNECTED) {

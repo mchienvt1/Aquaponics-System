@@ -17,4 +17,5 @@ ThingsBoard tbClient(mqttClient, MAX_MESSAGE_RECEIVE_SIZE, MAX_MESSAGE_SEND_SIZE
 void connect_task_init() {
     wifi_task_init();
     thingsboard_task_init();
+    publish_task_init();
 }

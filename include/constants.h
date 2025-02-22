@@ -113,15 +113,15 @@ constexpr const char RPC_RGB_STATUS[] = "process_rgb_status";
 // Shared Attributes //
 // https://github.com/thingsboard/thingsboard-client-sdk/blob/master/examples/0006-esp8266_esp32_process_shared_attribute_update
 constexpr const char BLINKING_INTERVAL_ATTR[] = "blinkingInterval";
-constexpr const char LED_MODE_ATTR[] = "ledMode";
-constexpr const char LED_STATE_ATTR[] = "ledState";
+constexpr const char RGB_MODE_ATTR[] = "rgb_mode";
+constexpr const char RGB_VALUE_ATTR[] = "rgb_value";
 
 constexpr uint8_t MAX_ATTRIBUTES_SUBSCRIPTIONS = 1U;
 constexpr uint8_t MAX_ATTRIBUTES = 3U;
 constexpr std::array<const char*, MAX_ATTRIBUTES> SHARED_ATTRIBUTES_LIST = {
-    LED_STATE_ATTR,
     BLINKING_INTERVAL_ATTR,
-    LED_MODE_ATTR
+    RGB_MODE_ATTR,
+    RGB_VALUE_ATTR
 };
 
 #endif

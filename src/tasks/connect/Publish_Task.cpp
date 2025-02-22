@@ -33,11 +33,12 @@ void subscribe_attribute_task(void *pvParameters) {
         delay(WIFI_TIMER);
     }
     while (true) {
+        tbClient.sendTelemetryData("rgb_value", pixels.getPixelColor(0));
         publish_wifi_attributes();
         delay(5000);
     }
 }
 
 void publish_task_init() {
-    xTaskCreate(subscribe_attribute_task, "Subscribe_Attribute_Task", 2048, NULL, 1, NULL);
+    xTaskCreate(subscribe_attribute_task, "Subscribe_Attribute_Task", 4096, NULL, 1, NULL);
 }

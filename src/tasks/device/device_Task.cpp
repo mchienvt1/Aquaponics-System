@@ -1,5 +1,7 @@
 #include "device_Task.h"
 
+Adafruit_NeoPixel pixels(NUM_PIXELS, LED_RGB, NEO_GRB + NEO_KHZ800);
+
 void device_task_init() {
     gpio_task_init();
     sensor_task_init();

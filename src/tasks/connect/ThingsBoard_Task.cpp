@@ -11,12 +11,21 @@ bool shared_attributes_subscribed = false;
 
 void ota_setup() {
     if (!currentFWSent) {
-        ESP_LOGI("OTA", "Current FW: %s %s\n", CURRENT_FIRMWARE_TITLE, CURRENT_FIRMWARE_VERSION);
+        ESP_LOGI("OTA", "Current FW: %s %s", CURRENT_FIRMWARE_TITLE, CURRENT_FIRMWARE_VERSION);
         currentFWSent = ota.Firmware_Send_Info(CURRENT_FIRMWARE_TITLE, CURRENT_FIRMWARE_VERSION);
     }
 
     if (!updateRequestSent) {
-        const OTA_Update_Callback callback(CURRENT_FIRMWARE_TITLE, CURRENT_FIRMWARE_VERSION, &updater, &finished_callback, &progress_callback, &update_starting_callback, FIRMWARE_FAILURE_RETRIES, FIRMWARE_PACKET_SIZE);
+        const OTA_Update_Callback callback(
+            CURRENT_FIRMWARE_TITLE, 
+            CURRENT_FIRMWARE_VERSION,
+            &updater, 
+            &finished_callback, 
+            &progress_callback, 
+            &update_starting_callback, 
+            FIRMWARE_FAILURE_RETRIES, 
+            FIRMWARE_PACKET_SIZE
+        );
         // See https://thingsboard.io/docs/user-guide/ota-updates/
         // to understand how to create a new OTA pacakge and assign it to a device so it can download it.
         // Sending the request again after a successfull update will automatically send the UPDATED firmware state,
@@ -43,7 +52,11 @@ void rpc_setup() {
 
 void shared_attributes_setup() {
     if (!shared_attributes_subscribed) {
-        const Shared_Attribute_Callback<MAX_ATTRIBUTES> callback(processSharedAttributeUpdate, SHARED_ATTRIBUTES_LIST);
+        const Shared_Attribute_Callback<MAX_ATTRIBUTES> callback(
+            processSharedAttributeUpdate,
+            SHARED_ATTRIBUTES_LIST.cbegin(), 
+            SHARED_ATTRIBUTES_LIST.cend()
+        );
         if (!shared_attributes.Shared_Attributes_Subscribe(callback)) {
             ESP_LOGE("SHARED_ATTR", "Failed to subscribe to shared attributes");
         }
