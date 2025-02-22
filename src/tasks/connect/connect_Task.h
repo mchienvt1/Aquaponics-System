@@ -16,6 +16,8 @@ extern WiFiClient wifiClient;
 extern Arduino_MQTT_Client mqttClient;
 extern ThingsBoard tbClient;
 
+extern bool tb_connected;
+
 // extern bool tb_connected = false;
 
 void connect_task_init();

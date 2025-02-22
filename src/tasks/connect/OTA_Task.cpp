@@ -26,7 +26,7 @@ void ota_task(void *pvParameters) {
     while (WiFi.status() != WL_CONNECTED) {
         delay(WIFI_TIMER);
     }
-    while (!tbClient.connected()) {
+    while (!tb_connected) {
         delay(THINGSBOARD_CONNECT_TIMER);
     }
     if (!currentFWSent) {

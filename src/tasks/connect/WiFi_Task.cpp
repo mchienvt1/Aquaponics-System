@@ -1,11 +1,11 @@
 #include "WiFi_Task.h"
 
-volatile bool need_reconnect = false;
+volatile bool wifi_need_reconnect = false;
 
 // Task to handle Wi-Fi connection
 void wifi_task(void *pvParameters) {
         // Wifi Mode
-    WiFi.mode(WIFI_STA);
+    WiFi.mode(WIFI_STA);    
     WiFi.begin(WIFI_SSID, WIFI_PASSWORD);
     // set_rgb_color(RED_RGB);
     // Loop if not connected
@@ -23,8 +23,8 @@ void wifi_task(void *pvParameters) {
     // Check if need to reconnect
     while (true) {
         if (WiFi.status() != WL_CONNECTED) {
-            if (!need_reconnect) {
-                need_reconnect = true;
+            if (!wifi_need_reconnect) {
+                wifi_need_reconnect = true;
                 Serial.println("WiFi Disconnected");
                 WiFi.disconnect();
                 WiFi.begin(WIFI_SSID, WIFI_PASSWORD);
@@ -32,8 +32,8 @@ void wifi_task(void *pvParameters) {
                 set_rgb_color(RED_RGB);
             }
         }
-        if (need_reconnect && WiFi.status() == WL_CONNECTED) {
-            need_reconnect = false;
+        if (wifi_need_reconnect && WiFi.status() == WL_CONNECTED) {
+            wifi_need_reconnect = false;
         }
         // ESP_LOGI("WIFI", "WiFi mode: %d ", WiFi.getMode());
         delay(WIFI_TIMER);

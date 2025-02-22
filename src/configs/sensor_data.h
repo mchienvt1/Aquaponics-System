@@ -15,7 +15,7 @@ public:
     
     void set_data(const std::string &data_name, const float &value);
     float get_data(const std::string &data_name);
-    const StaticJsonDocument<MAX_MESSAGE_SEND_SIZE> format_data();
+    String format_data();
 };
 
 #endif
