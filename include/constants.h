@@ -107,6 +107,8 @@ constexpr uint16_t FIRMWARE_PACKET_SIZE = 4096U;
 // https://github.com/thingsboard/thingsboard-client-sdk/tree/master/examples/0010-esp8266_esp32_rpc
 constexpr uint8_t MAX_RPC_SUBSCRIPTIONS = 3U;
 constexpr uint8_t MAX_RPC_RESPONSE = 5U;
+constexpr const char RPC_RELAY_STATUS[] = "process_relay_status";
+constexpr const char RPC_RGB_STATUS[] = "process_rgb_status";
 
 // Shared Attributes //
 // https://github.com/thingsboard/thingsboard-client-sdk/blob/master/examples/0006-esp8266_esp32_process_shared_attribute_update

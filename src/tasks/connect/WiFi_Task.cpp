@@ -24,6 +24,7 @@ void wifi_task(void *pvParameters) {
     while (true) {
         if (WiFi.status() != WL_CONNECTED) {
             if (!wifi_need_reconnect) {
+                set_rgb_color(RED_RGB);
                 wifi_need_reconnect = true;
                 Serial.println("WiFi Disconnected");
                 WiFi.disconnect();
@@ -34,6 +35,7 @@ void wifi_task(void *pvParameters) {
         }
         if (wifi_need_reconnect && WiFi.status() == WL_CONNECTED) {
             wifi_need_reconnect = false;
+            set_rgb_color(GREEN_RGB);
         }
         // ESP_LOGI("WIFI", "WiFi mode: %d ", WiFi.getMode());
         delay(WIFI_TIMER);
