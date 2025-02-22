@@ -137,7 +137,7 @@ static void load_sensor_data() {
 }
 
 static void send_sensor_data() {
-    update_sensor_data(data.format_data());
+    update_telemetry_data(data.format_data());
 }
 
 void sensor_task(void *pvParameters) {

@@ -25,10 +25,11 @@ float GPSData::get_data(const std::string &data_name) {
     return default_value;
 }
 
-const StaticJsonDocument<MAX_MESSAGE_SEND_SIZE> GPSData::format_data() {
-    StaticJsonDocument<MAX_MESSAGE_SEND_SIZE> doc;
+String GPSData::format_data() {
+    String res = "{";
     for (auto &data : gps_data_map) {
-        doc[data.first] = data.second;
+        res += "\"" + String(data.first.c_str()) + "\":" + String(data.second) + ",";
     }
-    return doc;
+    res[res.length() - 1] = '}';
+    return res;
 }

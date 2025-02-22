@@ -41,12 +41,7 @@ constexpr color WHITE_RGB = {255, 255, 255};
 constexpr color BLACK_RGB = {0, 0, 0};
 
 constexpr uint8_t GPIO_Relay_Pin[6] = {
-    RELAY_CH1,
-    RELAY_CH2,
-    RELAY_CH3, 
-    RELAY_CH4,
-    RELAY_CH5,
-    RELAY_CH6
+    RELAY_CH1, RELAY_CH2, RELAY_CH3, RELAY_CH4, RELAY_CH5, RELAY_CH6
 };
 
 /* SENSORs */
@@ -56,12 +51,12 @@ constexpr uint8_t GPIO_Relay_Pin[6] = {
 #define ISEC
 
 // Sensor IDs
-#define ISHC_ID 0x02
-#define ISDC_ID 0x10
-#define ISEC_ID 0x04
+constexpr uint8_t ISHC_ID = 0x02;
+constexpr uint8_t ISDC_ID = 0x10;
+constexpr uint8_t ISEC_ID = 0x04;
 
 // Sensor Commands
-#define SENSOR_DATA_COUNT 7
+constexpr uint8_t SENSOR_DATA_COUNT = 7;
 #define MEASURE_TEMP "temperature"
 #define MEASURE_PH "pH"
 #define MEASURE_DO "DO"
@@ -97,32 +92,34 @@ constexpr uint8_t GPIO_Relay_Pin[6] = {
 #define THINGSBOARD_SERVER "app.coreiot.io"
 #define THINGSBOARD_PORT 1883U
 #define DEVICE_TOKEN "fl2qilkqmt9fx6c9i7bf"
-#define MAX_MESSAGE_SEND_SIZE 512U
-#define MAX_MESSAGE_RECEIVE_SIZE 512U
-#define MAX_APIS 2U
+constexpr uint16_t MAX_MESSAGE_SEND_SIZE = 512U;
+constexpr uint16_t MAX_MESSAGE_RECEIVE_SIZE = 512U;
+constexpr uint8_t MAX_APIS = 3U;
 
 // OTA //
-// Firmware title and version used to compare with remote version, to check if an update is needed.
-// Title needs to be the same and version needs to be different --> downgrading is possible
+// https://github.com/thingsboard/thingsboard-client-sdk/tree/master/examples/0009-esp8266_esp32_process_OTA_MQTT
 constexpr char CURRENT_FIRMWARE_TITLE[] = MY_BOARD;
 constexpr char CURRENT_FIRMWARE_VERSION[] = MY_VERSION;
-
-// Maximum amount of retries we attempt to download each firmware chunck over MQTT
 constexpr uint8_t FIRMWARE_FAILURE_RETRIES = 12U;
-// Size of each firmware chunck downloaded over MQTT,
-// increased packet size, might increase download speed
 constexpr uint16_t FIRMWARE_PACKET_SIZE = 4096U;
 
 // RPC //
-constexpr char BLINKING_INTERVAL_ATTR[] = "blinkingInterval";
-constexpr char LED_MODE_ATTR[] = "ledMode";
-constexpr char LED_STATE_ATTR[] = "ledState";
+// https://github.com/thingsboard/thingsboard-client-sdk/tree/master/examples/0010-esp8266_esp32_rpc
 constexpr uint8_t MAX_RPC_SUBSCRIPTIONS = 3U;
 constexpr uint8_t MAX_RPC_RESPONSE = 5U;
 
-constexpr std::array<const char*, 2U> SHARED_ATTRIBUTES_LIST = {
+// Shared Attributes //
+// https://github.com/thingsboard/thingsboard-client-sdk/blob/master/examples/0006-esp8266_esp32_process_shared_attribute_update
+constexpr const char BLINKING_INTERVAL_ATTR[] = "blinkingInterval";
+constexpr const char LED_MODE_ATTR[] = "ledMode";
+constexpr const char LED_STATE_ATTR[] = "ledState";
+
+constexpr uint8_t MAX_ATTRIBUTES_SUBSCRIPTIONS = 1U;
+constexpr uint8_t MAX_ATTRIBUTES = 3U;
+constexpr std::array<const char*, MAX_ATTRIBUTES> SHARED_ATTRIBUTES_LIST = {
     LED_STATE_ATTR,
-    BLINKING_INTERVAL_ATTR
+    BLINKING_INTERVAL_ATTR,
+    LED_MODE_ATTR
 };
 
 #endif

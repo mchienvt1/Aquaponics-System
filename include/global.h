@@ -29,10 +29,11 @@
 #include "PubSubClient.h"
 #include "ThingsBoard.h"
 #include "Arduino_MQTT_Client.h"
-#include <Server_Side_RPC.h>
-#include <OTA_Firmware_Update.h>
-#include <Espressif_Updater.h>
 #include "ArduinoJson.h"
+#include <Espressif_Updater.h>
+#include <OTA_Firmware_Update.h>
+#include <Server_Side_RPC.h>
+#include <Shared_Attribute_Update.h>
 
 // Libraries for OTA Update
 #ifdef OTA_TASK_H_

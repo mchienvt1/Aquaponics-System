@@ -3,9 +3,11 @@
 // Initialize used apis
 OTA_Firmware_Update<> ota;
 Server_Side_RPC<MAX_RPC_SUBSCRIPTIONS, MAX_RPC_RESPONSE> rpc;
+Shared_Attribute_Update<MAX_ATTRIBUTES_SUBSCRIPTIONS, MAX_ATTRIBUTES> shared_attributes;
 const std::array<IAPI_Implementation*, MAX_APIS> apis = {
     &ota,
-    &rpc
+    &rpc,
+    &shared_attributes
 };
 
 WiFiClient wifiClient;
