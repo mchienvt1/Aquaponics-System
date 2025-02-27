@@ -1,10 +1,6 @@
 #include "WiFi_Task.h"
 
-volatile bool wifi_need_reconnect = false;
-
-// Task to handle Wi-Fi connection
-void wifi_task(void *pvParameters) {
-        // Wifi Mode
+void wifi_connect() {
     WiFi.mode(WIFI_STA);    
     WiFi.begin(WIFI_SSID, WIFI_PASSWORD);
     // set_rgb_color(RED_RGB);
@@ -19,30 +15,30 @@ void wifi_task(void *pvParameters) {
     set_rgb_color(GREEN_RGB);
     ESP_LOGI("WIFI", "Connected to SSID: %s", WIFI_SSID);
     ESP_LOGI("WIFI", "IP Address: %s", WiFi.localIP().toString().c_str());
-    
-    // Check if need to reconnect
+}
+
+bool wifi_need_reconnect() {
+    if (WiFi.status() == WL_CONNECTED) return false;
+    wifi_connect();
+    return false;
+}
+
+// Task to handle Wi-Fi connection
+void wifi_task(void *pvParameters) {
     while (true) {
-        if (WiFi.status() != WL_CONNECTED) {
-            if (!wifi_need_reconnect) {
-                set_rgb_color(RED_RGB);
-                wifi_need_reconnect = true;
-                Serial.println("WiFi Disconnected");
-                WiFi.disconnect();
-                WiFi.begin(WIFI_SSID, WIFI_PASSWORD);
-                Serial.println("Reconnecting to SSID: " + String(WIFI_SSID));
-                // set_rgb_color(RED_RGB);
-            }
-        }
-        if (wifi_need_reconnect && WiFi.status() == WL_CONNECTED) {
-            wifi_need_reconnect = false;
-            set_rgb_color(GREEN_RGB);
-        }
-        // ESP_LOGI("WIFI", "WiFi mode: %d ", WiFi.getMode());
+        if (wifi_need_reconnect()) continue;
+        String wifi_data = "{\"rssi\":" + String(WiFi.RSSI()) + 
+                            "\"channel\":" + String(WiFi.channel()) +
+                            "\"bssid\":" + WiFi.BSSIDstr() +
+                            "\"localIp\":" + WiFi.localIP().toString() +
+                            "\"ssid\":" + WiFi.SSID() + "}";
+        update_data(wifi_data);
         delay(WIFI_TIMER);
     }
 }
 
 // Function to initialize the Wi-Fi task
 void wifi_task_init() {
+    wifi_connect();
     xTaskCreate(wifi_task, "WiFi_Task", 4096, NULL, 1, NULL);
 }   

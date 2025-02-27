@@ -57,8 +57,8 @@ void GPS_task(void *pvParameters) {
         displayInfo();
         if (WiFi.status() == WL_CONNECTED && satellite_status) {
             String message = gps_data.format_data();
-            ESP_LOGI("GPS", "Publish GPS Data %s", message.c_str());
-            update_telemetry_data(message);
+            // ESP_LOGI("GPS", "Publish GPS Data %s", message.c_str());
+            update_data(message);
         }
         delay(GPS_TIMER);
     }

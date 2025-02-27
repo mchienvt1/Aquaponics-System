@@ -13,4 +13,7 @@ void process_relay_status(const JsonVariantConst &data, JsonDocument &response);
 /// @param response Data containgin the response value, any number, string or json, that should be sent to the cloud. Useful for getMethods
 void process_rgb_status(const JsonVariantConst &data, JsonDocument &response);
 
+/// @brief Subscribe to Server-Sided RPC
+bool rpc_setup();
+
 #endif // RPC_TASK_H_

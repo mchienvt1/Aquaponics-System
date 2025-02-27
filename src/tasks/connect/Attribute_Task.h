@@ -1,5 +1,5 @@
-#ifndef PUBLISH_TASK_H_
-#define PUBLISH_TASK_H_
+#ifndef ATTRIBUTE_TASK_H_
+#define ATTRIBUTE_TASK_H_
 
 #include "global.h"
 
@@ -10,11 +10,8 @@ void processSharedAttributeUpdate(const JsonObjectConst &data);
 
 /// @brief Update telemetry data to thingsboard broker
 /// @param _data Data formatted as JSON string
-void update_telemetry_data(String _data);
+void update_data(const String &data);
 
-/// @brief Publish WiFi attributes to thingsboard broker
-void publish_wifi_attributes();
-
-void publish_task_init();
+// void publish_task_init();
 
 #endif
