@@ -71,19 +71,20 @@ void thingsboard_task(void *pvParameters) {
     }
     if (!tbClient.connected()) {
         // ESP_LOGI("MQTT", "Connecting to ThingsBoard server %s with token %s", THINGSBOARD_SERVER, SENSOR_TOKEN);
-        while (!tbClient.connect(THINGSBOARD_SERVER, DEVICE_TOKEN, THINGSBOARD_PORT)) {
-            ESP_LOGI("TB", "Connecting to ThingsBoard MQTT server");
-            delay(THINGSBOARD_CONNECT_TIMER);
+        if (!tbClient.connect(THINGSBOARD_SERVER, DEVICE_TOKEN, THINGSBOARD_PORT)) {
+            ESP_LOGI("TB", "Failed to connect to ThingsBoard MQTT server");
+            // delay(THINGSBOARD_CONNECT_TIMER);
+            vTaskDelete(NULL);
         }
         ESP_LOGI("TB", "Connected to ThingsBoard MQTT server with token %s", DEVICE_TOKEN);
         ESP_LOGI("TB", "Setting up Tasks");
         ota_setup();
         rpc_setup();
         shared_attributes_setup();
-    }
-    while (true) {
-        tbClient.loop();
-        delay(THINGSBOARD_LOOP_TIMER);
+        while (true) {
+            tbClient.loop();
+            delay(THINGSBOARD_LOOP_TIMER);
+        }
     }
 }
 
