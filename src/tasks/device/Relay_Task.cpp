@@ -5,7 +5,7 @@ uint8_t relay_state = 0;
 uint8_t duration = 0;
 
 void parse_payload(const char* payload) {
-    return;
+    ESP_LOGI("RELAY", "Payload: %s", payload);
 }
 
 void set_duration(uint8_t d) {
