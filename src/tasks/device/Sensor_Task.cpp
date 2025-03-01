@@ -138,8 +138,8 @@ static void load_sensor_data() {
 
 static void send_sensor_data() {
     String message = data.format_data();
-    ESP_LOGI("SENSOR", "Publish Sensor Data %s", message.c_str());
-    update_telemetry_data(message);
+    // ESP_LOGI("SENSOR", "Publish Sensor Data %s", message.c_str());
+    update_sensor_data(message);
 }
 
 void sensor_task(void *pvParameters) {

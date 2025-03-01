@@ -22,4 +22,7 @@ void finished_callback(const bool &success);
 /// @param total Total amount of chunks we need to receive and process until the update has completed
 void progress_callback(const size_t &current, const size_t &total);
 
+/// @brief Subscribed to OTA related attributes for OTA Update
+bool ota_setup();
+
 #endif // OTA_H

@@ -19,22 +19,22 @@
 // Global Libraries for the project
 #include "WiFi.h"
 #include "SPIFFS.h"
-#include "DHT20.h"
+// #include "DHT20.h"
 #include "HardwareSerial.h"
 // #include "SoftwareSerial.h"
 #include "TinyGPSPlus.h"
 #include "Adafruit_NeoPixel.h"
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
-#include "PubSubClient.h"
+// #include "PubSubClient.h"
 #include "ThingsBoard.h"
 #include "Arduino_MQTT_Client.h"
-#include "ArduinoJson.h"
+// #include "ArduinoJson.h"
 #include <Espressif_Updater.h>
 #include <OTA_Firmware_Update.h>
 #include "RPC_Request_Callback.h"
 #include <Server_Side_RPC.h>
-#include <Client_Side_RPC.h>
+// #include <Client_Side_RPC.h>
 #include <Shared_Attribute_Update.h>
 
 // Libraries for OTA Update

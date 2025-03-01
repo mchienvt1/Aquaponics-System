@@ -1,5 +1,5 @@
-#ifndef PUBLISH_TASK_H_
-#define PUBLISH_TASK_H_
+#ifndef ATTRIBUTES_TASK_H_
+#define ATTRIBUTES_TASK_H_
 
 #include "global.h"
 
@@ -8,13 +8,7 @@
 /// @param data Data containing the shared attributes that were changed and their current value
 void processSharedAttributeUpdate(const JsonObjectConst &data);
 
-/// @brief Update telemetry data to thingsboard broker
-/// @param _data Data formatted as JSON string
-void update_telemetry_data(String _data);
-
-/// @brief Publish WiFi attributes to thingsboard broker
-void publish_wifi_attributes();
-
-void publish_task_init();
+/// @brief Subscribe to device's shared attributes 
+bool shared_attributes_setup();
 
 #endif

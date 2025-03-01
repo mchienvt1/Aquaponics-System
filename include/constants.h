@@ -5,7 +5,7 @@
 // Information
 #define MY_BOARD "ESP32-S3-RELAY-6CH"
 #define BOARD_ID 2003
-#define MY_VERSION "1.0.2"
+#define MY_VERSION "1.1.0"
 
 // BAUD RATE
 #define MAIN_BAUDRATE 115200
@@ -66,7 +66,7 @@ constexpr uint8_t SENSOR_DATA_COUNT = 7;
 #define MEASURE_RESIS "resistance"
 
 /* TASK Timers */
-#define WIFI_TIMER 1000
+#define WIFI_TIMER 5000
 // #define RELAY_STATUS_TIMER 1000
 // #define RELAY_CONTROL_TIMER 100
 #define RS485_PROCESS_TIMER 1000
@@ -91,7 +91,7 @@ constexpr uint8_t SENSOR_DATA_COUNT = 7;
 // ThingsBoard Credentials //
 #define THINGSBOARD_SERVER "app.coreiot.io"
 #define THINGSBOARD_PORT 1883U
-#define DEVICE_TOKEN "fl2qilkqmt9fx6c9i7bf"
+#define DEVICE_TOKEN "thoq6z6dqmjqbxefbrio"
 constexpr uint16_t MAX_MESSAGE_SEND_SIZE = 512U;
 constexpr uint16_t MAX_MESSAGE_RECEIVE_SIZE = 512U;
 constexpr uint8_t MAX_APIS = 3U;
@@ -115,11 +115,12 @@ constexpr const char RPC_RGB_STATUS[] = "process_rgb_status";
 constexpr const char BLINKING_INTERVAL_ATTR[] = "blinkingInterval";
 constexpr const char RGB_MODE_ATTR[] = "rgb_mode";
 constexpr const char RGB_VALUE_ATTR[] = "rgb_value";
+constexpr const char RELAY_COMMAND_ATTR[] = "command";
 
 constexpr uint8_t MAX_ATTRIBUTES_SUBSCRIPTIONS = 1U;
 constexpr uint8_t MAX_ATTRIBUTES = 3U;
 constexpr std::array<const char*, MAX_ATTRIBUTES> SHARED_ATTRIBUTES_LIST = {
-    BLINKING_INTERVAL_ATTR,
+    RELAY_COMMAND_ATTR,
     RGB_MODE_ATTR,
     RGB_VALUE_ATTR
 };
