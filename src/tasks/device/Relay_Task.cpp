@@ -6,6 +6,13 @@ uint8_t relay_ch = 0;
 uint8_t state = 0;
 uint64_t duration = 0;
 
+void pump_setup() {
+    relay_ch = 1;
+    state = 1;
+    duration = 5000U;
+    need_control = true;
+}
+
 void parse_payload(const char* payload) {
     ESP_LOGI("RELAY", "Payload: %s", payload);
 

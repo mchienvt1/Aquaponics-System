@@ -3,6 +3,7 @@
 
 #include "global.h"
 
+void pump_setup();
 void parse_payload(const char* payload);
 void relay_task_init();
 
