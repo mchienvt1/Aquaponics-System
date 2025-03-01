@@ -3,14 +3,7 @@
 
 #include "global.h"
 
-struct relay_data {
-    uint8_t relay_ch;
-    uint8_t state;
-    uint8_t duration;
-};
-
-void set_callback();
-void set_duration(uint8_t d);
+void parse_payload(const char* payload);
 void relay_task_init();
 
 #endif

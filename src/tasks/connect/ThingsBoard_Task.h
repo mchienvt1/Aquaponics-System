@@ -3,6 +3,11 @@
 
 #include "global.h"
 
+
+void update_sensor_data(const String &data);
+void update_gps_data(const String &data);
+void update_wifi_data(const String &data);
+
 void thingsboard_task_init();
 
 #endif

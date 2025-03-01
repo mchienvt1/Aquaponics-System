@@ -1,14 +1,11 @@
 #include "Relay_Task.h"
 
-bool has_callback = false;
-bool need_control = false;
-
 uint8_t relay_ch = 0;
+uint8_t relay_state = 0;
 uint8_t duration = 0;
 
-void set_callback() {
-    Serial.println("Set Callback true");
-    has_callback = true;
+void parse_payload(const char* payload) {
+    return;
 }
 
 void set_duration(uint8_t d) {

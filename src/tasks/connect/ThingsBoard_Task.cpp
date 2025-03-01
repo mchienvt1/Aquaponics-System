@@ -1,32 +1,58 @@
 #include "ThingsBoard_Task.h"
 
-// volatile bool tb_need_reconnect = false;
+String sensor_data_str = "";
+String gps_data_str = "";
+String wifi_data_str = "";
 
-// bool currentFWSent = false;
-// bool updateRequestSent = false;
 bool ota_subscribed = false;
 bool rpc_subscribed = false;
 bool shared_attributes_subscribed = false;
 
+void update_sensor_data(const String &data) {
+    sensor_data_str = data;
+}
+
+void update_gps_data(const String &data) {
+    gps_data_str = data;
+}
+
+void update_wifi_data(const String &data) {
+    wifi_data_str = data;
+}
+
 void thingsboard_task(void *pvParameters) {
     while (true) {
+        delay(THINGSBOARD_LOOP_TIMER);
         while (WiFi.status() != WL_CONNECTED) {
             delay(WIFI_TIMER);
         }
         if (!tbClient.connected()) {
             // ESP_LOGI("MQTT", "Connecting to ThingsBoard server %s with token %s", THINGSBOARD_SERVER, SENSOR_TOKEN);
-            while (!tbClient.connect(THINGSBOARD_SERVER, DEVICE_TOKEN, THINGSBOARD_PORT)) {
-                ESP_LOGI("TB", "Try to connect to ThingsBoard MQTT server");
-                delay(THINGSBOARD_CONNECT_TIMER);
+            if (!tbClient.connect(THINGSBOARD_SERVER, DEVICE_TOKEN, THINGSBOARD_PORT)) {
+                ESP_LOGI("TB", "Unable to connect to ThingsBoard MQTT server");
+                vTaskDelete(NULL);
+                // delay(THINGSBOARD_CONNECT_TIMER);
             }
             // ESP_LOGI("TB", "Connected to ThingsBoard MQTT server with token %s", DEVICE_TOKEN);
             ESP_LOGI("TB", "Setting up Tasks");
-            // shared_attributes_setup();
         }
         if (!ota_subscribed) ota_subscribed = ota_setup();
         if (!rpc_subscribed) rpc_subscribed = rpc_setup();
+        if (!shared_attributes_subscribed) shared_attributes_subscribed = shared_attributes_setup();
+
+        if (strcmp(sensor_data_str.c_str(), "") != 0) {
+            tbClient.sendTelemetryString(sensor_data_str.c_str());
+            sensor_data_str = "";
+        }
+        if (strcmp(gps_data_str.c_str(), "") != 0) {
+            tbClient.sendAttributeString(gps_data_str.c_str());
+            gps_data_str = "";
+        }
+        if (strcmp(wifi_data_str.c_str(), "") != 0) {
+            tbClient.sendAttributeString(wifi_data_str.c_str());
+            wifi_data_str = "";
+        }
         tbClient.loop();
-        delay(THINGSBOARD_LOOP_TIMER);
     }
 }
 

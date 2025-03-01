@@ -27,12 +27,13 @@ bool wifi_need_reconnect() {
 void wifi_task(void *pvParameters) {
     while (true) {
         if (wifi_need_reconnect()) continue;
-        String wifi_data = "{\"rssi\":" + String(WiFi.RSSI()) + 
-                            "\"channel\":" + String(WiFi.channel()) +
-                            "\"bssid\":" + WiFi.BSSIDstr() +
-                            "\"localIp\":" + WiFi.localIP().toString() +
-                            "\"ssid\":" + WiFi.SSID() + "}";
-        update_data(wifi_data);
+        String wifi_data =  "{\"rssi\":\"" + String(WiFi.RSSI()) + 
+                            "\",\"channel\":\"" + String(WiFi.channel()) +
+                            "\",\"bssid\":\"" + WiFi.BSSIDstr() +
+                            "\",\"localIp\":\"" + WiFi.localIP().toString() +
+                            "\",\"ssid\":\"" + WiFi.SSID() + "\"}";
+        // ESP_LOGI("WIFI", "Data: %s", wifi_data.c_str());
+        update_wifi_data(wifi_data);
         delay(WIFI_TIMER);
     }
 }
