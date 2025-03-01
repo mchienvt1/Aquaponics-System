@@ -2,12 +2,12 @@
 
 void processSharedAttributeUpdate(const JsonObjectConst &data) {
     for (auto it = data.begin(); it != data.end(); ++it) {
-        Serial.println(it->key().c_str());
+        // Serial.println(it->key().c_str());
         // Shared attributes have to be parsed by their type.
-        Serial.println(it->value().as<const char*>());
+        // Serial.println(it->value().as<const char*>());
         
         // Parsing RELAY_COMMAND_ATTR attribute
-        if (strcmp(it->key().c_str(), RELAY_COMMAND_ATTR) != 0) {
+        if (strcmp(it->key().c_str(), RELAY_COMMAND_ATTR) == 0) {
             parse_payload(it->value().as<const char*>());
         }
     }

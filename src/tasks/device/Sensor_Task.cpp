@@ -152,5 +152,5 @@ void sensor_task(void *pvParameters) {
 
 void sensor_task_init() {
     RS485Serial.begin(RS485_BAUDRATE, SERIAL_8N1, RXD_RS485, TXD_RS485);
-    xTaskCreate(sensor_task, "Sensor_Task", 4096, NULL, 1, NULL);
+    xTaskCreate(sensor_task, "Sensor_Task", 4096, NULL, 1, &sensor_task_handle);
 }

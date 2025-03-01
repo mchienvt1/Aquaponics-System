@@ -8,6 +8,7 @@
 #include "Relay_Task.h"
 
 extern Adafruit_NeoPixel pixels;
+extern TaskHandle_t sensor_task_handle;
 
 void device_task_init();
 
