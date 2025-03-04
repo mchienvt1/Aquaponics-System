@@ -18,12 +18,12 @@ void processSharedAttributeUpdate(const JsonObjectConst &data) {
     // Serial.println(buffer);
 }
 
+const Shared_Attribute_Callback<MAX_ATTRIBUTES> callback(
+    &processSharedAttributeUpdate,
+    SHARED_ATTRIBUTES_LIST
+);
+
 bool shared_attributes_setup() {
-    const Shared_Attribute_Callback<MAX_ATTRIBUTES> callback(
-        &processSharedAttributeUpdate,
-        SHARED_ATTRIBUTES_LIST.cbegin(), 
-        SHARED_ATTRIBUTES_LIST.cend()
-    );
     if (!shared_attributes.Shared_Attributes_Subscribe(callback)) {
         ESP_LOGE("SHARED_ATTR", "Failed to subscribe to shared attributes");
         return false;

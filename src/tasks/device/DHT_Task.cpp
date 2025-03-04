@@ -6,40 +6,36 @@ void dht_task(void *pvParameters) {
     Wire1.begin(DHT_SDA, DHT_SCL);
 
     while (true) {
-        Serial.print("DHT20, \t");
         int status = dht20.read();
-        switch (status)
-        {
-        case DHT20_OK:
-          Serial.print("OK,\t");
-          break;
-        case DHT20_ERROR_CHECKSUM:
-          Serial.print("Checksum error,\t");
-          break;
-        case DHT20_ERROR_CONNECT:
-          Serial.print("Connect error,\t");
-          break;
-        case DHT20_MISSING_BYTES:
-          Serial.print("Missing bytes,\t");
-          break;
-        case DHT20_ERROR_BYTES_ALL_ZERO:
-          Serial.print("All bytes read zero");
-          break;
-        case DHT20_ERROR_READ_TIMEOUT:
-          Serial.print("Read time out");
-          break;
-        case DHT20_ERROR_LASTREAD:
-          Serial.print("Error read too fast");
-          break;
-        default:
-          Serial.print("Unknown error,\t");
-          break;
-        }
-      
-        //  DISPLAY DATA, sensor has only one decimal.
-        Serial.print(dht20.getHumidity(), 1);
-        Serial.print(",\t");
-        Serial.println(dht20.getTemperature(), 1);
+        float dht_temp = dht20.getTemperature();
+        float dht_humi = dht20.getHumidity();
+        // switch (status)
+        // {
+        //     case DHT20_OK:
+        //     ESP_LOGI("DHT", "TEMP: %.2f HUMI: %.2f", dht_temp, dht_humi);
+        //     break;
+        //     case DHT20_ERROR_CHECKSUM:
+        //     ESP_LOGE("DHT", "Checksum error");
+        //     break;
+        //     case DHT20_ERROR_CONNECT:
+        //     ESP_LOGE("DHT", "Connect error");
+        //     break;
+        //     case DHT20_MISSING_BYTES:
+        //     ESP_LOGE("DHT", "Missing bytes");
+        //     break;
+        //     case DHT20_ERROR_BYTES_ALL_ZERO:
+        //     ESP_LOGE("DHT", "All bytes read zero");
+        //     break;
+        //     case DHT20_ERROR_READ_TIMEOUT:
+        //     ESP_LOGE("DHT", "Read time out");
+        //     break;
+        //     case DHT20_ERROR_LASTREAD:
+        //     ESP_LOGE("DHT", "Error read too fast");
+        //     break;
+        //     default:
+        //     ESP_LOGE("DHT", "Unknown error");
+        //     break;
+        // }
         delay(2000);
     }
 }

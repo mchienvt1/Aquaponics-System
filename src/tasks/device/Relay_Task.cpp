@@ -7,8 +7,8 @@ enum POOL_STATE {
     INIT, PUMPING, SENSING
 };
 
-uint8_t relay_ch = 0;
-uint8_t state = 0;
+uint8_t relay_ch = RELAY_CH1;
+uint8_t state = 1;
 uint64_t duration = 0;
 
 void pump_setup() {
@@ -47,50 +47,43 @@ void parse_payload(const char* payload) {
 uint32_t PUMP_TIMER = 5000u;
 uint32_t SEND_TIMER = 5000u * 60u;
 
-
-void pump(POOL_STATE &pstate) {
-    int start = millis();
-    digitalWrite(RELAY_CH1, 1);
-    while (millis() - start < PUMP_TIMER) continue;
-    digitalWrite(RELAY_CH1, 0);
-    pstate = SENSING;
-}
-
-void sense(POOL_STATE &pstate) {
-    int start = millis();
-    while (millis() - start < SEND_TIMER) continue;
-    pstate = PUMPING;
-}
-
 void relay_task(void *pvParameters) {
+    // TODO: change this to a 5 minute task
+    while (true) {
+        if (sensor_task_handle != NULL) {
+            vTaskSuspend(sensor_task_handle);
+            unsigned long start = millis();
+            digitalWrite(relay_ch, state);
+            while (millis() - start <= PUMP_TIMER) continue;
+            // need_control = false;
+            digitalWrite(relay_ch, 1 - state);
+            vTaskResume(sensor_task_handle);
+        }
+        delay(SEND_TIMER);
+    }
+
     // while (true) {
-    //     if (need_control && sensor_task_handle != NULL) {
-    //         vTaskSuspend(sensor_task_handle);
-    //         unsigned long start = millis();
-    //         digitalWrite(relay_ch, state);
-    //         while (millis() - start <= duration) continue;
-    //         need_control = false;
-    //         digitalWrite(relay_ch, 1 - state);
-    //         vTaskResume(sensor_task_handle);
+    //     POOL_STATE pstate = INIT;
+    //     switch(pstate) {
+    //         case INIT:
+    //             pstate = PUMPING;
+    //             break;
+    //         case PUMPING:
+    //             digitalWrite(RELAY_CH1, 1);
+    //             Serial.println("Change State");
+    //             delay(PUMP_TIMER);
+    //             digitalWrite(RELAY_CH1, 0);
+    //             pstate = SENSING;
+    //             break;
+    //         case SENSING:
+    //             delay(SEND_TIMER);
+    //             Serial.println("Change State");
+    //             pstate = PUMPING;
+    //             break;
     //     }
+    //     Serial.println(pstate);
     //     delay(1000);
     // }
-
-    while (true) {
-        POOL_STATE pstate = INIT;
-        switch(pstate) {
-            case INIT:
-            case PUMPING:
-                pump(pstate);
-                break;
-            case SENSING:
-                sense(pstate);
-                break;
-            default:
-                break;
-        }
-        delay(1);
-    }
 }
 
 void relay_task_init() {

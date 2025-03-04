@@ -19,22 +19,23 @@ void progress_callback(const size_t &current, const size_t &total) {
     ESP_LOGI("OTA", "Progress %.2f%%", static_cast<float>(current * 100U) / total);
 }
 
+const OTA_Update_Callback callback(
+    CURRENT_FIRMWARE_TITLE, 
+    CURRENT_FIRMWARE_VERSION,
+    &updater, 
+    &finished_callback, 
+    &progress_callback, 
+    &update_starting_callback, 
+    FIRMWARE_FAILURE_RETRIES, 
+    FIRMWARE_PACKET_SIZE
+);
+
 bool ota_setup() {
     // if (!currentFWSent) {
     //     ESP_LOGI("OTA", "Current FW: %s %s", CURRENT_FIRMWARE_TITLE, CURRENT_FIRMWARE_VERSION);
     //     currentFWSent = ota.Firmware_Send_Info(CURRENT_FIRMWARE_TITLE, CURRENT_FIRMWARE_VERSION);
     // }
 
-    const OTA_Update_Callback callback(
-        CURRENT_FIRMWARE_TITLE, 
-        CURRENT_FIRMWARE_VERSION,
-        &updater, 
-        &finished_callback, 
-        &progress_callback, 
-        &update_starting_callback, 
-        FIRMWARE_FAILURE_RETRIES, 
-        FIRMWARE_PACKET_SIZE
-    );
     // See https://thingsboard.io/docs/user-guide/ota-updates/
     // to understand how to create a new OTA pacakge and assign it to a device so it can download it.
     // Sending the request again after a successfull update will automatically send the UPDATED firmware state,

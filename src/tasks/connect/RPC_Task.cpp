@@ -9,16 +9,17 @@ void process_relay_status(const JsonVariantConst &data, JsonDocument &response) 
 void process_rgb_status(const JsonVariantConst &data, JsonDocument &response) {
     ESP_LOGI("RPC", "RGB Data: %s", data.as<String>().c_str());
     ESP_LOGI("RPC", "Process RGB Status");
-    // if (data) set_rgb_color(BLUE_RGB);
-    // else set_rgb_color(BLACK_RGB);
+    if (data) set_rgb_color(BLUE_RGB);
+    else set_rgb_color(BLACK_RGB);
 }
+
+const std::array<RPC_Callback, MAX_RPC_SUBSCRIPTIONS> callbacks = {
+    RPC_Callback {RPC_RELAY_STATUS, process_relay_status},
+    RPC_Callback {RPC_RGB_STATUS, process_rgb_status}
+};
 
 bool rpc_setup() {
     // ESP_LOGI("RPC", "Subscribing to RPC methods");
-    const std::array<RPC_Callback, MAX_RPC_SUBSCRIPTIONS> callbacks = {
-        RPC_Callback {RPC_RELAY_STATUS, process_relay_status},
-        RPC_Callback {RPC_RGB_STATUS, process_rgb_status}
-    };
     if (!rpc.RPC_Subscribe(callbacks.cbegin(), callbacks.cend())) {
         ESP_LOGE("RPC", "Failed to subscribe to RPC methods");
         return false;

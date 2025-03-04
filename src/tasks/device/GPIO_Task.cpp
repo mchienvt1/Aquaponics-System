@@ -1,7 +1,7 @@
 #include "GPIO_Task.h"
 
 void set_rgb_color(color c) {
-    ESP_LOGI("GPIO", "Change pixel color to #%2x%2x%2x", c.red, c.green, c.blue);
+    // ESP_LOGI("GPIO", "Change pixel color to #%2x%2x%2x", c.red, c.green, c.blue);
     pixels.setPixelColor(0, c.red, c.green, c.blue);
     pixels.show();
 }
@@ -60,19 +60,18 @@ void gpio_task(void *pvParameters) {
     // }
 }
 
-// void blink_rgb_task(void *pvParameters) {
-//     while (true) {
-//         uint32_t color = pixels.getPixelColor(0);
-//         pixels.clear();
-//         delay(1000);
-//         pixels.setPixelColor(0, color);
-//         delay(1000);
-//     }
-// }
+void blink_rgb_task(void *pvParameters) {
+    while (true) {
+        set_rgb_color(BLACK_RGB);
+        delay(1000);
+        set_rgb_color(BLUE_RGB);
+        delay(1000);
+    }
+}
 
 void gpio_task_init() {
     xTaskCreate(gpio_task, "GPIO_Task", 4096, NULL, 1, NULL);
-    // xTaskCreate(blink_rgb_task, "Blink_RGB_Task", 2048, NULL, 0, NULL);
+    xTaskCreate(blink_rgb_task, "Blink_RGB_Task", 2048, NULL, 2, NULL);
     // xTaskCreate(test_relay_control, "", 2048, NULL, 2, NULL);
     // xTaskCreate(test_rgb, "test_rgb", 2048, NULL, 258, NULL);
 };
