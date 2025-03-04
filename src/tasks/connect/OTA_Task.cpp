@@ -16,7 +16,7 @@ void finished_callback(const bool &success) {
 }
 
 void progress_callback(const size_t &current, const size_t &total) {
-    ESP_LOGI("OTA", "Progress %.2f%%\n", static_cast<float>(current * 100U) / total);
+    ESP_LOGI("OTA", "Progress %.2f%%", static_cast<float>(current * 100U) / total);
 }
 
 bool ota_setup() {

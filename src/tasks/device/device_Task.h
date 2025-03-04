@@ -6,6 +6,7 @@
 #include "Sensor_Task.h"
 #include "GPS_Task.h"
 #include "Relay_Task.h"
+#include "DHT_Task.h"
 
 extern Adafruit_NeoPixel pixels;
 extern TaskHandle_t sensor_task_handle;

@@ -3,6 +3,8 @@
 
 #include "global.h"
 
+// Example from thingsboard/thingsboard-client-sdk/blob/master/examples/0009-esp8266_esp32_process_OTA_MQTT
+
 /// @brief Update starting callback method that will be called as soon as the shared attribute firmware keys have been received and processed
 /// and the moment before we subscribe the necessary topics for the OTA firmware update.
 /// Is meant to give a moment were any additional processes or communication with the cloud can be stopped to ensure the update process runs as smooth as possible.

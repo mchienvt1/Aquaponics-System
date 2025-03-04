@@ -19,7 +19,7 @@
 // Global Libraries for the project
 #include "WiFi.h"
 #include "SPIFFS.h"
-// #include "DHT20.h"
+#include "DHT20.h"
 #include "HardwareSerial.h"
 // #include "SoftwareSerial.h"
 #include "TinyGPSPlus.h"

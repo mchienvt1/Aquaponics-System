@@ -3,16 +3,13 @@
 void wifi_connect() {
     WiFi.mode(WIFI_STA);    
     WiFi.begin(WIFI_SSID, WIFI_PASSWORD);
-    // set_rgb_color(RED_RGB);
     // Loop if not connected
     while (WiFi.status() != WL_CONNECTED) {
         // Print status
-        set_rgb_color(RED_RGB);
         ESP_LOGI("WIFI", "WiFi Status: %d ", WiFi.status());
         delay(WIFI_TIMER);
     }
 
-    set_rgb_color(GREEN_RGB);
     ESP_LOGI("WIFI", "Connected to SSID: %s", WIFI_SSID);
     ESP_LOGI("WIFI", "IP Address: %s", WiFi.localIP().toString().c_str());
 }

@@ -2,6 +2,11 @@
 
 bool need_control = false;
 
+
+enum POOL_STATE {
+    INIT, PUMPING, SENSING
+};
+
 uint8_t relay_ch = 0;
 uint8_t state = 0;
 uint64_t duration = 0;
@@ -39,18 +44,52 @@ void parse_payload(const char* payload) {
     need_control = true;
 }
 
+uint32_t PUMP_TIMER = 5000u;
+uint32_t SEND_TIMER = 5000u * 60u;
+
+
+void pump(POOL_STATE &pstate) {
+    int start = millis();
+    digitalWrite(RELAY_CH1, 1);
+    while (millis() - start < PUMP_TIMER) continue;
+    digitalWrite(RELAY_CH1, 0);
+    pstate = SENSING;
+}
+
+void sense(POOL_STATE &pstate) {
+    int start = millis();
+    while (millis() - start < SEND_TIMER) continue;
+    pstate = PUMPING;
+}
+
 void relay_task(void *pvParameters) {
+    // while (true) {
+    //     if (need_control && sensor_task_handle != NULL) {
+    //         vTaskSuspend(sensor_task_handle);
+    //         unsigned long start = millis();
+    //         digitalWrite(relay_ch, state);
+    //         while (millis() - start <= duration) continue;
+    //         need_control = false;
+    //         digitalWrite(relay_ch, 1 - state);
+    //         vTaskResume(sensor_task_handle);
+    //     }
+    //     delay(1000);
+    // }
+
     while (true) {
-        if (need_control && sensor_task_handle != NULL) {
-            vTaskSuspend(sensor_task_handle);
-            unsigned long start = millis();
-            digitalWrite(relay_ch, state);
-            while (millis() - start <= duration) continue;
-            need_control = false;
-            digitalWrite(relay_ch, 1 - state);
-            vTaskResume(sensor_task_handle);
+        POOL_STATE pstate = INIT;
+        switch(pstate) {
+            case INIT:
+            case PUMPING:
+                pump(pstate);
+                break;
+            case SENSING:
+                sense(pstate);
+                break;
+            default:
+                break;
         }
-        delay(1000);
+        delay(1);
     }
 }
 

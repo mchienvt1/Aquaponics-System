@@ -4,8 +4,8 @@
 /* BOARD */
 // Information
 #define MY_BOARD "ESP32-S3-RELAY-6CH"
-#define BOARD_ID 2003
 #define MY_VERSION "1.1.1"
+// #define BOARD_ID 2003
 
 // BAUD RATE
 #define MAIN_BAUDRATE 115200
@@ -21,21 +21,26 @@
 #define RELAY_CH4 42
 #define RELAY_CH5 45
 #define RELAY_CH6 46 
-#define TXD_RS485 17 // relay_6_ch
-#define RXD_RS485 18 // relay_6_ch
-#define TXD_GPS 11 // GPS
-#define RXD_GPS 12 // GPS
+
+#define TXD_GPS 11      // GPS AT6668
+#define RXD_GPS 12      // GPS AT6668
+#define DHT_SDA 14      // Sensor DHT
+#define DHT_SCL 15      // Sensor DHT
+#define TXD_RS485 17    // Sensor ISx
+#define RXD_RS485 18    // Sensor ISx
+
 #define LED_RGB 38
 #define NUM_PIXELS 1
 #define Brightness 39 // Set brightness to (0 to 255)
+
 #define BUZZER 21 // relay_6_ch
 
 struct color {
     uint8_t red, green, blue;
 };
 
-constexpr color RED_RGB = {220, 20, 60};
-constexpr color GREEN_RGB = {34, 139, 34};
+constexpr color RED_RGB = {34, 139, 34};
+constexpr color GREEN_RGB = {220, 20, 60};
 constexpr color BLUE_RGB = {100, 149, 237};
 constexpr color WHITE_RGB = {255, 255, 255};
 constexpr color BLACK_RGB = {0, 0, 0};
