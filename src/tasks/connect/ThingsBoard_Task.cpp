@@ -45,6 +45,7 @@ void thingsboard_task(void *pvParameters) {
         if (!rpc_subscribed) rpc_subscribed = rpc_setup();
         if (!shared_attributes_subscribed) shared_attributes_subscribed = shared_attributes_setup();
 
+        // TODO: Make a Data Structure to store these more efficient
         if (strcmp(sensor_data_str.c_str(), "") != 0) {
             tbClient.sendTelemetryString(sensor_data_str.c_str());
             sensor_data_str = "";
@@ -61,6 +62,7 @@ void thingsboard_task(void *pvParameters) {
             tbClient.sendTelemetryString(env_data_str.c_str());
             env_data_str = "";
         }
+        set_rgb_color(GREEN_RGB);
         tbClient.loop();
     }
 }

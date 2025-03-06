@@ -48,7 +48,7 @@ uint32_t PUMP_TIMER = 5000u;
 uint32_t SEND_TIMER = 5000u * 60u;
 
 void relay_task(void *pvParameters) {
-    // TODO: change this to a 5 minute task
+    // TODO: change this to a state machine
     while (true) {
         if (sensor_task_handle != NULL) {
             vTaskSuspend(sensor_task_handle);
@@ -61,29 +61,6 @@ void relay_task(void *pvParameters) {
         }
         delay(SEND_TIMER);
     }
-
-    // while (true) {
-    //     POOL_STATE pstate = INIT;
-    //     switch(pstate) {
-    //         case INIT:
-    //             pstate = PUMPING;
-    //             break;
-    //         case PUMPING:
-    //             digitalWrite(RELAY_CH1, 1);
-    //             Serial.println("Change State");
-    //             delay(PUMP_TIMER);
-    //             digitalWrite(RELAY_CH1, 0);
-    //             pstate = SENSING;
-    //             break;
-    //         case SENSING:
-    //             delay(SEND_TIMER);
-    //             Serial.println("Change State");
-    //             pstate = PUMPING;
-    //             break;
-    //     }
-    //     Serial.println(pstate);
-    //     delay(1000);
-    // }
 }
 
 void relay_task_init() {

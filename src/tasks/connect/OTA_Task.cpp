@@ -4,6 +4,7 @@ Espressif_Updater<> updater;
 
 void update_starting_callback() {
     ESP_LOGI("OTA", "Starting update...");
+    set_rgb_color(WHITE_RGB);
 }
 
 void finished_callback(const bool &success) {
