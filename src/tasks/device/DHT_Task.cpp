@@ -37,6 +37,9 @@ void dht_task(void *pvParameters) {
         //     break;
         // }
         delay(2000);
+        String env_data = "{\"env_temp\":" + String(dht_temp) + 
+                          ",\"env_humi\":" + String(dht_humi) + "}";
+        update_env_data(env_data);
     }
 }
 

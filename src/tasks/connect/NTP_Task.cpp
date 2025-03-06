@@ -3,23 +3,23 @@
 constexpr const char TIMEZONE[] = "UTC-7";
 constexpr const char NTP_SERVER[]= "pool.ntp.org";
 
-void initialize_sntp(void) {
+void initialize_sntp() {
     // Set timezone (optional, adjust as needed)
     setenv("TZ", TIMEZONE, 1);
     tzset();
 
     // Initialize SNTP
-    sntp_setoperatingmode(ESP_SNTP_OPMODE_POLL);
+    sntp_setoperatingmode(SNTP_OPMODE_POLL);
     sntp_setservername(0, NTP_SERVER); // Use a reliable NTP server
     sntp_init();
 }
 
-void print_current_time(void) {
+void print_current_time() {
     time_t now;
     struct tm timeinfo;
     time(&now);
     localtime_r(&now, &timeinfo);
-    ESP_LOGI("NTP", "Current time: %s", asctime(&timeinfo));
+    // ESP_LOGI("NTP", "Current time: %s", asctime(&timeinfo));
 }
 
 void ntp_task(void *pvParameters) {
@@ -32,12 +32,8 @@ void ntp_task(void *pvParameters) {
         delay(2000);
     }
     while (true) {
-        time_t now;
-        struct tm timeinfo;
-        time(&now);
-        localtime_r(&now, &timeinfo);
-        printf("Current time: %s", asctime(&timeinfo));
-        delay(1000);
+        print_current_time();
+        delay(10000);
     }
 }
 

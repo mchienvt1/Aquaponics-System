@@ -3,11 +3,11 @@
 void set_rgb_color(color c) {
     // ESP_LOGI("GPIO", "Change pixel color to #%2x%2x%2x", c.red, c.green, c.blue);
     pixels.setPixelColor(0, c.red, c.green, c.blue);
-    pixels.show();
 }
 
 void set_led_color() {
     pixels.begin();
+    set_rgb_color(RED_RGB);
     pixels.setBrightness(Brightness);
 }
 
@@ -61,10 +61,14 @@ void gpio_task(void *pvParameters) {
 }
 
 void blink_rgb_task(void *pvParameters) {
+    uint32_t pixel_color = pixels.getPixelColor(0);
     while (true) {
-        set_rgb_color(BLACK_RGB);
+        pixels.setPixelColor(0, pixel_color);
+        pixels.show();
         delay(1000);
-        set_rgb_color(BLUE_RGB);
+        pixel_color = pixels.getPixelColor(0);
+        set_rgb_color(BLACK_RGB);
+        pixels.show();
         delay(1000);
     }
 }

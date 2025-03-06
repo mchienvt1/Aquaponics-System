@@ -4,7 +4,7 @@
 /* BOARD */
 // Information
 #define MY_BOARD "ESP32-S3-RELAY-6CH"
-#define MY_VERSION "1.1.1"
+#define MY_VERSION "1.1.2"
 // #define BOARD_ID 2003
 
 // BAUD RATE

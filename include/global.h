@@ -2,6 +2,7 @@
 #define GLOBAL_H_
 
 #include <array>
+#include <list>
 #include <map>
 #include <fcntl.h>
 // #include <termios.h>
@@ -11,8 +12,8 @@
 #include "esp_event.h"
 #include <esp_err.h>
 #include "esp_log.h"
-#include "esp_ota_ops.h"
-#include "esp_wifi.h"
+// #include "esp_ota_ops.h"
+// #include "esp_wifi.h"
 #include "esp_sntp.h"
 
 #include "nvs.h"
@@ -38,13 +39,6 @@
 #include <Server_Side_RPC.h>
 // #include <Client_Side_RPC.h>
 #include <Shared_Attribute_Update.h>
-
-// Libraries for OTA Update
-#ifdef OTA_TASK_H_
-#include <HTTPClient.h>
-#include "esp_http_client.h"
-#include "esp_https_ota.h"
-#endif
 
 // Libraries for AsyncWebServer
 #ifdef SERVER_TASK_H_

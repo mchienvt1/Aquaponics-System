@@ -32,8 +32,8 @@ const OTA_Update_Callback callback(
 
 bool ota_setup() {
     // if (!currentFWSent) {
-    //     ESP_LOGI("OTA", "Current FW: %s %s", CURRENT_FIRMWARE_TITLE, CURRENT_FIRMWARE_VERSION);
-    //     currentFWSent = ota.Firmware_Send_Info(CURRENT_FIRMWARE_TITLE, CURRENT_FIRMWARE_VERSION);
+    ESP_LOGI("OTA", "Current FW: %s %s", CURRENT_FIRMWARE_TITLE, CURRENT_FIRMWARE_VERSION);
+    ota.Firmware_Send_Info(CURRENT_FIRMWARE_TITLE, CURRENT_FIRMWARE_VERSION);
     // }
 
     // See https://thingsboard.io/docs/user-guide/ota-updates/
