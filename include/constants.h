@@ -75,7 +75,7 @@ constexpr uint8_t SENSOR_DATA_COUNT = 7;
 // #define RELAY_STATUS_TIMER 1000
 // #define RELAY_CONTROL_TIMER 100
 #define SENSOR_ISX_PROCESS_TIMER 1000
-#define SENSOR_ISX_READ_WRITE_TIMER 100
+#define SENSOR_ISX_READ_WRITE_TIMER 250
 #define GPS_TIMER 10000
 #define THINGSBOARD_LOOP_TIMER 1000
 #define THINGSBOARD_CONNECT_TIMER 1000
@@ -96,7 +96,7 @@ constexpr uint8_t SENSOR_DATA_COUNT = 7;
 /* ThingsBoard Credentials */
 #define THINGSBOARD_SERVER "app.coreiot.io"
 #define THINGSBOARD_PORT 1883U
-#define DEVICE_TOKEN "bVnP8RnwjZc1xmA1nS5R"
+#define DEVICE_TOKEN "thoq6z6dqmjqbxefbrio"
 constexpr uint16_t MAX_MESSAGE_SEND_SIZE = 512U;
 constexpr uint16_t MAX_MESSAGE_RECEIVE_SIZE = 512U;
 constexpr uint8_t MAX_APIS = 3U;

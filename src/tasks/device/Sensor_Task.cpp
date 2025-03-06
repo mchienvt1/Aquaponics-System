@@ -16,7 +16,8 @@ void send_processed_data() {
         float singular_data = 0.00f;
         uint16_t list_idx = 1;
         for (auto it = data_list.begin(); it != data_list.end(); ++it) {
-            singular_data = singular_data + ((*it).get_data(index) - singular_data) / (float)list_idx; 
+            if ((*it).get_data(index) >= -1) 
+                singular_data = singular_data + ((*it).get_data(index) - singular_data) / (float)list_idx; 
             ++list_idx;
         }
         avg_data.set_data(index, singular_data);
@@ -165,7 +166,7 @@ static void send_sensor_data() {
         ESP_LOGI("SENSOR", "Contained data, data count %d", data_list.size());
     }
     String message = data.format_data();
-    // ESP_LOGI("SENSOR", "Publish Sensor Data %s", message.c_str());
+    ESP_LOGI("SENSOR", "Data %s", message.c_str());
     update_sensor_data(message);
 }
 
