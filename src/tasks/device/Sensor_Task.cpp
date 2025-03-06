@@ -6,30 +6,23 @@ bool need_processing = false;
 HardwareSerial RS485Serial(1);
 SensorData data;
 
-
-struct data_point {
-    std::list<SensorData> data_list;
-    uint16_t count;
-};
-
-data_point dp;
-// dp.count = 0;
+std::list<SensorData> data_list;
 
 void send_processed_data() {
-    if (dp.count <= 0) return;
+    if (data_list.size() <= 0) return;
     SensorData avg_data;
-    ESP_LOGI("SENSOR", "Collected %d data points\n", dp.count);
+    ESP_LOGI("SENSOR", "Collected %d data points\n", data_list.size());
     for (uint8_t index = 0; index < SENSOR_DATA_COUNT; ++index) {
         float singular_data = 0.00f;
         uint16_t list_idx = 1;
-        for (auto it = dp.data_list.begin(); it != dp.data_list.end(); ++it) {
+        for (auto it = data_list.begin(); it != data_list.end(); ++it) {
             singular_data = singular_data + ((*it).get_data(index) - singular_data) / (float)list_idx; 
             ++list_idx;
         }
         avg_data.set_data(index, singular_data);
     }
     ESP_LOGI("SENSOR", "Publish Sensor Data %s", avg_data.format_data().c_str());
-    dp.count = 0;
+    data_list.clear();
     // tbClient.sendAttributeString(avg_data.format_data().c_str());
 }
 
@@ -168,9 +161,8 @@ static void load_sensor_data() {
 
 static void send_sensor_data() {
     if (need_processing) {
-        dp.data_list.push_back(data);
-        dp.count++;
-        ESP_LOGI("SENSOR", "Contained data, data count %d", dp.count);
+        data_list.push_back(data);
+        ESP_LOGI("SENSOR", "Contained data, data count %d", data_list.size());
     }
     String message = data.format_data();
     // ESP_LOGI("SENSOR", "Publish Sensor Data %s", message.c_str());
