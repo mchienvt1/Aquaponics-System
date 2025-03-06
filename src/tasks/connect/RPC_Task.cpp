@@ -3,7 +3,7 @@
 void process_relay_status(const JsonVariantConst &data, JsonDocument &response) {
     ESP_LOGI("RPC", "Relay Data: %s", data.as<String>().c_str());
     ESP_LOGI("RPC", "Process Relay Status");
-    pump_setup();
+    // pump_setup();
 }
 
 void process_rgb_status(const JsonVariantConst &data, JsonDocument &response) {

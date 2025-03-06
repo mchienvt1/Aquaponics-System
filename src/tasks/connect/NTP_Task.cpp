@@ -19,7 +19,7 @@ void print_current_time() {
     struct tm timeinfo;
     time(&now);
     localtime_r(&now, &timeinfo);
-    // ESP_LOGI("NTP", "Current time: %s", asctime(&timeinfo));
+    ESP_LOGI("NTP", "Current time: %s", asctime(&timeinfo));
 }
 
 void ntp_task(void *pvParameters) {
@@ -38,5 +38,5 @@ void ntp_task(void *pvParameters) {
 }
 
 void ntp_task_init() {
-    xTaskCreate(ntp_task, "NTP_Task", 2048, 0, 1, 0);
+    xTaskCreate(ntp_task, "NTP_Task", 4096, 0, 1, 0);
 }

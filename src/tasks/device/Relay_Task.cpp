@@ -1,22 +1,17 @@
 #include "Relay_Task.h"
 
-bool need_control = false;
-
-
-enum POOL_STATE {
-    INIT, PUMPING, SENSING
-};
+// bool need_control = false;
 
 uint8_t relay_ch = RELAY_CH1;
 uint8_t state = 1;
 uint64_t duration = 0;
 
-void pump_setup() {
-    relay_ch = 1;
-    state = 1;
-    duration = 5000U;
-    need_control = true;
-}
+// void pump_setup() {
+//     relay_ch = 1;
+//     state = 1;
+//     duration = 5000U;
+//     need_control = true;
+// }
 
 void parse_payload(const char* payload) {
     ESP_LOGI("RELAY", "Payload: %s", payload);
@@ -41,29 +36,59 @@ void parse_payload(const char* payload) {
     // Serial.println(token);
     duration = atoi(token);
     
-    need_control = true;
+    // need_control = true;
 }
 
 uint32_t PUMP_TIMER = 5000u;
+uint32_t STAB_TIMER = 15000u;
 uint32_t SEND_TIMER = 5000u * 60u;
+
+DATA_COLLECTION_STATE data_collection_state = INIT;
 
 void relay_task(void *pvParameters) {
     // TODO: change this to a state machine
+    unsigned long timer = millis();
     while (true) {
-        if (sensor_task_handle != NULL) {
-            vTaskSuspend(sensor_task_handle);
-            unsigned long start = millis();
-            digitalWrite(relay_ch, state);
-            while (millis() - start <= PUMP_TIMER) continue;
-            // need_control = false;
-            digitalWrite(relay_ch, 1 - state);
-            vTaskResume(sensor_task_handle);
+        switch (data_collection_state) {
+            case INIT:
+                data_collection_state = PUMP;
+                digitalWrite(RELAY_CH1, 1);
+                ESP_LOGI("RELAY", "INIT");
+                break;
+            case PUMP:
+                if (millis() - timer >= PUMP_TIMER) {
+                    data_collection_state = STABILIZE;
+                    digitalWrite(RELAY_CH1, 0);
+                    ESP_LOGI("RELAY", "STATE = STABILIZE");
+                    timer = millis();
+                }
+                break;
+                case STABILIZE:
+                if (millis() - timer >= STAB_TIMER) {
+                    data_collection_state = COLLECT;
+                    need_processing = true;
+                    ESP_LOGI("RELAY", "STATE = COLLECT");
+                    timer = millis();
+                }
+                break;
+            case COLLECT:
+                if (millis() - timer >= SEND_TIMER) {
+                    send_processed_data();
+                    need_processing = false;
+                    data_collection_state = PUMP;
+                    digitalWrite(RELAY_CH1, 1);
+                    ESP_LOGI("RELAY", "STATE = PUMP");
+                    timer = millis();
+                }
+                break;
+            default:
+                break;
         }
-        delay(SEND_TIMER);
+        delay(10);
     }
 }
 
 void relay_task_init() {
-    xTaskCreate(relay_task, "Relay_Task", 2048, NULL, 1, NULL);
+    xTaskCreate(relay_task, "Relay_Task", 4096, NULL, 1, NULL);
     // xTaskCreate(relay_control_task, "relay_control_task", 2048, nullptr, 2, nullptr);
 }

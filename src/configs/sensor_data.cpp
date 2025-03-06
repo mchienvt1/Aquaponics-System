@@ -21,6 +21,10 @@ void SensorData::set_data(const std::string &data_name, const float &value) {
     }
 }
 
+void SensorData::set_data(uint8_t index, const float &value) {
+    sensor_data_map[index].second = value;
+}
+
 float SensorData::get_data(const std::string &data_name) {
     for (auto &data : sensor_data_map) {
         if (data.first == data_name) {
@@ -28,6 +32,10 @@ float SensorData::get_data(const std::string &data_name) {
         }
     }
     return default_value;
+}
+
+float SensorData::get_data(uint8_t index) {
+    return sensor_data_map[index].second;
 }
 
 String SensorData::format_data() {

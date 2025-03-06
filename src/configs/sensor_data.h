@@ -14,7 +14,10 @@ public:
     ~SensorData();
     
     void set_data(const std::string &data_name, const float &value);
+    void set_data(uint8_t index, const float &value);
+    
     float get_data(const std::string &data_name);
+    float get_data(uint8_t index);
     String format_data();
 };
 

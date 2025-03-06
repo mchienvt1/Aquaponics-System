@@ -50,7 +50,7 @@ constexpr uint8_t GPIO_Relay_Pin[6] = {
 };
 
 /* SENSORs */
-// Sensor Status
+// Sensor ISx Status
 #define ISHC 
 #define ISDC 
 #define ISEC
@@ -74,8 +74,8 @@ constexpr uint8_t SENSOR_DATA_COUNT = 7;
 #define WIFI_TIMER 5000
 // #define RELAY_STATUS_TIMER 1000
 // #define RELAY_CONTROL_TIMER 100
-#define RS485_PROCESS_TIMER 1000
-#define RS485_READ_WRITE_TIMER 1000
+#define SENSOR_ISX_PROCESS_TIMER 1000
+#define SENSOR_ISX_READ_WRITE_TIMER 100
 #define GPS_TIMER 10000
 #define THINGSBOARD_LOOP_TIMER 1000
 #define THINGSBOARD_CONNECT_TIMER 1000
@@ -84,24 +84,24 @@ constexpr uint8_t SENSOR_DATA_COUNT = 7;
 #define LED_RGB_TIMER 1000
 #define INSANELY_LONG_TIMER 60000
 
-// GPS //
+/* GPS */
 #define GPS_DATA_COUNT 2
 #define GPS_LATITUDE "latitude"
 #define GPS_LONGITUDE "longitude"
 
-// WiFi Credentials //
+/* WiFi Credentials */
 #define WIFI_SSID "w"
 #define WIFI_PASSWORD "tuideptrai"
 
-// ThingsBoard Credentials //
+/* ThingsBoard Credentials */
 #define THINGSBOARD_SERVER "app.coreiot.io"
 #define THINGSBOARD_PORT 1883U
-#define DEVICE_TOKEN "thoq6z6dqmjqbxefbrio"
+#define DEVICE_TOKEN "5gozg5xcmqlb2tzc9san"
 constexpr uint16_t MAX_MESSAGE_SEND_SIZE = 512U;
 constexpr uint16_t MAX_MESSAGE_RECEIVE_SIZE = 512U;
 constexpr uint8_t MAX_APIS = 3U;
 
-// OTA //
+/* OTA */
 // https://github.com/thingsboard/thingsboard-client-sdk/tree/master/examples/0009-esp8266_esp32_process_OTA_MQTT
 constexpr char CURRENT_FIRMWARE_TITLE[] = MY_BOARD;
 constexpr char CURRENT_FIRMWARE_VERSION[] = MY_VERSION;
@@ -115,7 +115,7 @@ constexpr uint8_t MAX_RPC_RESPONSE = 5U;
 constexpr const char RPC_RELAY_STATUS[] = "process_relay_status";
 constexpr const char RPC_RGB_STATUS[] = "process_rgb_status";
 
-// Shared Attributes //
+/* SHARED ATTRIBUTES */
 // https://github.com/thingsboard/thingsboard-client-sdk/blob/master/examples/0006-esp8266_esp32_process_shared_attribute_update
 constexpr const char BLINKING_INTERVAL_ATTR[] = "blinkingInterval";
 constexpr const char RGB_MODE_ATTR[] = "rgb_mode";

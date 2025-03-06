@@ -1,7 +1,37 @@
 #include "Sensor_Task.h"
+#include <list>
+
+bool need_processing = false;
 
 HardwareSerial RS485Serial(1);
 SensorData data;
+
+
+struct data_point {
+    std::list<SensorData> data_list;
+    uint16_t count;
+};
+
+data_point dp;
+// dp.count = 0;
+
+void send_processed_data() {
+    if (dp.count <= 0) return;
+    SensorData avg_data;
+    ESP_LOGI("SENSOR", "Collected %d data points\n", dp.count);
+    for (uint8_t index = 0; index < SENSOR_DATA_COUNT; ++index) {
+        float singular_data = 0.00f;
+        uint16_t list_idx = 1;
+        for (auto it = dp.data_list.begin(); it != dp.data_list.end(); ++it) {
+            singular_data = singular_data + ((*it).get_data(index) - singular_data) / (float)list_idx; 
+            ++list_idx;
+        }
+        avg_data.set_data(index, singular_data);
+    }
+    ESP_LOGI("SENSOR", "Publish Sensor Data %s", avg_data.format_data().c_str());
+    dp.count = 0;
+    // tbClient.sendAttributeString(avg_data.format_data().c_str());
+}
 
 uint8_t count_sensor() {
     uint8_t count = 0;
@@ -93,10 +123,10 @@ float process_value(Sensor &sensor, std::string command_name, size_t buffer_size
     clean_rs485_buffer();
     
     write_to_sensor(sensor, command_name);
-    vTaskDelay(RS485_READ_WRITE_TIMER / portTICK_PERIOD_MS);
+    vTaskDelay(SENSOR_ISX_READ_WRITE_TIMER / portTICK_PERIOD_MS);
 
     read_from_sensor(sensor, buffer_size, command_name, &value);
-    vTaskDelay(RS485_READ_WRITE_TIMER / portTICK_PERIOD_MS);
+    vTaskDelay(SENSOR_ISX_READ_WRITE_TIMER / portTICK_PERIOD_MS);
 
     // Publish value to MQTT
     // if (value != -1.0) {
@@ -137,6 +167,11 @@ static void load_sensor_data() {
 }
 
 static void send_sensor_data() {
+    if (need_processing) {
+        dp.data_list.push_back(data);
+        dp.count++;
+        ESP_LOGI("SENSOR", "Contained data, data count %d", dp.count);
+    }
     String message = data.format_data();
     // ESP_LOGI("SENSOR", "Publish Sensor Data %s", message.c_str());
     update_sensor_data(message);
@@ -146,7 +181,7 @@ void sensor_task(void *pvParameters) {
     while (1) {
         load_sensor_data();
         send_sensor_data();
-        vTaskDelay(RS485_PROCESS_TIMER / portTICK_PERIOD_MS);
+        vTaskDelay(SENSOR_ISX_PROCESS_TIMER / portTICK_PERIOD_MS);
     }
 }
 
