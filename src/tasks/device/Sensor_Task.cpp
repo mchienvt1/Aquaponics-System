@@ -162,11 +162,14 @@ static void load_sensor_data() {
 
 static void send_sensor_data() {
     if (need_processing) {
-        data_list.push_back(data);
-        ESP_LOGI("SENSOR", "Contained data, data count %d", data_list.size());
+        // Catch anomaly here
+        if (data.get_data(MEASURE_RESIS) < 10000) {
+            data_list.push_back(data);
+            ESP_LOGI("SENSOR", "Contained %d data points", data_list.size());
+        } 
     }
     String message = data.format_data();
-    ESP_LOGI("SENSOR", "Data %s", message.c_str());
+    // ESP_LOGI("SENSOR", "Data %s", message.c_str());
     update_sensor_data(message);
 }
 
