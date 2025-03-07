@@ -3,8 +3,8 @@
 
 /* BOARD */
 // Information
-#define MY_BOARD "ESP32-S3-RELAY-6CH"
-#define MY_VERSION "1.1.2"
+#define MY_BOARD "ESP32-AQUAPONICS"
+#define MY_VERSION "1.0.0"
 // #define BOARD_ID 2003
 
 // BAUD RATE
@@ -74,8 +74,8 @@ constexpr uint8_t SENSOR_DATA_COUNT = 7;
 #define WIFI_TIMER 5000
 // #define RELAY_STATUS_TIMER 1000
 // #define RELAY_CONTROL_TIMER 100
-#define SENSOR_ISX_PROCESS_TIMER 1000
-#define SENSOR_ISX_READ_WRITE_TIMER 250
+#define SENSOR_ISX_PROCESS_TIMER 2000
+#define SENSOR_ISX_READ_WRITE_TIMER 200
 #define GPS_TIMER 10000
 #define THINGSBOARD_LOOP_TIMER 1000
 #define THINGSBOARD_CONNECT_TIMER 1000
@@ -96,7 +96,7 @@ constexpr uint8_t SENSOR_DATA_COUNT = 7;
 /* ThingsBoard Credentials */
 #define THINGSBOARD_SERVER "app.coreiot.io"
 #define THINGSBOARD_PORT 1883U
-#define DEVICE_TOKEN "thoq6z6dqmjqbxefbrio"
+#define DEVICE_TOKEN "Q7RJzfJ1DyE5iXXU17BB"
 constexpr uint16_t MAX_MESSAGE_SEND_SIZE = 512U;
 constexpr uint16_t MAX_MESSAGE_RECEIVE_SIZE = 512U;
 constexpr uint8_t MAX_APIS = 3U;

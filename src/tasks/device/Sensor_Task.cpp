@@ -1,5 +1,4 @@
 #include "Sensor_Task.h"
-#include <list>
 
 bool need_processing = false;
 
@@ -16,6 +15,7 @@ void send_processed_data() {
         float singular_data = 0.00f;
         uint16_t list_idx = 1;
         for (auto it = data_list.begin(); it != data_list.end(); ++it) {
+            // TODO: Detect and ignore the anomaly data in list
             if ((*it).get_data(index) >= -1) 
                 singular_data = singular_data + ((*it).get_data(index) - singular_data) / (float)list_idx; 
             ++list_idx;

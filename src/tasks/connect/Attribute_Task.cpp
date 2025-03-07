@@ -7,15 +7,15 @@ void processSharedAttributeUpdate(const JsonObjectConst &data) {
         // Serial.println(it->value().as<const char*>());
         
         // Parsing RELAY_COMMAND_ATTR attribute
-        if (strcmp(it->key().c_str(), RELAY_COMMAND_ATTR) == 0) {
-            parse_payload(it->value().as<const char*>());
-        }
+        // if (strcmp(it->key().c_str(), RELAY_COMMAND_ATTR) == 0) {
+        //     parse_payload(it->value().as<const char*>());
+        // }
     }
   
-    // const size_t jsonSize = Helper::Measure_Json(data);
-    // char buffer[jsonSize];
-    // serializeJson(data, buffer, jsonSize);
-    // Serial.println(buffer);
+    const size_t jsonSize = Helper::Measure_Json(data);
+    char buffer[jsonSize];
+    serializeJson(data, buffer, jsonSize);
+    Serial.println(buffer);
 }
 
 const Shared_Attribute_Callback<MAX_ATTRIBUTES> callback(

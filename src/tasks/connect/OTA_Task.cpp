@@ -21,14 +21,14 @@ void progress_callback(const size_t &current, const size_t &total) {
 }
 
 const OTA_Update_Callback callback(
-    CURRENT_FIRMWARE_TITLE, 
-    CURRENT_FIRMWARE_VERSION,
+    CURRENT_FIRMWARE_TITLE,         // ESP32-AQUAPONICS
+    CURRENT_FIRMWARE_VERSION,       // 1.0.0
     &updater, 
     &finished_callback, 
     &progress_callback, 
     &update_starting_callback, 
-    FIRMWARE_FAILURE_RETRIES, 
-    FIRMWARE_PACKET_SIZE
+    FIRMWARE_FAILURE_RETRIES,       // 12
+    FIRMWARE_PACKET_SIZE            // 4096
 );
 
 bool ota_setup() {
