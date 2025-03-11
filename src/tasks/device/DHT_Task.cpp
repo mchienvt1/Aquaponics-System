@@ -36,7 +36,7 @@ void dht_task(void *pvParameters) {
             ESP_LOGE("DHT", "Unknown error");
             break;
         }
-        delay(2000);
+        delay(SENSOR_DHT_TIMER);
         String env_data = "{\"env_temp\":" + String(dht_temp) + 
                           ",\"env_humi\":" + String(dht_humi) + "}";
         update_env_data(env_data);
@@ -44,5 +44,5 @@ void dht_task(void *pvParameters) {
 }
 
 void dht_task_init() {
-    xTaskCreate(dht_task, "DHT_Task", 2048, 0, 1, 0);
+    xTaskCreate(dht_task, "DHT_Task", 4096, 0, 1, 0);
 }

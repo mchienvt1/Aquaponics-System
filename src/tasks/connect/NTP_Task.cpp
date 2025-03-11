@@ -29,11 +29,11 @@ void ntp_task(void *pvParameters) {
     }
     while (sntp_get_sync_status() == SNTP_SYNC_STATUS_RESET) {
         ESP_LOGI("NTP", "Waiting for system time to be set... ");
-        delay(2000);
+        delay(NTP_CONNECT_TIMER);
     }
     while (true) {
         print_current_time();
-        delay(10000);
+        delay(NTP_LOOP_TIMER);
     }
 }
 
