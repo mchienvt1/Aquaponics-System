@@ -22,10 +22,10 @@
 #define RELAY_CH5 45
 #define RELAY_CH6 46 
 
-#define TXD_GPS 11      // GPS AT6668
-#define RXD_GPS 12      // GPS AT6668
-#define DHT_SDA 14      // Sensor DHT
-#define DHT_SCL 15      // Sensor DHT
+#define TXD_GPS 9       // GPS AT6668
+#define RXD_GPS 10      // GPS AT6668
+#define DHT_SDA 8     // Sensor DHT
+#define DHT_SCL 7      // Sensor DHT
 #define TXD_RS485 17    // Sensor ISx
 #define RXD_RS485 18    // Sensor ISx
 

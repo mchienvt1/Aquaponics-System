@@ -18,7 +18,8 @@ public:
     
     float get_data(const std::string &data_name);
     float get_data(uint8_t index);
-    String format_data();
+    String format_raw_data();
+    String format_processed_data();
 };
 
 #endif

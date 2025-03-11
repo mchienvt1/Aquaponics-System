@@ -38,10 +38,19 @@ float SensorData::get_data(uint8_t index) {
     return sensor_data_map[index].second;
 }
 
-String SensorData::format_data() {
+String SensorData::format_raw_data() {
     String res = "{";
     for (auto &data : sensor_data_map) {
-        res += "\"" + String(data.first.c_str()) + "\":" + String(data.second) + ",";
+        res += "\"raw_" + String(data.first.c_str()) + "\":" + String(data.second) + ",";
+    }
+    res[res.length() - 1] = '}';
+    return res;
+}
+
+String SensorData::format_processed_data() {
+    String res = "{";
+    for (auto &data : sensor_data_map) {
+        res += "\"processed_" + String(data.first.c_str()) + "\":" + String(data.second) + ",";
     }
     res[res.length() - 1] = '}';
     return res;

@@ -22,7 +22,7 @@ void send_processed_data() {
         }
         avg_data.set_data(index, singular_data);
     }
-    ESP_LOGI("SENSOR", "Publish Sensor Data %s", avg_data.format_data().c_str());
+    ESP_LOGI("SENSOR", "Publish Sensor Data %s", avg_data.format_processed_data().c_str());
     data_list.clear();
     // tbClient.sendAttributeString(avg_data.format_data().c_str());
 }
@@ -168,7 +168,7 @@ static void send_sensor_data() {
             ESP_LOGI("SENSOR", "Contained %d data points", data_list.size());
         } 
     }
-    String message = data.format_data();
+    String message = data.format_raw_data();
     // ESP_LOGI("SENSOR", "Data %s", message.c_str());
     update_sensor_data(message);
 }
