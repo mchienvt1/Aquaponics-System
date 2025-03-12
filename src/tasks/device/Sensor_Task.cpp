@@ -24,7 +24,7 @@ void send_processed_data() {
     }
     ESP_LOGI("SENSOR", "Publish Sensor Data %s", avg_data.format_processed_data().c_str());
     data_list.clear();
-    // tbClient.sendAttributeString(avg_data.format_data().c_str());
+    update_process_data(avg_data.format_processed_data());
 }
 
 uint8_t count_sensor() {

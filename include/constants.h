@@ -85,7 +85,7 @@ constexpr uint8_t SENSOR_DATA_COUNT = 7;
 #define LED_RGB_TIMER 1000
 #define INSANELY_LONG_TIMER 60000
 #define SENSOR_ISX_PROCESS_TIMER 2000
-#define SENSOR_ISX_READ_WRITE_TIMER 200
+#define SENSOR_ISX_READ_WRITE_TIMER 250
 #define SENSOR_DHT_TIMER 2000
 
 /* GPS */
@@ -94,13 +94,13 @@ constexpr uint8_t SENSOR_DATA_COUNT = 7;
 #define GPS_LONGITUDE "longitude"
 
 /* WiFi Credentials */
-#define WIFI_SSID "w"
-#define WIFI_PASSWORD "tuideptrai"
+#define WIFI_SSID "RD-SEAI_2.4G"
+#define WIFI_PASSWORD ""
 
 /* ThingsBoard Credentials */
 #define THINGSBOARD_SERVER "app.coreiot.io"
 #define THINGSBOARD_PORT 1883U
-#define DEVICE_TOKEN "thoq6z6dqmjqbxefbrio"
+#define DEVICE_TOKEN "5ww7zny85HcDyOgKnhBI"
 constexpr uint16_t MAX_MESSAGE_SEND_SIZE = 512U;
 constexpr uint16_t MAX_MESSAGE_RECEIVE_SIZE = 512U;
 constexpr uint8_t MAX_APIS = 3U;

@@ -4,6 +4,7 @@ String sensor_data_str = "";
 String gps_data_str = "";
 String wifi_data_str = "";
 String env_data_str = "";
+String process_data_str = "";
 
 bool ota_subscribed = false;
 bool rpc_subscribed = false;
@@ -23,6 +24,10 @@ void update_wifi_data(const String &data) {
 
 void update_env_data(const String &data) {
     env_data_str = data;
+}
+
+void update_process_data(const String &data) {
+    process_data_str = data;
 }
 
 void thingsboard_task(void *pvParameters) {
@@ -61,6 +66,10 @@ void thingsboard_task(void *pvParameters) {
         if (strcmp(env_data_str.c_str(), "") != 0) {
             tbClient.sendTelemetryString(env_data_str.c_str());
             env_data_str = "";
+        }
+        if (strcmp(process_data_str.c_str(), "") != 0) {
+            tbClient.sendTelemetryString(process_data_str.c_str());
+            process_data_str = "";
         }
         set_rgb_color(GREEN_RGB);
         tbClient.loop();
