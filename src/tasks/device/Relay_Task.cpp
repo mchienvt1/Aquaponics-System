@@ -39,9 +39,9 @@ void parse_payload(const char* payload) {
     // need_control = true;
 }
 
-uint32_t PUMP_TIMER = 5000u;
-uint32_t STAB_TIMER = 15000u;
-uint32_t SEND_TIMER = 5000u * 60u;
+uint32_t PUMP_TIMER = 10000u;
+uint32_t STAB_TIMER = 10000u;
+uint32_t SEND_TIMER = 10000u * 1u;
 
 DATA_COLLECTION_STATE data_collection_state = INIT;
 
@@ -58,7 +58,7 @@ void relay_task(void *pvParameters) {
             case PUMP:
                 if (millis() - timer >= PUMP_TIMER) {
                     data_collection_state = STABILIZE;
-                    digitalWrite(RELAY_CH1, 0);
+                    digitalWrite(RELAY_CH1, 1);
                     ESP_LOGI("RELAY", "STATE = STABILIZE");
                     timer = millis();
                 }
@@ -76,7 +76,7 @@ void relay_task(void *pvParameters) {
                     send_processed_data();
                     need_processing = false;
                     data_collection_state = PUMP;
-                    digitalWrite(RELAY_CH1, 1);
+                    digitalWrite(RELAY_CH1, 0);
                     ESP_LOGI("RELAY", "STATE = PUMP");
                     timer = millis();
                 }
@@ -89,6 +89,6 @@ void relay_task(void *pvParameters) {
 }
 
 void relay_task_init() {
-    xTaskCreate(relay_task, "Relay_Task", 4096, NULL, 1, NULL);
+    xTaskCreate(relay_task, "Relay_Task", 4096, NULL, 1, &relay_task_handle);
     // xTaskCreate(relay_control_task, "relay_control_task", 2048, nullptr, 2, nullptr);
 }

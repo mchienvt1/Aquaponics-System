@@ -94,7 +94,7 @@ constexpr uint8_t SENSOR_DATA_COUNT = 7;
 #define GPS_LONGITUDE "longitude"
 
 /* WiFi Credentials */
-#define WIFI_SSID "RD-SEAI_2.4G"
+#define WIFI_SSID "NLU-SV"
 #define WIFI_PASSWORD ""
 
 /* ThingsBoard Credentials */
@@ -114,10 +114,13 @@ constexpr uint16_t FIRMWARE_PACKET_SIZE = 4096U;
 
 // RPC //
 // https://github.com/thingsboard/thingsboard-client-sdk/tree/master/examples/0010-esp8266_esp32_rpc
-constexpr uint8_t MAX_RPC_SUBSCRIPTIONS = 3U;
+constexpr uint8_t MAX_RPC_SUBSCRIPTIONS = 9U;
 constexpr uint8_t MAX_RPC_RESPONSE = 5U;
-constexpr const char RPC_RELAY_STATUS[] = "process_relay_status";
-constexpr const char RPC_RGB_STATUS[] = "process_rgb_status";
+// constexpr const char RPC_RELAY_STATUS[] = "process_relay_status_1";
+// constexpr const char RPC_RGB_STATUS[] = "process_rgb_status";
+constexpr const char RPC_AUTO_STATUS[] = "rpc_toggle_auto_manual";
+constexpr const char RPC_RELAY_STATUS_2[] = "process_relay_status_2";
+constexpr const char RPC_RELAY_STATUS_3[] = "process_relay_status_3";
 
 /* SHARED ATTRIBUTES */
 // https://github.com/thingsboard/thingsboard-client-sdk/blob/master/examples/0006-esp8266_esp32_process_shared_attribute_update

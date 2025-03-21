@@ -10,6 +10,7 @@
 
 extern Adafruit_NeoPixel pixels;
 extern TaskHandle_t sensor_task_handle;
+extern TaskHandle_t relay_task_handle;
 
 void device_task_init();
 
