@@ -11,4 +11,12 @@ void processSharedAttributeUpdate(const JsonObjectConst &data);
 /// @brief Subscribe to device's shared attributes 
 bool shared_attributes_setup();
 
+void processClientAttributeRequest(const JsonObjectConst &data);
+
+void request_client_attributes();
+
+void processSharedAttributeRequest(const JsonObjectConst &data);
+
+void request_shared_attributes();
+
 #endif

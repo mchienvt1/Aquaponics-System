@@ -6,8 +6,8 @@ TaskHandle_t relay_task_handle = NULL;
 
 void device_task_init() {
     gpio_task_init();
+    relay_task_init();
     sensor_task_init();
     gps_task_init();
-    relay_task_init();
     dht_task_init();
 }

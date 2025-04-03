@@ -1,6 +1,7 @@
 #include "sensor.h"
 
-Sensor::Sensor(uint8_t id, const std::map<std::string, std::array<uint8_t, 6>> &raw_command_map) {
+Sensor::Sensor(std::string name, uint8_t id, const std::map<std::string, std::array<uint8_t, 6>> &raw_command_map) {
+    this->name = name;
     this->id = id;
     for (auto &raw_command : raw_command_map) {
         std::array<uint8_t, 8> command = process_CRC(raw_command.second);
@@ -40,4 +41,7 @@ void Sensor::print_command() {
     for (auto it = command_map.begin(); it != command_map.end(); ++it) {
         // std::cout << it->first << "\n";
     }
+}
+std::string Sensor::get_sensor_name(){
+    return this->name;
 }

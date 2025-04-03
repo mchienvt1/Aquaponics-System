@@ -16,10 +16,6 @@ void displayInfo()
 
     satellite_status = true;
 
-    // if (gps.satellites.isValid() && gps.hdop.isValid()) {
-    //     Serial.printf("Found %02d satellites with %03.1f hdop\n", gps.satellites.value(), gps.hdop.hdop());
-    // }
-
     if (gps.location.isValid()) {
         gps_data.set_data(GPS_LATITUDE, gps.location.lat());
         gps_data.set_data(GPS_LONGITUDE, gps.location.lng());
@@ -28,24 +24,22 @@ void displayInfo()
     else {
         ESP_LOGW("GPS", "Unknown Location");
     }
-    // printInt(gps.charsProcessed(), true, 6);
-    // printInt(gps.sentencesWithFix(), true, 10);
-    // printInt(gps.failedChecksum(), true, 9);
-    // Serial.println();
 }
 
 void GPS_task(void *pvParameters) {
-    // display_info_init();
     while (true) {
-        // Read data from AT6668
-        while (GPSSerial.available() > 0) {
+        if (GPSSerial.available() > 0) {
             gps.encode(GPSSerial.read());
+            displayInfo();
+            if (WiFi.status() == WL_CONNECTED && satellite_status) {
+                // update_gps_data(gps_data.format_data());
+                sendTelemetry(gps_data.format_data());
+            }
         }
-        displayInfo();
-        if (WiFi.status() == WL_CONNECTED && satellite_status) {
-            update_gps_data(gps_data.format_data());
+        else{
+            ESP_LOGE("GPS", "Fail to connect to GPS");
         }
-        delay(GPS_TIMER);
+        vTaskDelay(GPS_TIMER / portTICK_PERIOD_MS);
     }
 
 }

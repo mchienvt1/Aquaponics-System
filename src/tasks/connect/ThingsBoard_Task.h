@@ -3,7 +3,8 @@
 
 #include "global.h"
 
-
+void sendTelemetry(const String&data);
+void sendAttribute(const String&data);
 void update_sensor_data(const String &data);
 void update_gps_data(const String &data);
 void update_wifi_data(const String &data);

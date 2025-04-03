@@ -1,6 +1,8 @@
 #ifndef CONSTANT_H_
 #define CONSTANT_H_
 
+#define DEVELOP "1"
+
 /* BOARD */
 // Information
 #define MY_BOARD "ESP32-AQUAPONICS"
@@ -41,7 +43,7 @@ struct color {
 
 constexpr color RED_RGB = {34, 139, 34};
 constexpr color GREEN_RGB = {220, 20, 60};
-constexpr color BLUE_RGB = {100, 149, 237};
+constexpr color BLUE_RGB = {60, 0, 255};
 constexpr color WHITE_RGB = {255, 255, 255};
 constexpr color BLACK_RGB = {0, 0, 0};
 
@@ -84,9 +86,11 @@ constexpr uint8_t SENSOR_DATA_COUNT = 7;
 #define GPS_TIMER 10000
 #define LED_RGB_TIMER 1000
 #define INSANELY_LONG_TIMER 60000
-#define SENSOR_ISX_PROCESS_TIMER 2000
-#define SENSOR_ISX_READ_WRITE_TIMER 250
+#define SENSOR_ISX_PROCESS_TIMER 1000
+#define SENSOR_ISX_READ_WRITE_TIMER 20
 #define SENSOR_DHT_TIMER 2000
+#define SENSOR_CLEAR_TIMEOUT 10
+#define SENSOR_DATA_PROCESS_TIME 10000
 
 /* GPS */
 #define GPS_DATA_COUNT 2
@@ -94,8 +98,8 @@ constexpr uint8_t SENSOR_DATA_COUNT = 7;
 #define GPS_LONGITUDE "longitude"
 
 /* WiFi Credentials */
-#define WIFI_SSID "NLU-SV"
-#define WIFI_PASSWORD ""
+#define WIFI_SSID "QuocPhong"
+#define WIFI_PASSWORD "quocphong2003"
 
 /* ThingsBoard Credentials */
 #define THINGSBOARD_SERVER "app.coreiot.io"
@@ -103,7 +107,7 @@ constexpr uint8_t SENSOR_DATA_COUNT = 7;
 #define DEVICE_TOKEN "5ww7zny85HcDyOgKnhBI"
 constexpr uint16_t MAX_MESSAGE_SEND_SIZE = 512U;
 constexpr uint16_t MAX_MESSAGE_RECEIVE_SIZE = 512U;
-constexpr uint8_t MAX_APIS = 3U;
+constexpr uint8_t MAX_APIS = 5U;
 
 /* OTA */
 // https://github.com/thingsboard/thingsboard-client-sdk/tree/master/examples/0009-esp8266_esp32_process_OTA_MQTT
@@ -116,11 +120,12 @@ constexpr uint16_t FIRMWARE_PACKET_SIZE = 4096U;
 // https://github.com/thingsboard/thingsboard-client-sdk/tree/master/examples/0010-esp8266_esp32_rpc
 constexpr uint8_t MAX_RPC_SUBSCRIPTIONS = 9U;
 constexpr uint8_t MAX_RPC_RESPONSE = 5U;
-// constexpr const char RPC_RELAY_STATUS[] = "process_relay_status_1";
-// constexpr const char RPC_RGB_STATUS[] = "process_rgb_status";
+
 constexpr const char RPC_AUTO_STATUS[] = "rpc_toggle_auto_manual";
 constexpr const char RPC_RELAY_STATUS_2[] = "process_relay_status_2";
 constexpr const char RPC_RELAY_STATUS_3[] = "process_relay_status_3";
+constexpr const char RPC_SWITCH_RELAY_CHANGE[] = "process_switch_relay_change";
+constexpr const char RPC_CHECK_HEALTH[] = "process_check_health";
 
 /* SHARED ATTRIBUTES */
 // https://github.com/thingsboard/thingsboard-client-sdk/blob/master/examples/0006-esp8266_esp32_process_shared_attribute_update
@@ -128,13 +133,26 @@ constexpr const char BLINKING_INTERVAL_ATTR[] = "blinkingInterval";
 constexpr const char RGB_MODE_ATTR[] = "rgb_mode";
 constexpr const char RGB_VALUE_ATTR[] = "rgb_value";
 constexpr const char RELAY_COMMAND_ATTR[] = "command";
+constexpr const char RELAY_1_STATUS[] = "relay_1_status";
+constexpr const char RELAY_2_STATUS[] = "relay_2_status";
+constexpr const char RELAY_3_STATUS[] = "relay_3_status";
 
 constexpr uint8_t MAX_ATTRIBUTES_SUBSCRIPTIONS = 1U;
-constexpr uint8_t MAX_ATTRIBUTES = 3U;
+constexpr uint8_t MAX_ATTRIBUTES = 10U;
 constexpr std::array<const char*, MAX_ATTRIBUTES> SHARED_ATTRIBUTES_LIST = {
     RELAY_COMMAND_ATTR,
     RGB_MODE_ATTR,
-    RGB_VALUE_ATTR
+    RGB_VALUE_ATTR,
+    RELAY_1_STATUS,
+    RELAY_2_STATUS,
+    RELAY_3_STATUS
 };
+
+constexpr std::array<const char *, MAX_ATTRIBUTES> REQUESTED_SHARED_ATTRIBUTES = {RELAY_1_STATUS};
+const std::vector<const char *> REQUESTED_CLIENT_ATTRIBUTES = {RELAY_1_STATUS,RELAY_2_STATUS,RELAY_3_STATUS};
+
+
+constexpr uint64_t REQUEST_TIMEOUT_MICROSECONDS = 5000U * 1000U;
+
 
 #endif

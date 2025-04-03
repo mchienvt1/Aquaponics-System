@@ -1,57 +1,36 @@
 #include "sensor_data.h"
 
-SensorData::SensorData() {
-    sensor_data_map[0] = std::make_pair(MEASURE_TEMP, default_value);
-    sensor_data_map[1] = std::make_pair(MEASURE_PH, default_value);
-    sensor_data_map[2] = std::make_pair(MEASURE_DO, default_value);
-    sensor_data_map[3] = std::make_pair(MEASURE_CONDUCT, default_value);
-    sensor_data_map[4] = std::make_pair(MEASURE_SALI, default_value);
-    sensor_data_map[5] = std::make_pair(MEASURE_TDS, default_value);
-    sensor_data_map[6] = std::make_pair(MEASURE_RESIS, default_value);
-}
+SensorData::SensorData() {}
 
 SensorData::~SensorData() {}
 
-void SensorData::set_data(const std::string &data_name, const float &value) {
-    for (auto &data : sensor_data_map) {
-        if (data.first == data_name) {
-            data.second = value;
-            break;
-        }
+float calculate_average(const std::vector<float> & values){
+    float sum = 0;
+    for(float v: values) sum += v;
+    return values.empty() ? 0 : sum / values.size();
+}
+
+std::string SensorData::process_sensor_data(){
+    // process all sensor data
+    std::map<std::string, std::vector<float>>::iterator it;
+    for(std::map<std::string, std::vector<float>>::iterator i = sensor_data_mp.begin();i!=sensor_data_mp.end();i++){
+        this->processed_data[i->first] = calculate_average(i->second);
     }
+    nlohmann::json j = this->processed_data; 
+    return j.dump();
 }
 
-void SensorData::set_data(uint8_t index, const float &value) {
-    sensor_data_map[index].second = value;
+void SensorData::set_data(const std::string &sensor_name, const float &value){
+    this->sensor_data_mp[sensor_name].push_back(value);
 }
 
-float SensorData::get_data(const std::string &data_name) {
-    for (auto &data : sensor_data_map) {
-        if (data.first == data_name) {
-            return data.second;
-        }
+std::vector<float> SensorData::get_data(const std::string &sensor_name){
+    return this->sensor_data_mp[sensor_name];
+}
+void SensorData::clear_all_sensor_data(){
+    std::map<std::string, std::vector<float>>::iterator it;
+    for(std::map<std::string, std::vector<float>>::iterator i = sensor_data_mp.begin();i!=sensor_data_mp.end();i++){
+        this->processed_data[i->first] = -1.0;
+        this->sensor_data_mp[i->first].clear();
     }
-    return default_value;
-}
-
-float SensorData::get_data(uint8_t index) {
-    return sensor_data_map[index].second;
-}
-
-String SensorData::format_raw_data() {
-    String res = "{";
-    for (auto &data : sensor_data_map) {
-        res += "\"raw_" + String(data.first.c_str()) + "\":" + String(data.second) + ",";
-    }
-    res[res.length() - 1] = '}';
-    return res;
-}
-
-String SensorData::format_processed_data() {
-    String res = "{";
-    for (auto &data : sensor_data_map) {
-        res += "\"processed_" + String(data.first.c_str()) + "\":" + String(data.second) + ",";
-    }
-    res[res.length() - 1] = '}';
-    return res;
 }

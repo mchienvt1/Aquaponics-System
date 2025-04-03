@@ -89,6 +89,6 @@ void relay_task(void *pvParameters) {
 }
 
 void relay_task_init() {
-    xTaskCreate(relay_task, "Relay_Task", 4096, NULL, 1, &relay_task_handle);
+    // xTaskCreate(relay_task, "Relay_Task", 4096, NULL, 1, &relay_task_handle);
     // xTaskCreate(relay_control_task, "relay_control_task", 2048, nullptr, 2, nullptr);
 }
