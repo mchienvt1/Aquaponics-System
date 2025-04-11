@@ -23,23 +23,48 @@
 //     digitalWrite(RELAY_CH3, data.as<uint8_t>());
 // }
 
-void process_switch_relay_change(const JsonVariantConst &data, JsonDocument &response){
+// Hàm xử lý yêu cầu RPC method: "control"
+void process_schedule_relay(const JsonVariantConst &data, JsonDocument &response)
+{
+    int relayPins[] = {RELAY_CH1, RELAY_CH2, RELAY_CH3};
+    nlohmann::json j = {};
+
+    for (int i = 0; i < 3; ++i)
+    {
+        String key = "relay" + String(i + 1);
+        if (data.containsKey(key))
+        {
+            bool state = data[key];
+            digitalWrite(relayPins[i], state);
+
+            String statusKey = "relay_" + String(i + 1) + "_status";
+            j[statusKey.c_str()] = state;
+        }
+    }
+
+    sendAttribute(String(j.dump().c_str()));
+}
+
+void process_switch_relay_change(const JsonVariantConst &data, JsonDocument &response)
+{
     int relayIndexes[] = {RELAY_CH1, RELAY_CH2, RELAY_CH3};
     int relayIndex = data["relayIndex"];
     int value = data["value"] ? 1 : 0;
-    if(relayIndex < 3){
+    if (relayIndex < 3)
+    {
         digitalWrite(relayIndexes[relayIndex], value);
     }
-    std::string key = "relay_" + std::to_string(relayIndex + 1) + "_status";;
+    std::string key = "relay_" + std::to_string(relayIndex + 1) + "_status";
+    ;
     nlohmann::json j = {};
-    j[key] = value; 
- 
+    j[key] = value;
+
     sendAttribute(String(j.dump().c_str()));
 }
-void process_check_health(const JsonVariantConst &data, JsonDocument &response){
+void process_check_health(const JsonVariantConst &data, JsonDocument &response)
+{
     response["status"] = true;
 }
-
 
 const std::array<RPC_Callback, MAX_RPC_SUBSCRIPTIONS> callbacks = {
     // RPC_Callback {RPC_RELAY_STATUS, process_relay_status},
@@ -49,16 +74,17 @@ const std::array<RPC_Callback, MAX_RPC_SUBSCRIPTIONS> callbacks = {
     // RPC_Callback {RPC_RELAY_STATUS_3, process_relay_status_3},
     // RPC_Callback {RPC_RELAY_STATUS_3, process_relay_status_3},
 
-    RPC_Callback {RPC_SWITCH_RELAY_CHANGE, process_switch_relay_change},
-    RPC_Callback {RPC_CHECK_HEALTH, process_check_health},
-};
+    RPC_Callback{RPC_SWITCH_RELAY_CHANGE, process_switch_relay_change},
+    RPC_Callback{RPC_CHECK_HEALTH, process_check_health},
+    RPC_Callback{RPC_SCHEDULE_RELAY, process_schedule_relay}};
 
-
-bool rpc_setup() {
-    if (!rpc.RPC_Subscribe(callbacks.cbegin(), callbacks.cend())) {
+bool rpc_setup()
+{
+    if (!rpc.RPC_Subscribe(callbacks.cbegin(), callbacks.cend()))
+    {
         ESP_LOGE("RPC", "Failed to subscribe to RPC methods");
         return false;
-    }   
+    }
     ESP_LOGI("RPC", "Subscribed to RPC methods");
     return true;
 }

@@ -22,14 +22,14 @@
 #define RELAY_CH3 41
 #define RELAY_CH4 42
 #define RELAY_CH5 45
-#define RELAY_CH6 46 
+#define RELAY_CH6 46
 
-#define TXD_GPS 9       // GPS AT6668
-#define RXD_GPS 10      // GPS AT6668
-#define DHT_SDA 8     // Sensor DHT
-#define DHT_SCL 7      // Sensor DHT
-#define TXD_RS485 17    // Sensor ISx
-#define RXD_RS485 18    // Sensor ISx
+#define TXD_GPS 9    // GPS AT6668
+#define RXD_GPS 10   // GPS AT6668
+#define DHT_SDA 8    // Sensor DHT
+#define DHT_SCL 7    // Sensor DHT
+#define TXD_RS485 17 // Sensor ISx
+#define RXD_RS485 18 // Sensor ISx
 
 #define LED_RGB 38
 #define NUM_PIXELS 1
@@ -37,7 +37,8 @@
 
 #define BUZZER 21 // relay_6_ch
 
-struct color {
+struct color
+{
     uint8_t red, green, blue;
 };
 
@@ -48,13 +49,12 @@ constexpr color WHITE_RGB = {255, 255, 255};
 constexpr color BLACK_RGB = {0, 0, 0};
 
 constexpr uint8_t GPIO_Relay_Pin[6] = {
-    RELAY_CH1, RELAY_CH2, RELAY_CH3, RELAY_CH4, RELAY_CH5, RELAY_CH6
-};
+    RELAY_CH1, RELAY_CH2, RELAY_CH3, RELAY_CH4, RELAY_CH5, RELAY_CH6};
 
 /* SENSORs */
 // Sensor ISx Status
-#define ISHC 
-#define ISDC 
+#define ISHC
+#define ISDC
 #define ISEC
 
 // Sensor IDs
@@ -98,13 +98,13 @@ constexpr uint8_t SENSOR_DATA_COUNT = 7;
 #define GPS_LONGITUDE "longitude"
 
 /* WiFi Credentials */
-#define WIFI_SSID "QuocPhong"
-#define WIFI_PASSWORD "quocphong2003"
+#define WIFI_SSID "PhuongPhuong"
+#define WIFI_PASSWORD "26011007"
 
 /* ThingsBoard Credentials */
 #define THINGSBOARD_SERVER "app.coreiot.io"
 #define THINGSBOARD_PORT 1883U
-#define DEVICE_TOKEN "5ww7zny85HcDyOgKnhBI"
+#define DEVICE_TOKEN "B5aBnzyRDs8HdV47IUp9"
 constexpr uint16_t MAX_MESSAGE_SEND_SIZE = 512U;
 constexpr uint16_t MAX_MESSAGE_RECEIVE_SIZE = 512U;
 constexpr uint8_t MAX_APIS = 5U;
@@ -126,6 +126,7 @@ constexpr const char RPC_RELAY_STATUS_2[] = "process_relay_status_2";
 constexpr const char RPC_RELAY_STATUS_3[] = "process_relay_status_3";
 constexpr const char RPC_SWITCH_RELAY_CHANGE[] = "process_switch_relay_change";
 constexpr const char RPC_CHECK_HEALTH[] = "process_check_health";
+constexpr const char RPC_SCHEDULE_RELAY[] = "process_schedule_relay";
 
 /* SHARED ATTRIBUTES */
 // https://github.com/thingsboard/thingsboard-client-sdk/blob/master/examples/0006-esp8266_esp32_process_shared_attribute_update
@@ -139,20 +140,17 @@ constexpr const char RELAY_3_STATUS[] = "relay_3_status";
 
 constexpr uint8_t MAX_ATTRIBUTES_SUBSCRIPTIONS = 1U;
 constexpr uint8_t MAX_ATTRIBUTES = 10U;
-constexpr std::array<const char*, MAX_ATTRIBUTES> SHARED_ATTRIBUTES_LIST = {
+constexpr std::array<const char *, MAX_ATTRIBUTES> SHARED_ATTRIBUTES_LIST = {
     RELAY_COMMAND_ATTR,
     RGB_MODE_ATTR,
     RGB_VALUE_ATTR,
     RELAY_1_STATUS,
     RELAY_2_STATUS,
-    RELAY_3_STATUS
-};
+    RELAY_3_STATUS};
 
 constexpr std::array<const char *, MAX_ATTRIBUTES> REQUESTED_SHARED_ATTRIBUTES = {RELAY_1_STATUS};
-const std::vector<const char *> REQUESTED_CLIENT_ATTRIBUTES = {RELAY_1_STATUS,RELAY_2_STATUS,RELAY_3_STATUS};
-
+const std::vector<const char *> REQUESTED_CLIENT_ATTRIBUTES = {RELAY_1_STATUS, RELAY_2_STATUS, RELAY_3_STATUS};
 
 constexpr uint64_t REQUEST_TIMEOUT_MICROSECONDS = 5000U * 1000U;
-
 
 #endif
