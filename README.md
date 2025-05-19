@@ -1,4 +1,5 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 ﻿
 <a href="https://github.com/ACLAB-HCMUT"><img src="https://raw.githubusercontent.com/ACLAB-HCMUT/Common/main/Assets/ACLAB_IMG_1.png" alt="ACLAB logo" title="ACLAB" align="right" height="100" /></a>
 
@@ -20,3 +21,6 @@
 4. Exit Bootloader by Pressing Reset.
 5. To build and upload filesystem image (SPIFF): Platformio Extension -> "Build Filesystem Image" -> "Upload Filesystem Image"
 
+=======
+# Aquaponics-System
+>>>>>>> 729a7f2ba46c0ca3fe6ccea38e39e1bda5b0d969
