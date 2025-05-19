@@ -8,7 +8,7 @@
 #include <fcntl.h>
 // #include <termios.h>
 #include <unistd.h>
-#include <nlohmann/json.hpp> 
+#include <nlohmann/json.hpp>
 #include "esp_partition.h"
 #include "esp_system.h"
 #include "esp_event.h"
@@ -38,9 +38,9 @@
 // #include "ArduinoJson.h"
 #include <Espressif_Updater.h>
 #include <OTA_Firmware_Update.h>
-#include "RPC_Request_Callback.h"
-#include <Server_Side_RPC.h>
-// #include <Client_Side_RPC.h>
+// #include "RPC_Request_Callback.h"
+// #include <Server_Side_RPC.h>
+// // #include <Client_Side_RPC.h>
 #include <Shared_Attribute_Update.h>
 #include <Attribute_Request.h>
 // Libraries for AsyncWebServer

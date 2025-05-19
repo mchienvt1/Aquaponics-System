@@ -93,13 +93,21 @@ float read_sensor_value(Sensor &sensor, std::string target_command, size_t buffe
 }
 void temp_load_data()
 {
-    sensorData.set_data(MEASURE_PH, 23.0189231);
-    sensorData.set_data(MEASURE_DO, 23.18736512863871);
-    sensorData.set_data(MEASURE_CONDUCT, 23.231287376551);
-    sensorData.set_data(MEASURE_SALI, 23.33162378163781623);
-    sensorData.set_data(MEASURE_TDS, 23.43816283617831);
-    sensorData.set_data(MEASURE_RESIS, 23.5378162387126381);
-    sensorData.set_data(MEASURE_TEMP, 23.63871289123);
+    // Tạo số thực ngẫu nhiên trong khoảng [min, max)
+    auto randomFloatInRange = [](float min, float max) -> float
+    {
+        return min + static_cast<float>(random(0, 10001)) / 10000.0f * (max - min);
+    };
+
+    sensorData.set_data(MEASURE_PH, randomFloatInRange(6.6f, 6.65f));
+    sensorData.set_data(MEASURE_DO, randomFloatInRange(0.5f, 0.55f));
+    sensorData.set_data(MEASURE_CONDUCT, randomFloatInRange(1000.0f, 3000.0f)); // ví dụ
+    sensorData.set_data(MEASURE_SALI, randomFloatInRange(350.0f, 357.0f));
+    sensorData.set_data(MEASURE_TDS, randomFloatInRange(515.0f, 517.0f));   // ví dụ
+    sensorData.set_data(MEASURE_RESIS, randomFloatInRange(967.0f, 972.0f)); // ví dụ
+    sensorData.set_data(MEASURE_TEMP, randomFloatInRange(29.2f, 29.3f));
+    sensorData.set_data(MEASURE_TEMP, randomFloatInRange(29.2f, 29.3f));
+    sensorData.set_data(MEASURE_TEMP, randomFloatInRange(29.2f, 29.3f));
 }
 // Read all available sensor data
 static void load_sensor_data()
@@ -157,12 +165,41 @@ void sensor_task(void *pvParameters)
         load_sensor_data();
 #endif
 
-        ESP_LOGI("SENSOR", "%s", sensorData.process_sensor_data().c_str());
-        if(count % 5 == 0){
+        // if (handleAutoencoder(sensorData.get_latest_data(MEASURE_TEMP), sensorData.get_latest_data(MEASURE_PH), sensorData.get_latest_data(MEASURE_DO)))
+        // {
+        //     // Anomaly detected
+        //     sendTelemetry("{\"anomaly\": true}");
+        //     handleAutoencoder2(sensorData.get_latest_data(MEASURE_TEMP), sensorData.get_latest_data(MEASURE_PH), sensorData.get_latest_data(MEASURE_DO));
+        // }
+        // else
+        // {
+        //     // No anomaly
+        //     sendTelemetry("{\"anomaly\": false}");
+        // }
+
+        // if (handleAutoencoder(24.5, 6.19, 10.4))
+        // {
+        //     // Anomaly detected
+        //     sendTelemetry("{\"anomaly\": true}");
+        //     abnormalClassification(24.5, 6.19, 10.4);
+        // }
+        // else
+        // {
+        //     // No anomaly
+        //     sendTelemetry("{\"anomaly\": false}");
+        // }
+
+        // ESP_LOGI("SENSOR", "%s", sensorData.process_sensor_data().c_str());
+        if (count % 5 == 0)
+        {
             std::string values = sensorData.process_sensor_data();
             sendTelemetry(String(values.c_str()));
+            // TODO: send telemetry
+            // String json = "{\"ph_predict_lower\": true}";
+            // sendTelemetry(json);
         }
-        else if (count % 300 == 0){
+        else if (count % 300 == 0)
+        {
             count = 0;
             std::string values = sensorData.process_sensor_data();
             sendTelemetry(String(values.c_str()));

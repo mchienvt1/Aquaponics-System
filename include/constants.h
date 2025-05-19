@@ -88,7 +88,7 @@ constexpr uint8_t SENSOR_DATA_COUNT = 7;
 #define INSANELY_LONG_TIMER 60000
 #define SENSOR_ISX_PROCESS_TIMER 1000
 #define SENSOR_ISX_READ_WRITE_TIMER 20
-#define SENSOR_DHT_TIMER 2000
+#define SENSOR_DHT_TIMER 5000
 #define SENSOR_CLEAR_TIMEOUT 10
 #define SENSOR_DATA_PROCESS_TIME 10000
 
@@ -98,8 +98,8 @@ constexpr uint8_t SENSOR_DATA_COUNT = 7;
 #define GPS_LONGITUDE "longitude"
 
 /* WiFi Credentials */
-#define WIFI_SSID "PhuongPhuong"
-#define WIFI_PASSWORD "26011007"
+#define WIFI_SSID "N14"
+#define WIFI_PASSWORD "28092021"
 
 /* ThingsBoard Credentials */
 #define THINGSBOARD_SERVER "app.coreiot.io"
@@ -116,27 +116,19 @@ constexpr char CURRENT_FIRMWARE_VERSION[] = MY_VERSION;
 constexpr uint8_t FIRMWARE_FAILURE_RETRIES = 12U;
 constexpr uint16_t FIRMWARE_PACKET_SIZE = 4096U;
 
-// RPC //
-// https://github.com/thingsboard/thingsboard-client-sdk/tree/master/examples/0010-esp8266_esp32_rpc
-constexpr uint8_t MAX_RPC_SUBSCRIPTIONS = 9U;
-constexpr uint8_t MAX_RPC_RESPONSE = 5U;
-
-constexpr const char RPC_AUTO_STATUS[] = "rpc_toggle_auto_manual";
-constexpr const char RPC_RELAY_STATUS_2[] = "process_relay_status_2";
-constexpr const char RPC_RELAY_STATUS_3[] = "process_relay_status_3";
-constexpr const char RPC_SWITCH_RELAY_CHANGE[] = "process_switch_relay_change";
-constexpr const char RPC_CHECK_HEALTH[] = "process_check_health";
-constexpr const char RPC_SCHEDULE_RELAY[] = "process_schedule_relay";
-
 /* SHARED ATTRIBUTES */
 // https://github.com/thingsboard/thingsboard-client-sdk/blob/master/examples/0006-esp8266_esp32_process_shared_attribute_update
 constexpr const char BLINKING_INTERVAL_ATTR[] = "blinkingInterval";
 constexpr const char RGB_MODE_ATTR[] = "rgb_mode";
 constexpr const char RGB_VALUE_ATTR[] = "rgb_value";
 constexpr const char RELAY_COMMAND_ATTR[] = "command";
-constexpr const char RELAY_1_STATUS[] = "relay_1_status";
-constexpr const char RELAY_2_STATUS[] = "relay_2_status";
-constexpr const char RELAY_3_STATUS[] = "relay_3_status";
+// constexpr const char RELAY_1_STATUS[] = "relay_1_status";
+// constexpr const char RELAY_2_STATUS[] = "relay_2_status";
+// constexpr const char RELAY_3_STATUS[] = "relay_3_status";
+constexpr const char DEVICE_STATE_1[] = "deviceState1";
+constexpr const char DEVICE_STATE_2[] = "deviceState2";
+constexpr const char DEVICE_STATE_3[] = "deviceState3";
+constexpr const char AI_MODE[] = "automate_prediction_button";
 
 constexpr uint8_t MAX_ATTRIBUTES_SUBSCRIPTIONS = 1U;
 constexpr uint8_t MAX_ATTRIBUTES = 10U;
@@ -144,12 +136,19 @@ constexpr std::array<const char *, MAX_ATTRIBUTES> SHARED_ATTRIBUTES_LIST = {
     RELAY_COMMAND_ATTR,
     RGB_MODE_ATTR,
     RGB_VALUE_ATTR,
-    RELAY_1_STATUS,
-    RELAY_2_STATUS,
-    RELAY_3_STATUS};
+    DEVICE_STATE_1,
+    DEVICE_STATE_2,
+    DEVICE_STATE_3,
+    AI_MODE};
 
-constexpr std::array<const char *, MAX_ATTRIBUTES> REQUESTED_SHARED_ATTRIBUTES = {RELAY_1_STATUS};
-const std::vector<const char *> REQUESTED_CLIENT_ATTRIBUTES = {RELAY_1_STATUS, RELAY_2_STATUS, RELAY_3_STATUS};
+constexpr std::array<const char *, MAX_ATTRIBUTES> REQUESTED_SHARED_ATTRIBUTES = {DEVICE_STATE_1,
+                                                                                  DEVICE_STATE_2,
+                                                                                  DEVICE_STATE_3,
+                                                                                  AI_MODE};
+const std::vector<const char *> REQUESTED_CLIENT_ATTRIBUTES = {DEVICE_STATE_1,
+                                                               DEVICE_STATE_2,
+                                                               DEVICE_STATE_3,
+                                                               AI_MODE};
 
 constexpr uint64_t REQUEST_TIMEOUT_MICROSECONDS = 5000U * 1000U;
 

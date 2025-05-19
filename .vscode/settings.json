@@ -57,6 +57,7 @@
   "C_Cpp_Runner.useLinkTimeOptimization": false,
   "C_Cpp_Runner.msvcSecureNoWarnings": false,
   "files.associations": {
+    "*.embeddedhtml": "html",
     "cstdlib": "cpp",
     "array": "cpp",
     "atomic": "cpp",
@@ -118,7 +119,13 @@
     "any": "cpp",
     "codecvt": "cpp",
     "forward_list": "cpp",
-    "valarray": "cpp"
+    "valarray": "cpp",
+    "ili9341.h": "c",
+    "complex": "cpp",
+    "csignal": "cpp",
+    "set": "cpp",
+    "future": "cpp",
+    "*.ipp": "cpp"
   },
   "C_Cpp.errorSquiggles": "disabled"
 }
