@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 ﻿
 <a href="https://github.com/ACLAB-HCMUT"><img src="https://raw.githubusercontent.com/ACLAB-HCMUT/Common/main/Assets/ACLAB_IMG_1.png" alt="ACLAB logo" title="ACLAB" align="right" height="100" /></a>
 
@@ -18,3 +19,4 @@
 3. Flash Firmware.
 4. Exit Bootloader by Pressing Reset.
 5. To build and upload filesystem image (SPIFF): Platformio Extension -> "Build Filesystem Image" -> "Upload Filesystem Image"
+
