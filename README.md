@@ -14,7 +14,7 @@ Dự án **Aquaponics System** nhằm xây dựng một mô hình kết hợp gi
 Hệ thống bao gồm:
 
 - **ESP32-S3-Relay-6CH** thu thập dữ liệu từ cảm biến (pH, DO, Temperature)
-- **Cảm biến công nghiệp ISHC205, ISDC205, ISEC205 để đo nồng độ pH, oxy hòa tan và độ dẫn điện trong môi trường nước.
+- **Cảm biến công nghiệp ISHC205, ISDC205, ISEC205** đo nồng độ pH, oxy hòa tan và độ dẫn điện trong môi trường nước.
 - **CoreIOT** xử lý điều khiển thiết bị từ xa, lập lịch hoạt động, cảnh báo khi vượt ngưỡng
 - **AI LSTM model** dự đoán sớm biến động môi trường để chủ động cảnh báo và bảo vệ hệ sinh thái
 
