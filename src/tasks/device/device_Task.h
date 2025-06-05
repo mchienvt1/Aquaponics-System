@@ -4,7 +4,6 @@
 #include "global.h"
 #include "GPIO_Task.h"
 #include "Sensor_Task.h"
-#include "GPS_Task.h"
 #include "Relay_Task.h"
 #include "DHT_Task.h"
 

@@ -7,6 +7,7 @@
 #include "ThingsBoard_Task.h"
 #include "Attribute_Task.h"
 #include "OTA_Task.h"
+#include <ThingsBoard.h>
 
 extern OTA_Firmware_Update<> ota;
 extern Shared_Attribute_Update<MAX_ATTRIBUTES_SUBSCRIPTIONS, MAX_ATTRIBUTES> shared_attributes;

@@ -104,7 +104,7 @@ constexpr uint8_t SENSOR_DATA_COUNT = 7;
 /* ThingsBoard Credentials */
 #define THINGSBOARD_SERVER "app.coreiot.io"
 #define THINGSBOARD_PORT 1883U
-#define DEVICE_TOKEN "B5aBnzyRDs8HdV47IUp9"
+#define DEVICE_TOKEN "7SmDa7yfVMq4SxRgJ9Eq"
 constexpr uint16_t MAX_MESSAGE_SEND_SIZE = 512U;
 constexpr uint16_t MAX_MESSAGE_RECEIVE_SIZE = 512U;
 constexpr uint8_t MAX_APIS = 5U;
