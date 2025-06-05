@@ -2,7 +2,7 @@
 
 ## 🌿 Mô hình hệ thống ngoài đời thực
 
-<div style="display: flex; gap: 20px;">
+<div style="display: flex; gap: 10px;">
   <img src="./image/smart_aquaponics_system.png" alt="Real System 1" width="400"/>
   <img src="./image/iot_real_system.jpg" alt="Real System 2" width="400"/>
 </div>
