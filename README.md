@@ -31,7 +31,7 @@ Hệ thống bao gồm:
 
 Mô hình AI được huấn luyện với kiến trúc Conv1D + BiLSTM + Attention, dựa trên dữ liệu cảm biến lịch sử. Sau khi triển khai trên server Flask-SocketIO, luồng xử lý gồm:
 
-1. ESP32 gửi dữ liệu mỗi 5s
+1. ESP32 gửi dữ liệu mỗi 5 phút
 2. Server thu thập và chuẩn hóa dữ liệu
 3. Dự đoán 3 thông số môi trường
 4. Gửi kết quả dự đoán về dashboard và ESP32
