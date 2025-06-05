@@ -11,7 +11,7 @@
 
 Dự án **Aquaponics System** nhằm xây dựng một mô hình kết hợp giữa **nông nghiệp thông minh (IoT)** và **trí tuệ nhân tạo (AI)** trong việc giám sát và điều khiển hệ sinh thái nuôi cá - trồng rau bền vững. 
 
-Hệ thống được hiện thực bởi sinh viên Trường Đại học Bách Khoa TP.HCM, bao gồm:
+Hệ thống bao gồm:
 
 - **ESP32-S3-Relay-6CH** thu thập dữ liệu từ cảm biến (pH, DO, Temperature)
 - **CoreIOT** xử lý điều khiển thiết bị từ xa, lập lịch hoạt động, cảnh báo khi vượt ngưỡng
