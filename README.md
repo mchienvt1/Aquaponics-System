@@ -3,7 +3,7 @@
 ## 🌿 Mô hình hệ thống ngoài đời thực
 
 <img src="./image/smart_aquaponics_system.png" alt="Real System" width="500"/>
-<img src="./image/iot_real_system.png" alt="Real System" width="500"/>
+<img src="./image/iot_real_system.jpg" alt="Real System" width="500"/>
 
 ## 📌 Giới thiệu
 
